@@ -49,6 +49,13 @@ The 9/10 gap is not a mysterious sequence.  The feasible cell-size patterns are 
 - **The 6/8 conflict is structural.**  Standard 6 and 8 differ only in `b`,
   which the right cover removes.  Any unambiguous decimal font must sacrifice
   the topology of 6 or 8; the design question is which one.
+- **Nearest-standard (segment-fault) check.**  A viewer who assumes a small
+  display fault reads the glyph as the closest known digit.  `OPT_DEC` passes
+  this check within 0–9 (the 3/7 tie is broken by the weights).  The source
+  note’s **hex** font fails it for 6 and 8: its 6 is nearest to 3, its 8 is
+  nearest to 4.  No 16-glyph 0–F font can make every digit the unique weighted
+  nearest; the minimum is one violation (8).  This is a limit of the
+  7-segment hex space, not of one font.
 
 <p align="center">
   <img src="foundation/plots/family_existence.svg" alt="Attainable maximal-set sizes for the generalized family" width="720">

@@ -13,9 +13,9 @@ foundation/
   sat_experiments.py optional CP-SAT runs for 11-seg, 3x3 and 9-seg
   wellcovered.py    the well-covered criterion and its verification
   topology.py       geometry-based (components, holes) signature
-  font_opt.py       optional CP-SAT font search / Pareto table
+  font_opt.py       optional CP-SAT font search / Pareto / nearest
   charset.py        character-set validity and capacity
-  recognize.py      visible + occluded weighted-distance baseline
+  recognize.py      visible + occluded distance, nearest-standard check
   experiments.py    runs everything, writes JSON + SVG
   verify_sevenseg.py asserts the headline claims
   plot.py           dependency-free SVG charts
@@ -72,9 +72,10 @@ g++ -O3 -march=native -o foundation/results/count_mixed foundation/count_mixed.c
   `K₂ □ K₂ □ K₈ □ K₈`, and the well-covered probe.  Statuses are recorded
   as-is; a `FEASIBLE` value is not a proof of optimality.
 - `font_opt.json`: the CP-SAT font search (min mismatch, min flips, min
-  distance, topology-budget Pareto).  `OPT_DEC` in `fonts.py` is the
-  min-distance candidate; `TOP0_DEC`/`MIN_MISMATCH_DEC` are the
-  topology-only counterexamples.
+  distance, topology-budget Pareto, nearest-constrained decimal/hex).  `OPT_DEC`
+  in `fonts.py` is the min-distance candidate; `TOP0_DEC`/`MIN_MISMATCH_DEC`
+  are the topology-only examples; `MIN_FLIP_DEC` is a degenerate 4-flip
+  optimum.  The hex nearest constraint is infeasible; the min violation is 1.
 - `fonts`: validity, flip counts, visible/occluded baseline scores.
 - `capacity`: the character-set fit table.
 
@@ -91,6 +92,8 @@ g++ -O3 -march=native -o foundation/results/count_mixed foundation/count_mixed.c
   new candidates (4 / 4 / 5 for OPT_DEC / MIN_FLIP_DEC / TOP0_DEC);
 - the 7-segment capacity is 32;
 - the topology mismatches (doc decimal 6,8; OPT_DEC 8; TOP0_DEC none);
+- the nearest-standard mismatches (OPT_DEC none; doc hex 6,8; the 30-flip
+  counterexample 9 of 10 digits);
 - the well-covered criterion matches the exact and CP-SAT probes.
 
 ## Performance and limits

@@ -97,8 +97,9 @@ MIN_HEX = {
 # CP-SAT candidates from foundation/font_opt.py.  OPT_DEC is the
 # minimum weighted visible+occluded distance (4 flips, one visible topology
 # mismatch).  MIN_FLIP_DEC is a different 4-flip optimum; it is kept as a
-# warning about degenerate shapes (1 = b only).  TOP0_DEC preserves every
-# visible topology signature but is unreadable; it is a counterexample.
+# warning about degenerate shapes (7 = a,b, a 7 missing its lower half).
+# TOP0_DEC preserves every visible topology signature; MIN_MISMATCH_DEC is the
+# extreme topology-only counterexample (30 flips, unreadable).
 OPT_DEC = {
     "0": "1111110",
     "1": "0111000",
@@ -114,13 +115,13 @@ OPT_DEC = {
 
 MIN_FLIP_DEC = {
     "0": "1111110",
-    "1": "0100000",
+    "1": "0110000",
     "2": "1101101",
     "3": "1110001",
     "4": "0110011",
-    "5": "1011010",
+    "5": "1010011",
     "6": "1011111",
-    "7": "1110000",
+    "7": "1100000",
     "8": "0111111",
     "9": "1111011",
 }
@@ -140,13 +141,13 @@ MIN_MISMATCH_DEC = {
 
 TOP0_DEC = {
     "0": "1111110",
-    "1": "0110000",
+    "1": "0111000",
     "2": "1101101",
     "3": "0111001",
-    "4": "0110111",
+    "4": "0100011",
     "5": "1011011",
     "6": "0011111",
-    "7": "1100000",
+    "7": "1110000",
     "8": "1111111",
     "9": "1110011",
 }

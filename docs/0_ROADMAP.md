@@ -75,6 +75,9 @@ every headline claim has a script.
       sufficient.
 - [x] Produce the font Pareto table and the min-distance 4-flip decimal
       candidate; identify the topology-only counterexamples.
+- [x] Add the nearest-standard / segment-fault check; decimal candidate passes,
+      doc hex fails 6/8, and no 16-glyph 0–F nearest-preserving font exists
+      (minimum one violation).
 - [ ] Add endpoints/junctions/symmetry to the signature.
 - [ ] Human review of the min-distance font (`need_user_review`).
 - [ ] Novelty search for the well-covered criterion and the exact counts.

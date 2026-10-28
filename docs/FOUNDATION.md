@@ -494,6 +494,13 @@ mismatches exists and scores 0.105, i.e. it is unreadable.  The full analysis,
 the font Pareto table and the 6/8 structural conflict are in
 `docs/RECOGNITION.md`.
 
+A **nearest-standard** (segment-fault) check is also implemented: the intended
+digit should be the unique closest standard in the chosen character set, using
+the weighted distance.  For decimal, `OPT_DEC` passes (the unweighted 3/7 tie
+is broken by the weights).  For hex, the check is **infeasible for all 16
+glyphs**; the minimum number of nearest violations is one (8), and the source
+note’s hex font has two (6 and 8).  Details in `docs/RECOGNITION.md`.
+
 The next step is calibration, not another hand rule:
 
 1. Run a small recognition quiz/game: show a glyph (possibly occluded), ask for

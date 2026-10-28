@@ -8,7 +8,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from foundation import block, charset, recognize  # noqa: E402
 from foundation.exact import layout_graph, max_independent_set  # noqa: E402
-from foundation.fonts import DOC_DEC, DOC_HEX, MIN_DEC, MIN_HEX  # noqa: E402
+from foundation.fonts import (  # noqa: E402
+    DOC_DEC,
+    DOC_HEX,
+    MIN_DEC,
+    MIN_FLIP_DEC,
+    MIN_HEX,
+    MIN_MISMATCH_DEC,
+    OPT_DEC,
+    TOP0_DEC,
+)
 from foundation.layouts import grid_pixels, seven_seg, seven_seg_per_g  # noqa: E402
 from foundation.topology import signature, standard_signatures  # noqa: E402
 from foundation.wellcovered import criterion, verify_block_cases, verify_sat_probe  # noqa: E402
@@ -80,6 +89,24 @@ def test_topology():
     assert set_score(MIN_MISMATCH_DEC)["mean"] < 0.2
 
 
+def test_nearest():
+    from foundation.recognize import set_score
+
+    assert set_score(OPT_DEC)["nearest_mismatches"] == []
+    assert set_score(DOC_HEX)["nearest_mismatches"] == ["6", "8"]
+    assert set_score(MIN_MISMATCH_DEC)["nearest_mismatches"]
+    assert set_score(DOC_DEC)["per_glyph"]["3"]["nearest"]["unique"]
+    assert set_score(DOC_DEC)["per_glyph"]["3"]["nearest"]["margin"] > 0
+    import json
+    from pathlib import Path
+
+    p = Path(__file__).resolve().parents[1] / "foundation" / "results" / "font_opt.json"
+    if p.exists():
+        d = json.loads(p.read_text(encoding="utf-8"))
+        assert d["hex_nearest"]["status"] == "INFEASIBLE"
+        assert d["hex_min_nearest_violations"]["nearest_violations"] == 1
+
+
 def test_grid():
     adj = layout_graph(grid_pixels(3, 3))
     assert len(max_independent_set(adj)) == 64
@@ -107,6 +134,7 @@ if __name__ == "__main__":
     test_mis()
     test_wellcovered()
     test_topology()
+    test_nearest()
     test_grid()
     test_recognition()
     test_valid_set()

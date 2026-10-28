@@ -98,7 +98,7 @@ def main() -> None:
     # Topology: the model-optimised font has only 8 mismatched; the
     # topology-only font has none and is a counterexample, not a candidate.
     assert recognize.set_score(OPT_DEC)["topology_mismatches"] == ["8"]
-    assert recognize.set_score(MIN_FLIP_DEC)["topology_mismatches"] == ["5", "8"]
+    assert recognize.set_score(MIN_FLIP_DEC)["topology_mismatches"] == ["8"]
     assert recognize.set_score(TOP0_DEC)["topology_mismatches"] == []
     assert recognize.set_score(MIN_MISMATCH_DEC)["topology_mismatches"] == []
     assert recognize.set_score(MIN_MISMATCH_DEC)["mean"] < 0.2

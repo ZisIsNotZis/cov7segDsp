@@ -134,6 +134,9 @@ def font_results() -> dict[str, object]:
                 "per_glyph": v["per_glyph"],
                 "topology_mismatches": v["topology_mismatches"],
                 "occluded_topology_mismatches": v["occluded_topology_mismatches"],
+                "nearest_mismatches": v["nearest_mismatches"],
+                "nearest_ties": v["nearest_ties"],
+                "min_nearest_margin": v["min_nearest_margin"],
             }
             for k, v in scores.items()
         },
