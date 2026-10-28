@@ -15,6 +15,8 @@ foundation/
   topology.py       geometry-based (components, holes) signature
   font_opt.py       optional CP-SAT font search / Pareto / nearest
   charset.py        character-set validity and capacity
+  calibrate.py      quiz-export weight fit (optional scipy)
+  build_lab_data.py writes lab/data.js from the topology module
   recognize.py      visible + occluded distance, nearest-standard check
   experiments.py    runs everything, writes JSON + SVG
   verify_sevenseg.py asserts the headline claims
@@ -24,6 +26,7 @@ foundation/
 docs/
   FOUNDATION.md     the math/results note
   RECOGNITION.md    topology, the 6/8 conflict, the font Pareto
+  LAB.md            the static lab, quiz format, calibration
   0_STAGING.md      inbox (empty)
   1_PROBLEM.md      the pain and why now
   2_GOAL.md         the Goal, priorities, mode
@@ -51,6 +54,7 @@ python -m foundation.topology
 uv run --with ortools python -m foundation.exact
 uv run --with ortools python -m foundation.sat_experiments
 uv run --with ortools python -m foundation.font_opt
+uv run --with scipy python -m foundation.calibrate --synthetic
 ```
 
 The C++ helper is built with:
@@ -71,6 +75,7 @@ g++ -O3 -march=native -o foundation/results/count_mixed foundation/count_mixed.c
 - `sat.json`: CP-SAT status for the 11-seg layout, the 3x3 grid,
   `K₂ □ K₂ □ K₈ □ K₈`, and the well-covered probe.  Statuses are recorded
   as-is; a `FEASIBLE` value is not a proof of optimality.
+- `index.html` + `lab/`: the M3 static lab (core logic, data, UI).
 - `font_opt.json`: the CP-SAT font search (min mismatch, min flips, min
   distance, topology-budget Pareto, nearest-constrained decimal/hex).  `OPT_DEC`
   in `fonts.py` is the min-distance candidate; `TOP0_DEC`/`MIN_MISMATCH_DEC`

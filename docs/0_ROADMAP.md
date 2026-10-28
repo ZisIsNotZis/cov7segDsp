@@ -79,7 +79,8 @@ every headline claim has a script.
       doc hex fails 6/8, and no 16-glyph 0–F nearest-preserving font exists
       (minimum one violation).
 - [ ] Add endpoints/junctions/symmetry to the signature.
-- [ ] Human review of the min-distance font (`need_user_review`).
+- [x] Human review of the min-distance font: the user accepted the 5/8 shapes
+      (“these looks fine to me”); `OPT_DEC` is the lab default.
 - [ ] Novelty search for the well-covered criterion and the exact counts.
 - Deliverable: `docs/RECOGNITION.md`, `foundation/topology.py`,
   `foundation/font_opt.py`, updated font tables.
@@ -97,7 +98,9 @@ interactive interface and human responses.
 - Conflict matrix and font presets.
 - Quiz/design game: guess the glyph, design a set, see the score; collect the
   confusion matrix and calibrate `w_i`, `λ_vis`, `λ_occ`.
-- Deliverable: `index.html` + `docs/LAB.md` + a calibration report.
+- Deliverable: `index.html` + `docs/LAB.md` + `foundation/calibrate.py`.
+- Status: **shipped MVP**; the lab is usable now, human data is the remaining
+  input.
 - Acceptance: a non-specialist can see why a pair collides in under a minute;
   the quiz exports a confusion matrix.
 

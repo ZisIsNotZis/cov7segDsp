@@ -6,7 +6,7 @@
 
 **Which glyph sets stay unambiguous when any one side of a seven-segment display is covered?** This repository answers that exactly, then generalizes the answer to other grids and character sets.
 
-Status: **M2 — recognisability and proof (in progress)**.  M1 (the exact combinatorics, the general engine, the capacity bound) is shipped.  M2 adds the well-covered criterion, a geometry-based topology check, and a font Pareto search.  The interactive lab is M3.
+Status: **M3 — interactive lab (shipped MVP)**.  M1 (exact combinatorics, general engine, capacity) and M2 (well-covered criterion, topology, nearest-standard check, font Pareto) are shipped.  The static lab is now in `index.html`; the quiz it hosts is the human-calibration harness.
 
 The motivating case: a thin object covers one side of a traffic countdown.  The outermost line disappears, and the remaining pattern can be a different valid digit.  The 2024 *Journal of Vision* study of occluded countdown numerals documents the resulting 6/8 bistability.
 
@@ -61,10 +61,30 @@ The 9/10 gap is not a mysterious sequence.  The feasible cell-size patterns are 
   <img src="foundation/plots/family_existence.svg" alt="Attainable maximal-set sizes for the generalized family" width="720">
 </p>
 
-## Quick start
+## Try the lab
 
 ```bash
 git clone <this repo>
+cd cov7segDsp
+python3 -m http.server 8000
+# open http://localhost:8000/
+```
+
+The lab has four tabs:
+
+- **Lab** — edit a glyph, apply a cover, see the projection, the conflict list,
+  the conflict matrix, and the scorecard.
+- **Countdown** — drag the leaf to a side and watch which digits are still
+  readable; compare Standard vs Optimised.
+- **Quiz** — read a glyph (optionally occluded), click the digit, export the
+  JSON for calibration.
+- **Math** — the exact results, the capacity, and the count plots.
+
+The lab is documented in [docs/LAB.md](docs/LAB.md).
+
+## Quick start (CLI)
+
+```bash
 cd cov7segDsp
 python -m foundation.verify_sevenseg
 python -m foundation.experiments
@@ -84,6 +104,8 @@ uv run --with ortools python -m foundation.font_opt
 - **Character-set capacity.**  Check a glyph table, list conflicts and the offending cover, and compare a set size with the layout capacity.
 - **Font comparison.**  The source note’s decimal/hex tables, the exact minimum-flip tables, the min-distance 4-flip candidate, flip counts, a visible+occluded recognisability baseline, and a geometry-based topology check.
 - **Font search.**  CP-SAT over the 128 patterns: min topology mismatch, min flips, min weighted distance, and a topology-budget Pareto table.
+- **Static lab.**  `index.html` + `lab/`: glyph editor, draggable countdown occluder, conflict matrix, quiz and JSON export.
+- **Calibration harness.**  `foundation/calibrate.py` fits per-segment weights from the quiz export; a synthetic self-test recovers known weights (RMSE ≈ 0.04).
 - **Reproducible results.**  `foundation/results/foundation.json`, `sat.json`, `font_opt.json`, and SVG count/existence plots.
 - **An honest record of open cases.**  The 3×3 minimum is bounded (21 ≤ min ≤ 32, best feasible 32); the 9-segment minimum is open.
 
@@ -125,7 +147,9 @@ The foundation is deliberately **layout-parametric**: a new grid or character se
 | Visible+occluded recognisability baseline | done (weights provisional) |
 | Geometry-based topology signature | done |
 | Font Pareto search / 4-flip candidate | done |
-| Calibrated recognisability (quiz, weights) | in progress — M2 |
+| Static lab (editor, countdown, quiz) | done — M3 MVP |
+| Calibration harness (visible-evidence fit) | done; real responses pending |
+| Calibrated weights from human data | planned — refit after the quiz |
 | Interactive occlusion lab + design quiz | planned — M3 |
 | 14-segment / larger grids / algorithmic design engine | planned — M4 |
 | Release site / public demo | planned — M5 |

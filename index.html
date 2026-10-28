@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cov7seg lab — one side off</title>
+<style>
+  :root{
+    --bg:#0c0c0f; --panel:#141418; --panel2:#191920; --line:#2a2a32;
+    --ink:#f2f2f5; --muted:#9a9aa5; --accent:#ff5a4d; --amber:#ffb020;
+    --green:#4ade80; --red:#f43f5e; --blue:#60a5fa;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:radial-gradient(1200px 600px at 20% -10%, #1a1214 0, var(--bg) 55%);
+    color:var(--ink); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:14px; line-height:1.5;
+  }
+  header{
+    display:flex; align-items:center; gap:18px; padding:22px clamp(16px,4vw,48px) 10px;
+    flex-wrap:wrap;
+  }
+  .logo{width:150px; height:50px; display:block}
+  h1{font-size:20px; margin:0; letter-spacing:.5px}
+  .sub{margin:2px 0 0; color:var(--muted); font-size:12px}
+  .tabs{margin-left:auto; display:flex; gap:6px; flex-wrap:wrap}
+  .tabs button, button, select{
+    font:inherit; color:var(--ink); background:var(--panel2); border:1px solid var(--line);
+    border-radius:8px; padding:7px 11px; cursor:pointer;
+  }
+  .tabs button.active, button.active, button:hover, select:hover{border-color:var(--accent); color:#fff}
+  .tabs button.active{background:#2a1414}
+  button.small{padding:5px 8px; font-size:12px}
+  button:disabled{opacity:.45; cursor:default}
+  main{padding:10px clamp(16px,4vw,48px) 60px; max-width:1280px; margin:0 auto}
+  .tab{display:none}
+  .tab.active{display:block}
+  .panel{
+    background:linear-gradient(180deg,var(--panel),#121216); border:1px solid var(--line);
+    border-radius:14px; padding:16px; margin-bottom:16px;
+  }
+  h2{font-size:15px; margin:0 0 12px; color:#fff}
+  h3{font-size:12px; margin:16px 0 8px; color:var(--muted); text-transform:uppercase; letter-spacing:1px}
+  .grid{display:grid; grid-template-columns:minmax(300px,1fr) minmax(320px,1.15fr); gap:16px}
+  .grid.two{grid-template-columns:1fr 1fr}
+  @media (max-width:820px){.grid,.grid.two{grid-template-columns:1fr}}
+  .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .display{display:flex; gap:18px; justify-content:center; align-items:center; min-height:190px}
+  .glyph{width:170px; height:170px; display:block}
+  .glyph.big{width:190px; height:190px}
+  .glyph-bg{fill:#0a0a0c; stroke:#24242b; stroke-width:1}
+  .seg{stroke-width:9; stroke-linecap:round; fill:none; transition:stroke .12s}
+  .seg.on{stroke:var(--accent); filter:drop-shadow(0 0 5px rgba(255,90,77,.55))}
+  .seg.off{stroke:#2c2c34}
+  .seg.hidden{stroke:#4a3a20; opacity:.35}
+  .seg.covered{stroke:#22222a; opacity:.3}
+  .seg.conflict{stroke:var(--red); stroke-width:10; stroke-dasharray:4 3; filter:drop-shadow(0 0 6px rgba(244,63,94,.8))}
+  .seg.clickable{cursor:pointer; pointer-events:stroke}
+  .seg.clickable:hover{stroke-width:12}
+  .hint{color:var(--muted); font-size:12px; margin:8px 0 0}
+  .chip{display:inline-block; padding:2px 8px; border:1px solid var(--line); border-radius:999px; font-size:12px; margin:3px 4px 3px 0; color:var(--muted)}
+  .chip.ok{color:var(--green); border-color:#245c39}
+  .chip.warn{color:var(--red); border-color:#6b1d2a}
+  .chip.hint{color:var(--muted)}
+  .scorecard{display:grid; gap:4px; margin-bottom:6px}
+  .kv{display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid #202027; padding:4px 0; font-size:12px}
+  .kv span:first-child{color:var(--muted)}
+  .kv .bad{color:var(--red)}
+  .conflict-list{max-height:260px; overflow:auto; display:grid; gap:6px}
+  .conflict-item{text-align:left; font-size:12px; background:#18181d; border:1px solid var(--line); border-radius:8px; padding:7px 9px; cursor:pointer}
+  .conflict-item:hover{border-color:var(--red)}
+  .conflict-item b{color:var(--amber)}
+  .pair{display:flex; gap:18px; align-items:flex-start; margin-top:8px}
+  .pair-cell{text-align:center}
+  .cap{font-size:11px; color:var(--muted); margin-bottom:2px}
+  .pair .glyph{width:120px; height:120px}
+  #lab-matrix{overflow:auto}
+  .matrix{border-collapse:collapse; margin-top:6px}
+  .matrix th{font-size:10px; color:var(--muted); font-weight:400; padding:2px 4px}
+  .matrix td{width:24px; height:24px; text-align:center; border:1px solid #22222a; font-size:9px; color:var(--muted)}
+  .matrix td.diag{color:#33333c}
+  .matrix td.conflict{background:#54121d; color:#ffd7dd; cursor:pointer; border-color:#7a1d2c}
+  .matrix td.conflict:hover{background:#7a1d2c}
+  .cd-stage{position:relative; min-height:300px; display:flex; align-items:center; justify-content:center; margin:8px 0}
+  .cd-digit{display:flex; justify-content:center}
+  #cd-display{gap:26px}
+  .leaf{
+    position:absolute; z-index:5; border-radius:55% 12% 55% 12%;
+    background:radial-gradient(circle at 30% 30%, #7bd88f, #2b6b3a 60%, #173a20);
+    border:1px solid #9be6a8; box-shadow:0 8px 22px rgba(0,0,0,.55);
+    cursor:grab; touch-action:none; transition:width .12s, height .12s;
+  }
+  .leaf.dragging{cursor:grabbing}
+  .leaf::after{content:""; position:absolute; inset:10% 42% 10% 42%; background:#0d2a15; opacity:.5; border-radius:50%}
+  .choices{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+  .choice{min-width:44px; font-size:16px; padding:10px 12px}
+  .feedback{margin-top:10px; min-height:28px}
+  .stats-table{border-collapse:collapse; margin-top:10px; font-size:12px}
+  .stats-table th,.stats-table td{border:1px solid #24242b; padding:3px 10px; text-align:right}
+  .stats-table th{color:var(--muted); font-weight:400}
+  .stats-table td:first-child,.stats-table th:first-child{text-align:left}
+  .matrix-lite td{min-width:18px; font-size:10px; text-align:center}
+  .matrix-lite td.diag{color:var(--green); background:#112318}
+  .readings{min-height:30px; margin-top:8px}
+  .muted{color:var(--muted)}
+  .math-table{border-collapse:collapse; margin:10px 0; font-size:12px}
+  .math-table th,.math-table td{border:1px solid #24242b; padding:4px 10px; text-align:left}
+  .math-table th{color:var(--muted); font-weight:400}
+  .plots{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px}
+  .plots figure{flex:1 1 320px; margin:0}
+  .plots img{width:100%; background:#fff; border-radius:10px; border:1px solid var(--line)}
+  .plots figcaption{color:var(--muted); font-size:11px; margin-top:6px}
+  footer{color:var(--muted); font-size:11px; padding:0 clamp(16px,4vw,48px) 30px; max-width:1280px; margin:0 auto}
+  a{color:var(--blue)}
+</style>
+</head>
+<body>
+<header>
+  <img class="logo" src="assets/logo.svg" alt="cov7seg">
+  <div>
+    <h1>cov7seg lab</h1>
+    <p class="sub">one side off — what can you still read?</p>
+  </div>
+  <nav class="tabs">
+    <button data-tab="lab" class="active">Lab</button>
+    <button data-tab="countdown">Countdown</button>
+    <button data-tab="quiz">Quiz</button>
+    <button data-tab="math">Math</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ------------------------------------------------------------ LAB -->
+  <section id="tab-lab" class="tab active">
+    <div class="grid">
+      <div class="panel">
+        <h2>Glyph editor</h2>
+        <div id="lab-display" class="display"></div>
+        <div id="lab-covers" class="row" style="margin-top:8px"></div>
+        <div id="lab-readings" class="readings"></div>
+        <div class="row" style="margin-top:10px">
+          <button id="lab-random" class="small">Random glyph</button>
+          <button id="lab-reset" class="small">Reset preset</button>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <label>slot <select id="lab-slot"></select></label>
+          <button id="lab-apply" class="small">Apply glyph to slot</button>
+        </div>
+        <p class="hint">Click a segment to toggle it. Pick a cover to see what survives. A conflict means two slots become identical under that cover.</p>
+      </div>
+      <div class="panel">
+        <h2>Font</h2>
+        <div class="row">
+          <select id="lab-font" style="max-width:100%"></select>
+        </div>
+        <div id="lab-scorecard" class="scorecard" style="margin-top:10px"></div>
+        <h3>Conflicts</h3>
+        <div id="lab-conflicts" class="conflict-list"></div>
+        <h3>Selected conflict</h3>
+        <div id="lab-detail"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Conflict matrix</h2>
+      <div id="lab-matrix"></div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------ COUNTDOWN -->
+  <section id="tab-countdown" class="tab">
+    <div class="panel">
+      <div class="row">
+        <select id="cd-font" style="max-width:100%"></select>
+        <button id="cd-start">Start</button>
+        <button id="cd-reset">Reset</button>
+      </div>
+      <div id="cd-stage" class="cd-stage">
+        <div id="cd-display" class="display" style="min-height:0"></div>
+        <div id="cd-leaf" class="leaf" title="Drag me to a side"></div>
+      </div>
+      <div id="cd-cover-label" class="hint"></div>
+      <div class="grid two" style="margin-top:12px">
+        <div class="panel" style="margin:0">
+          <h3>Tens</h3>
+          <div id="cd-tens" class="readings"></div>
+        </div>
+        <div class="panel" style="margin:0">
+          <h3>Ones</h3>
+          <div id="cd-ones" class="readings"></div>
+        </div>
+      </div>
+      <p class="hint">Drag the leaf to a side. The covered side is hidden on both digits; the lists show every digit that could still be read. Try “Standard” vs “Optimised” to see the difference.</p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ QUIZ -->
+  <section id="tab-quiz" class="tab">
+    <div class="panel">
+      <div class="row">
+        <select id="quiz-font" style="max-width:100%"></select>
+        <label class="hint"><input type="checkbox" id="quiz-occlude" checked> random occlusion</label>
+        <button id="quiz-next">New glyph</button>
+        <button id="quiz-export" class="small">Export JSON</button>
+        <button id="quiz-reset" class="small">Clear data</button>
+      </div>
+      <div id="quiz-display" class="display"></div>
+      <div id="quiz-choices" class="choices"></div>
+      <div id="quiz-feedback" class="feedback"></div>
+      <div id="quiz-stats"></div>
+      <p class="hint">This is the human-calibration harness for M3. Responses are stored in localStorage; export the JSON to fit the weights.</p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ MATH -->
+  <section id="tab-math" class="tab">
+    <div class="panel">
+      <h2>What the foundation found</h2>
+      <p>Seven-segment display, four possible one-side covers: top removes <code>a</code>, bottom removes <code>d</code>, left removes <code>e,f</code>, right removes <code>b,c</code>; the middle <code>g</code> is never covered.</p>
+      <table class="math-table">
+        <tr><th>maximum unambiguous set</th><td>32</td></tr>
+        <tr><th>minimum maximal set</th><td>16</td></tr>
+        <tr><th>attainable maximal sizes</th><td>16, 19–32 (17 and 18 do not exist)</td></tr>
+        <tr><th>maximal sets per g / globally</th><td>604,008 / 364,825,664,064</td></tr>
+        <tr><th>character capacity</th><td>32 (decimal and hex fit; 36-letter alphanumeric and Base64 do not)</td></tr>
+        <tr><th>construction</th><td>4 cells × a matching of K₄,₄, plus cross-cell disjointness and hole-covering</td></tr>
+        <tr><th>well-covered criterion</th><td>K_{q1} □ … □ K_{qd} is well-covered iff q1 &gt; Σ<sub>i≥2</sub>(q_i − 1)</td></tr>
+      </table>
+      <p>The per-<code>g</code> graph is <code>K₂ □ K₂ □ K₄ □ K₄</code>; the global graph is two disjoint copies because <code>g</code> is never covered. The 9/10 gap is not a periodic sequence: it is the set of feasible cell-size patterns.</p>
+      <p>Recognisability is checked with a geometry-based <code>(components, holes)</code> signature and a nearest-standard / segment-fault check. The source note’s hex font fails the nearest check for 6 and 8; no 16-glyph 0–F nearest-preserving font exists. The optimised decimal candidate changes 1, 3, 5, 8 (4 flips) and is the “Optimised 0–9” preset in the Lab.</p>
+      <div class="plots">
+        <figure>
+          <img src="foundation/plots/sevenseg_global_counts.svg" alt="global counts by size">
+          <figcaption>Global maximal-set counts by size: peak at 26, not at the maximum 32.</figcaption>
+        </figure>
+        <figure>
+          <img src="foundation/plots/family_existence.svg" alt="family existence">
+          <figcaption>Attainable maximal sizes for K₂ □ K₂ □ K_q □ K_q: the gap moves and can disappear.</figcaption>
+        </figure>
+      </div>
+      <p class="hint">Full notes: <a href="docs/FOUNDATION.md">docs/FOUNDATION.md</a> · <a href="docs/RECOGNITION.md">docs/RECOGNITION.md</a> · <a href="docs/0_ROADMAP.md">roadmap</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  cov7seg · M3 lab · built from the M1/M2 exact results.  Everything is static; no server, no build.
+</footer>
+
+<script src="lab/data.js"></script>
+<script src="lab/core.js"></script>
+<script src="lab/ui.js"></script>
+</body>
+</html>
