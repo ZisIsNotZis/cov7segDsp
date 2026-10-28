@@ -6,7 +6,18 @@ Run:
 from __future__ import annotations
 
 from . import block, charset
-from .fonts import DOC_DEC, DOC_HEX, MIN_DEC, MIN_HEX, STANDARD
+from .fonts import (
+    DOC_DEC,
+    DOC_HEX,
+    MIN_DEC,
+    MIN_FLIP_DEC,
+    MIN_MISMATCH_DEC,
+    MIN_HEX,
+    OPT_DEC,
+    STANDARD,
+    TOP0_DEC,
+)
+from . import recognize
 from .layouts import seven_seg
 from .model import patterns_from_strings
 
@@ -36,7 +47,10 @@ def main() -> None:
     print("7-seg sizes/counts: OK")
 
     checks = charset.all_font_checks()
-    for name in ("doc_dec", "doc_hex", "min_dec", "min_hex"):
+    for name in (
+        "doc_dec", "doc_hex", "min_dec", "min_hex",
+        "opt_dec", "min_flip_dec", "top0_dec", "min_mismatch_dec",
+    ):
         assert checks[name]["ok"], (name, checks[name])
         assert all(checks[name]["projections_unique"].values()), name
     print("font tables valid: OK")
@@ -75,7 +89,20 @@ def main() -> None:
     assert sum(sum(a != b for a, b in zip(v, STANDARD[k])) for k, v in DOC_HEX.items()) == 11
     assert sum(sum(a != b for a, b in zip(v, STANDARD[k])) for k, v in MIN_DEC.items()) == 4
     assert sum(sum(a != b for a, b in zip(v, STANDARD[k])) for k, v in MIN_HEX.items()) == 8
+    assert sum(sum(a != b for a, b in zip(v, STANDARD[k])) for k, v in OPT_DEC.items()) == 4
+    assert sum(sum(a != b for a, b in zip(v, STANDARD[k])) for k, v in MIN_FLIP_DEC.items()) == 4
+    assert sum(sum(a != b for a, b in zip(v, STANDARD[k])) for k, v in TOP0_DEC.items()) == 5
+    assert sum(sum(a != b for a, b in zip(v, STANDARD[k])) for k, v in MIN_MISMATCH_DEC.items()) == 30
     print("flip counts: OK")
+
+    # Topology: the model-optimised font has only 8 mismatched; the
+    # topology-only font has none and is a counterexample, not a candidate.
+    assert recognize.set_score(OPT_DEC)["topology_mismatches"] == ["8"]
+    assert recognize.set_score(MIN_FLIP_DEC)["topology_mismatches"] == ["5", "8"]
+    assert recognize.set_score(TOP0_DEC)["topology_mismatches"] == []
+    assert recognize.set_score(MIN_MISMATCH_DEC)["topology_mismatches"] == []
+    assert recognize.set_score(MIN_MISMATCH_DEC)["mean"] < 0.2
+    print("topology/font search checks: OK")
 
     for row in charset.capacity_table():
         print(row)

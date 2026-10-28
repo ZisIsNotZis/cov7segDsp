@@ -31,6 +31,14 @@
    construction rule, generalisations, proof sketches, open questions and
    reproduction commands.  Every number points to the script that produces it.
 8. **Plots.**  Count curves and the existence dot-plot are generated as SVG.
+9. **Topological signature.**  A geometry-based `(components, holes)` signature
+   is computed for a pattern and compared with the standard glyph, visibly and
+   under each cover.  The raster parameters are explicit and reproducible.
+10. **Font search.**  A CP-SAT assignment search produces fonts optimised for
+    topology mismatches, flips, and weighted distance, plus a Pareto table.
+    Candidates are labelled as model output, not as perceptual truth.
+11. **Well-covered criterion.**  The theorem `q1 > Σ_{i≥2}(q_i−1)` is stated,
+    proved, and checked against the exact/CP-SAT data.
 
 ## Non-functional requirements
 

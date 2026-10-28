@@ -20,7 +20,18 @@ from .exact import (
     max_closed_neighborhood,
     max_independent_set,
 )
-from .fonts import DOC_DEC, DOC_HEX, MIN_DEC, MIN_HEX, STANDARD, flips_from_standard
+from .fonts import (
+    DOC_DEC,
+    DOC_HEX,
+    MIN_DEC,
+    MIN_FLIP_DEC,
+    MIN_MISMATCH_DEC,
+    MIN_HEX,
+    OPT_DEC,
+    STANDARD,
+    TOP0_DEC,
+    flips_from_standard,
+)
 from .layouts import grid_pixels
 from .plot import bar_chart_svg, dot_plot_svg
 
@@ -97,19 +108,33 @@ def font_results() -> dict[str, object]:
         "doc_hex": flips_from_standard(DOC_HEX),
         "min_dec": flips_from_standard(MIN_DEC),
         "min_hex": flips_from_standard(MIN_HEX),
+        "opt_dec": flips_from_standard(OPT_DEC),
+        "min_flip_dec": flips_from_standard(MIN_FLIP_DEC),
+        "top0_dec": flips_from_standard(TOP0_DEC),
+        "min_mismatch_dec": flips_from_standard(MIN_MISMATCH_DEC),
     }
     scores = {
         "doc_dec": recognize.set_score(DOC_DEC),
         "doc_hex": recognize.set_score(DOC_HEX),
         "min_dec": recognize.set_score(MIN_DEC),
         "min_hex": recognize.set_score(MIN_HEX),
+        "opt_dec": recognize.set_score(OPT_DEC),
+        "min_flip_dec": recognize.set_score(MIN_FLIP_DEC),
+        "top0_dec": recognize.set_score(TOP0_DEC),
+        "min_mismatch_dec": recognize.set_score(MIN_MISMATCH_DEC),
     }
     return {
         "checks": checks,
         "flips": {k: sum(v.values()) for k, v in flips.items()},
         "flips_by_glyph": flips,
         "scores": {
-            k: {"mean": v["mean"], "min": v["min"], "per_glyph": v["per_glyph"]}
+            k: {
+                "mean": v["mean"],
+                "min": v["min"],
+                "per_glyph": v["per_glyph"],
+                "topology_mismatches": v["topology_mismatches"],
+                "occluded_topology_mismatches": v["occluded_topology_mismatches"],
+            }
             for k, v in scores.items()
         },
     }

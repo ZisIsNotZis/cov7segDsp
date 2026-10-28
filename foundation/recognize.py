@@ -21,6 +21,7 @@ import math
 from .fonts import STANDARD, as_patterns
 from .layouts import seven_seg
 from .model import Layout
+from .topology import signature, standard_signatures
 
 # Segment weights.  The qualitative ordering follows van Nes & Bouma (1980):
 # F is the most distinctive segment, D the least distinctive.  The exact
@@ -73,6 +74,29 @@ def glyph_score(
     return math.exp(-(lambda_visible * d0 + lambda_cover * dc))
 
 
+def topology_details(table: dict[str, str]) -> dict[str, dict]:
+    """Visible and per-cover topological match against the standard glyph."""
+    layout = seven_seg()
+    pats = as_patterns(table)
+    std = as_patterns(STANDARD)
+    std_sigs = standard_signatures()
+    out = {}
+    for label, p in pats.items():
+        s0 = std[label]
+        visible = signature(layout, p) == std_sigs[label]
+        occluded = {}
+        for name, cover in layout.covers.items():
+            occluded[name] = signature(layout, p & ~cover) == signature(
+                layout, s0 & ~cover
+            )
+        out[label] = {
+            "visible": visible,
+            "occluded": occluded,
+            "all_match": visible and all(occluded.values()),
+        }
+    return out
+
+
 def table_scores(
     table: dict[str, str],
     weights: dict[str, float] | None = None,
@@ -82,6 +106,7 @@ def table_scores(
     layout = seven_seg()
     pats = as_patterns(table)
     std = as_patterns(STANDARD)
+    topo = topology_details(table)
     out = {}
     for label, p in pats.items():
         out[label] = {
@@ -99,6 +124,7 @@ def table_scores(
                 lambda_visible,
                 lambda_cover,
             ),
+            "topology": topo[label],
         }
     return out
 
@@ -126,6 +152,14 @@ def set_score(table: dict[str, str], **kw) -> dict[str, object]:
         "mean": sum(values) / len(values) if values else 0.0,
         "min": min(values) if values else 0.0,
         "per_glyph": scores,
+        "topology_mismatches": [
+            label for label, v in scores.items() if not v["topology"]["visible"]
+        ],
+        "occluded_topology_mismatches": [
+            label
+            for label, v in scores.items()
+            if not all(v["topology"]["occluded"].values())
+        ],
     }
 
 

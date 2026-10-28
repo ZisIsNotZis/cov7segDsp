@@ -8,8 +8,12 @@ from .fonts import (
     DOC_DEC,
     DOC_HEX,
     MIN_DEC,
+    MIN_FLIP_DEC,
+    MIN_MISMATCH_DEC,
     MIN_HEX,
+    OPT_DEC,
     STANDARD,
+    TOP0_DEC,
     as_patterns,
 )
 from .layouts import seven_seg, seven_seg_per_g
@@ -75,6 +79,10 @@ def all_font_checks() -> dict[str, object]:
         "doc_hex": check_table(DOC_HEX),
         "min_dec": check_table(MIN_DEC),
         "min_hex": check_table(MIN_HEX),
+        "opt_dec": check_table(OPT_DEC),
+        "min_flip_dec": check_table(MIN_FLIP_DEC),
+        "top0_dec": check_table(TOP0_DEC),
+        "min_mismatch_dec": check_table(MIN_MISMATCH_DEC),
     }
 
 

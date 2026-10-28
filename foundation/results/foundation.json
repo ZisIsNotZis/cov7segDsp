@@ -351,6 +351,50 @@
           "bottom": true,
           "left": true
         }
+      },
+      "opt_dec": {
+        "ok": true,
+        "size": 10,
+        "conflicts": [],
+        "projections_unique": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      },
+      "min_flip_dec": {
+        "ok": true,
+        "size": 10,
+        "conflicts": [],
+        "projections_unique": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      },
+      "top0_dec": {
+        "ok": true,
+        "size": 10,
+        "conflicts": [],
+        "projections_unique": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      },
+      "min_mismatch_dec": {
+        "ok": true,
+        "size": 10,
+        "conflicts": [],
+        "projections_unique": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
       }
     },
     "flips": {
@@ -358,7 +402,11 @@
       "doc_dec": 5,
       "doc_hex": 11,
       "min_dec": 4,
-      "min_hex": 8
+      "min_hex": 8,
+      "opt_dec": 4,
+      "min_flip_dec": 4,
+      "top0_dec": 5,
+      "min_mismatch_dec": 30
     },
     "flips_by_glyph": {
       "standard": {
@@ -438,6 +486,54 @@
         "d": 0,
         "E": 0,
         "F": 1
+      },
+      "opt_dec": {
+        "0": 0,
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4": 0,
+        "5": 1,
+        "6": 0,
+        "7": 0,
+        "8": 1,
+        "9": 0
+      },
+      "min_flip_dec": {
+        "0": 0,
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4": 0,
+        "5": 1,
+        "6": 0,
+        "7": 0,
+        "8": 1,
+        "9": 0
+      },
+      "top0_dec": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 1,
+        "5": 0,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1
+      },
+      "min_mismatch_dec": {
+        "0": 4,
+        "1": 3,
+        "2": 3,
+        "3": 4,
+        "4": 2,
+        "5": 5,
+        "6": 4,
+        "7": 3,
+        "8": 0,
+        "9": 2
       }
     },
     "scores": {
@@ -449,63 +545,174 @@
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "1": {
             "flips": 1,
             "visible_distance": 0.6,
             "occluded_distance": 1.7999999999999998,
-            "score": 0.31981902181630395
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "2": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "3": {
             "flips": 1,
             "visible_distance": 0.6,
             "occluded_distance": 1.7999999999999998,
-            "score": 0.31981902181630395
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "4": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "5": {
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": false
+              },
+              "all_match": false
+            }
           },
           "6": {
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": true,
+                "left": false
+              },
+              "all_match": false
+            }
           },
           "7": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "8": {
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "9": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           }
-        }
+        },
+        "topology_mismatches": [
+          "6",
+          "8"
+        ],
+        "occluded_topology_mismatches": [
+          "1",
+          "3",
+          "5",
+          "6",
+          "8"
+        ]
       },
       "doc_hex": {
         "mean": 0.6644721305841393,
@@ -515,99 +722,272 @@
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "1": {
             "flips": 1,
             "visible_distance": 0.6,
             "occluded_distance": 1.7999999999999998,
-            "score": 0.31981902181630395
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "2": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "3": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "4": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "5": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "6": {
             "flips": 3,
             "visible_distance": 2.8,
             "occluded_distance": 8.4,
-            "score": 0.004892753725239476
+            "score": 0.004892753725239476,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": false,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "7": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "8": {
             "flips": 3,
             "visible_distance": 2.6,
             "occluded_distance": 7.800000000000001,
-            "score": 0.007154598372314579
+            "score": 0.007154598372314579,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "9": {
             "flips": 2,
             "visible_distance": 1.6,
             "occluded_distance": 4.800000000000001,
-            "score": 0.04783488949419837
+            "score": 0.04783488949419837,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "A": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "b": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "C": {
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": false
+              },
+              "all_match": false
+            }
           },
           "d": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "E": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "F": {
             "flips": 1,
             "visible_distance": 1.2,
             "occluded_distance": 3.5999999999999996,
-            "score": 0.10228420671553748
+            "score": 0.10228420671553748,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           }
-        }
+        },
+        "topology_mismatches": [
+          "6",
+          "8",
+          "F"
+        ],
+        "occluded_topology_mismatches": [
+          "1",
+          "6",
+          "8",
+          "9",
+          "C",
+          "F"
+        ]
       },
       "min_dec": {
         "mean": 0.6938775282077878,
@@ -617,63 +997,173 @@
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "1": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "2": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "3": {
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "4": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "5": {
             "flips": 1,
             "visible_distance": 0.6,
             "occluded_distance": 1.7999999999999998,
-            "score": 0.31981902181630395
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "6": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "7": {
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": false,
+                "left": false
+              },
+              "all_match": false
+            }
           },
           "8": {
             "flips": 1,
             "visible_distance": 0.6,
             "occluded_distance": 1.7999999999999998,
-            "score": 0.31981902181630395
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "9": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           }
-        }
+        },
+        "topology_mismatches": [
+          "7",
+          "8"
+        ],
+        "occluded_topology_mismatches": [
+          "3",
+          "5",
+          "7",
+          "8"
+        ]
       },
       "min_hex": {
         "mean": 0.5710983711611191,
@@ -683,99 +1173,975 @@
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "1": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "2": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "3": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "4": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "5": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "6": {
             "flips": 1,
             "visible_distance": 1.1,
             "occluded_distance": 4.4,
-            "score": 0.08892161745938634
+            "score": 0.08892161745938634,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "7": {
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "8": {
             "flips": 1,
             "visible_distance": 0.6,
             "occluded_distance": 1.7999999999999998,
-            "score": 0.31981902181630395
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "9": {
             "flips": 1,
             "visible_distance": 1.1,
             "occluded_distance": 4.4,
-            "score": 0.08892161745938634
+            "score": 0.08892161745938634,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "A": {
             "flips": 1,
             "visible_distance": 1.1,
             "occluded_distance": 4.4,
-            "score": 0.08892161745938634
+            "score": 0.08892161745938634,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "b": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "C": {
             "flips": 1,
             "visible_distance": 1.2,
             "occluded_distance": 3.5999999999999996,
-            "score": 0.10228420671553748
+            "score": 0.10228420671553748,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
           },
           "d": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "E": {
             "flips": 0,
             "visible_distance": 0,
             "occluded_distance": 0.0,
-            "score": 1.0
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
           },
           "F": {
             "flips": 1,
             "visible_distance": 1.0,
             "occluded_distance": 3.0,
-            "score": 0.14956861922263506
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": false
+              },
+              "all_match": false
+            }
           }
-        }
+        },
+        "topology_mismatches": [
+          "0",
+          "6",
+          "8",
+          "9",
+          "A",
+          "C"
+        ],
+        "occluded_topology_mismatches": [
+          "0",
+          "6",
+          "8",
+          "9",
+          "A",
+          "C",
+          "F"
+        ]
+      },
+      "opt_dec": {
+        "mean": 0.7109025684671547,
+        "min": 0.14956861922263506,
+        "per_glyph": {
+          "0": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "1": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "2": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "3": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "4": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "5": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "6": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "7": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "8": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "9": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          }
+        },
+        "topology_mismatches": [
+          "8"
+        ],
+        "occluded_topology_mismatches": [
+          "1",
+          "3",
+          "5",
+          "8"
+        ]
+      },
+      "min_flip_dec": {
+        "mean": 0.670787787772096,
+        "min": 0.08892161745938634,
+        "per_glyph": {
+          "0": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "1": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "2": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "3": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "4": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "5": {
+            "flips": 1,
+            "visible_distance": 1.1,
+            "occluded_distance": 4.4,
+            "score": 0.08892161745938634,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "6": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "7": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "8": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": false,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "9": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          }
+        },
+        "topology_mismatches": [
+          "5",
+          "8"
+        ],
+        "occluded_topology_mismatches": [
+          "3",
+          "5",
+          "8"
+        ]
+      },
+      "top0_dec": {
+        "mean": 0.5918093498706845,
+        "min": 0.14956861922263506,
+        "per_glyph": {
+          "0": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "1": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "2": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "3": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "4": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "5": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "6": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": false
+              },
+              "all_match": false
+            }
+          },
+          "7": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "8": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "9": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          }
+        },
+        "topology_mismatches": [],
+        "occluded_topology_mismatches": [
+          "3",
+          "6",
+          "9"
+        ]
+      },
+      "min_mismatch_dec": {
+        "mean": 0.10455712481337372,
+        "min": 3.043248300840368e-05,
+        "per_glyph": {
+          "0": {
+            "flips": 4,
+            "visible_distance": 4.3,
+            "occluded_distance": 13.999999999999998,
+            "score": 0.00020346836901064417,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "1": {
+            "flips": 3,
+            "visible_distance": 3.2,
+            "occluded_distance": 9.600000000000001,
+            "score": 0.0022881766529221693,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": false
+              },
+              "all_match": false
+            }
+          },
+          "2": {
+            "flips": 3,
+            "visible_distance": 2.6,
+            "occluded_distance": 7.800000000000001,
+            "score": 0.007154598372314579,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": false
+              },
+              "all_match": false
+            }
+          },
+          "3": {
+            "flips": 4,
+            "visible_distance": 3.6,
+            "occluded_distance": 10.8,
+            "score": 0.0010701033996396044,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "4": {
+            "flips": 2,
+            "visible_distance": 2.1,
+            "occluded_distance": 7.4,
+            "score": 0.013299883542443767,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": false
+            }
+          },
+          "5": {
+            "flips": 5,
+            "visible_distance": 5.3,
+            "occluded_distance": 17.0,
+            "score": 3.043248300840368e-05,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": true,
+                "left": false
+              },
+              "all_match": false
+            }
+          },
+          "6": {
+            "flips": 4,
+            "visible_distance": 3.6,
+            "occluded_distance": 10.799999999999999,
+            "score": 0.0010701033996396044,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": false,
+                "right": true,
+                "bottom": false,
+                "left": false
+              },
+              "all_match": false
+            }
+          },
+          "7": {
+            "flips": 3,
+            "visible_distance": 2.6,
+            "occluded_distance": 7.800000000000001,
+            "score": 0.007154598372314579,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "8": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": true,
+                "bottom": true,
+                "left": true
+              },
+              "all_match": true
+            }
+          },
+          "9": {
+            "flips": 2,
+            "visible_distance": 2.1,
+            "occluded_distance": 7.4,
+            "score": 0.013299883542443767,
+            "topology": {
+              "visible": true,
+              "occluded": {
+                "top": true,
+                "right": false,
+                "bottom": false,
+                "left": true
+              },
+              "all_match": false
+            }
+          }
+        },
+        "topology_mismatches": [],
+        "occluded_topology_mismatches": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "9"
+        ]
       }
     }
   },

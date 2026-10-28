@@ -94,6 +94,63 @@ MIN_HEX = {
     "F": "0000111",  # - a
 }
 
+# CP-SAT candidates from foundation/font_opt.py.  OPT_DEC is the
+# minimum weighted visible+occluded distance (4 flips, one visible topology
+# mismatch).  MIN_FLIP_DEC is a different 4-flip optimum; it is kept as a
+# warning about degenerate shapes (1 = b only).  TOP0_DEC preserves every
+# visible topology signature but is unreadable; it is a counterexample.
+OPT_DEC = {
+    "0": "1111110",
+    "1": "0111000",
+    "2": "1101101",
+    "3": "1110001",
+    "4": "0110011",
+    "5": "1010011",
+    "6": "1011111",
+    "7": "1110000",
+    "8": "0111111",
+    "9": "1111011",
+}
+
+MIN_FLIP_DEC = {
+    "0": "1111110",
+    "1": "0100000",
+    "2": "1101101",
+    "3": "1110001",
+    "4": "0110011",
+    "5": "1011010",
+    "6": "1011111",
+    "7": "1110000",
+    "8": "0111111",
+    "9": "1111011",
+}
+
+MIN_MISMATCH_DEC = {
+    "0": "0011101",
+    "1": "0000010",
+    "2": "1110001",
+    "3": "0000001",
+    "4": "1110010",
+    "5": "0001100",
+    "6": "1100011",
+    "7": "0011000",
+    "8": "1111111",
+    "9": "1111110",
+}
+
+TOP0_DEC = {
+    "0": "1111110",
+    "1": "0110000",
+    "2": "1101101",
+    "3": "0111001",
+    "4": "0110111",
+    "5": "1011011",
+    "6": "0011111",
+    "7": "1100000",
+    "8": "1111111",
+    "9": "1110011",
+}
+
 
 def as_patterns(table: dict[str, str]) -> dict[str, int]:
     layout = seven_seg()

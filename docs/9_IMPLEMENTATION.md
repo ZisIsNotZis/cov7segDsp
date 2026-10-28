@@ -11,15 +11,19 @@ foundation/
   count_mixed.cpp   C++ helper for the exact counts (compiled on first use)
   exact.py          general conflict graph, MIS, lower bound, optional CP-SAT
   sat_experiments.py optional CP-SAT runs for 11-seg, 3x3 and 9-seg
+  wellcovered.py    the well-covered criterion and its verification
+  topology.py       geometry-based (components, holes) signature
+  font_opt.py       optional CP-SAT font search / Pareto table
   charset.py        character-set validity and capacity
   recognize.py      visible + occluded weighted-distance baseline
   experiments.py    runs everything, writes JSON + SVG
   verify_sevenseg.py asserts the headline claims
   plot.py           dependency-free SVG charts
-  results/          foundation.json and the compiled helper
+  results/          foundation.json, sat.json, font_opt.json, compiled helper
   plots/            SVG charts
 docs/
   FOUNDATION.md     the math/results note
+  RECOGNITION.md    topology, the 6/8 conflict, the font Pareto
   0_STAGING.md      inbox (empty)
   1_PROBLEM.md      the pain and why now
   2_GOAL.md         the Goal, priorities, mode
@@ -39,9 +43,14 @@ python -m foundation.verify_sevenseg
 # All tables, JSON, and SVG plots (dependency-free; compiles the C++ helper)
 python -m foundation.experiments
 
+# Criterion and topology spot checks
+python -m foundation.wellcovered
+python -m foundation.topology
+
 # Optional: CP-SAT queries for the hard cases
 uv run --with ortools python -m foundation.exact
 uv run --with ortools python -m foundation.sat_experiments
+uv run --with ortools python -m foundation.font_opt
 ```
 
 The C++ helper is built with:
@@ -62,6 +71,10 @@ g++ -O3 -march=native -o foundation/results/count_mixed foundation/count_mixed.c
 - `sat.json`: CP-SAT status for the 11-seg layout, the 3x3 grid,
   `K₂ □ K₂ □ K₈ □ K₈`, and the well-covered probe.  Statuses are recorded
   as-is; a `FEASIBLE` value is not a proof of optimality.
+- `font_opt.json`: the CP-SAT font search (min mismatch, min flips, min
+  distance, topology-budget Pareto).  `OPT_DEC` in `fonts.py` is the
+  min-distance candidate; `TOP0_DEC`/`MIN_MISMATCH_DEC` are the
+  topology-only counterexamples.
 - `fonts`: validity, flip counts, visible/occluded baseline scores.
 - `capacity`: the character-set fit table.
 
@@ -74,8 +87,11 @@ g++ -O3 -march=native -o foundation/results/count_mixed foundation/count_mixed.c
 - the doc decimal/hex tables are unambiguous under all four covers;
 - the source note’s hex 9 ASCII figure conflicts with 2 and 5, and the standard
   F drawing conflicts with A and E; the table variants are valid;
-- the flip counts 5 / 11 / 4 / 8;
-- the 7-segment capacity is 32.
+- the flip counts 5 / 11 / 4 / 8 for the source and min-flip sets, and the
+  new candidates (4 / 4 / 5 for OPT_DEC / MIN_FLIP_DEC / TOP0_DEC);
+- the 7-segment capacity is 32;
+- the topology mismatches (doc decimal 6,8; OPT_DEC 8; TOP0_DEC none);
+- the well-covered criterion matches the exact and CP-SAT probes.
 
 ## Performance and limits
 

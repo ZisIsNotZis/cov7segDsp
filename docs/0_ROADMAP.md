@@ -9,6 +9,18 @@ work so far is local computation; no paid API is required.
 
 ## Route revision log
 
+### 2026-10-28 — M2 calibration/quiz moves to M3
+
+- **Before:** M2 was “recognisability and proof” including the quiz and weight
+  calibration.
+- **Changed:** the quiz needs the interactive interface and human responses, so
+  it moves to M3 (lab/game).  M2 ships the theorem, the topology signature, the
+  6/8 structural result, the font Pareto, and the docs.
+- **Fact that forced it:** calibration requires data that cannot be produced by
+  the local solver; the interface that collects it is M3.
+- **Cost:** M2 has no human-calibrated weights yet; the scores remain a model.
+- **Dropped:** nothing; the work moved.
+
 ### 2026-10-28 — M1 becomes the universal foundation
 
 - **Before:** M1 was “verify the 7-segment claims”; M2 was the first lab/game;
@@ -52,22 +64,25 @@ Acceptance: `python -m foundation.verify_sevenseg` and
 `python -m foundation.experiments` pass; `docs/FOUNDATION.md` matches the JSON;
 every headline claim has a script.
 
-## M2 — Recognisability and proof
+## M2 — Recognisability and proof (in progress)
 
 **Turn the baseline into a calibrated model and settle the mathematical claims.**
 
-- Define the topological signature from geometry (holes, components, endpoints,
-  junctions, symmetry).
-- Run a small recognition quiz/game; collect a confusion matrix.
-- Fit segment weights, `λ_vis`, `λ_occ`; report confidence.
-- Re-rank the doc and min-flip fonts; produce a flips-vs-score Pareto front.
-- Prove or disprove the refined well-covered criterion
-  `max(q_i) ≥ Σ_{j≠i} q_j − (d−2)`; cite the known two-factor and
-  Hamming-graph results.
-- Novelty search: exact counts, 9/10 gap, candidate theorem.
-- Deliverable: `docs/RECOGNITION.md`, `docs/MATH.md`, `foundation/score.py`,
-  updated font tables.
-- Review: the final font’s look is `need_user_review`; the scores are a delivery.
+- [x] Prove the well-covered criterion
+      `q1 > Σ_{i≥2}(q_i − 1)`; verified against exact/CP-SAT data.
+- [x] Define the topological signature from geometry (components, holes).
+- [x] Show the 6/8 conflict is structural; topology is necessary, not
+      sufficient.
+- [x] Produce the font Pareto table and the min-distance 4-flip decimal
+      candidate; identify the topology-only counterexamples.
+- [ ] Add endpoints/junctions/symmetry to the signature.
+- [ ] Human review of the min-distance font (`need_user_review`).
+- [ ] Novelty search for the well-covered criterion and the exact counts.
+- Deliverable: `docs/RECOGNITION.md`, `foundation/topology.py`,
+  `foundation/font_opt.py`, updated font tables.
+
+The quiz/calibration is deferred to M3 (see the revision log); it needs the
+interactive interface and human responses.
 
 ## M3 — Lab and game
 
@@ -77,8 +92,9 @@ every headline claim has a script.
 - Segment editor; four mask buttons; conflicting pairs outlined; hidden
   segments glow red; possible-readings list.
 - Conflict matrix and font presets.
-- Quiz/design game: guess the glyph, design a set, see the score.
-- Deliverable: `index.html` + `docs/LAB.md`.
+- Quiz/design game: guess the glyph, design a set, see the score; collect the
+  confusion matrix and calibrate `w_i`, `λ_vis`, `λ_occ`.
+- Deliverable: `index.html` + `docs/LAB.md` + a calibration report.
 - Acceptance: a non-specialist can see why a pair collides in under a minute;
   the quiz exports a confusion matrix.
 

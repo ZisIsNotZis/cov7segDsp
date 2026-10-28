@@ -25,6 +25,19 @@ A small, dependency-free Python foundation plus a reproducible note.
   `foundation/plot.py`): JSON results and SVG count/existence charts.
 - **Docs**: this chain plus `docs/FOUNDATION.md`.
 
+## M2 additions (in progress)
+
+- **Well-covered theorem** with a short proof and a verification probe.
+- **Topology module** (`foundation/topology.py`): geometry-based components and
+  holes; visible and per-cover comparison.
+- **Font search** (`foundation/font_opt.py`): CP-SAT over the 128 patterns for
+  min mismatch, min flips, min distance and a topology-budget Pareto.
+- **Candidate fonts**: `OPT_DEC` (4 flips, one visible mismatch), `TOP0_DEC`
+  and `MIN_MISMATCH_DEC` (topology-only counterexamples), `MIN_FLIP_DEC` (a
+  degenerate 4-flip warning).
+- **Recognition note** (`docs/RECOGNITION.md`): the 6/8 structural conflict,
+  the topology tables, and the limits of the model.
+
 ## The shape of the product
 
 The product is a **foundation plus a set of views**:

@@ -6,7 +6,7 @@
 
 **Which glyph sets stay unambiguous when any one side of a seven-segment display is covered?** This repository answers that exactly, then generalizes the answer to other grids and character sets.
 
-Status: **M1 — foundation**.  The exact combinatorics, the general engine, the capacity bound and the first recognisability model are here.  The interactive lab is the next milestone.
+Status: **M2 — recognisability and proof (in progress)**.  M1 (the exact combinatorics, the general engine, the capacity bound) is shipped.  M2 adds the well-covered criterion, a geometry-based topology check, and a font Pareto search.  The interactive lab is M3.
 
 The motivating case: a thin object covers one side of a traffic countdown.  The outermost line disappears, and the remaining pattern can be a different valid digit.  The 2024 *Journal of Vision* study of occluded countdown numerals documents the resulting 6/8 bistability.
 
@@ -28,6 +28,32 @@ The 9/10 gap is not a mysterious sequence.  The feasible cell-size patterns are 
   <img src="foundation/plots/sevenseg_global_counts.svg" alt="7-segment global maximal-set counts by size" width="720">
 </p>
 
+## M2 so far
+
+- **Well-covered theorem.**  `K_{q1} □ … □ K_{qd}` is well-covered iff
+  `q1 > Σ_{i≥2}(q_i − 1)`.  For 7-segment `4 > 5` is false, so the graph is
+  not well-covered — the 9/10 gap is a consequence.  The proof and the
+  exact/CP-SAT verification are in [docs/FOUNDATION.md](docs/FOUNDATION.md).
+- **Topology is objective and necessary — but not sufficient.**
+  A geometry-based `(components, holes)` signature recovers 0/6/9 = one hole,
+  8 = two, 1/2/3/4/5/7 = none.  The source note’s decimal font breaks the hole
+  topology of **6 and 8**; its hex font breaks **6, 8, F**.  A 30-flip font
+  with *zero* topology mismatches exists and is unreadable (score 0.105), so
+  topology alone can be gamed.
+- **A 4-flip decimal candidate.**  The min-distance search finds
+  `1=0111000, 3=1110001, 5=1010011, 8=0111111`, all other digits standard:
+  4 flips, one visible topology mismatch (8), and a higher provisional score
+  than the source note’s 5-flip decimal set.  It is a candidate for human
+  review, not a verdict.  The full Pareto table is in
+  [docs/RECOGNITION.md](docs/RECOGNITION.md).
+- **The 6/8 conflict is structural.**  Standard 6 and 8 differ only in `b`,
+  which the right cover removes.  Any unambiguous decimal font must sacrifice
+  the topology of 6 or 8; the design question is which one.
+
+<p align="center">
+  <img src="foundation/plots/family_existence.svg" alt="Attainable maximal-set sizes for the generalized family" width="720">
+</p>
+
 ## Quick start
 
 ```bash
@@ -41,6 +67,7 @@ No third-party package is needed for these two commands.  The exact mixed-Hammin
 
 ```bash
 uv run --with ortools python -m foundation.exact
+uv run --with ortools python -m foundation.font_opt
 ```
 
 ## What it can do now
@@ -48,8 +75,9 @@ uv run --with ortools python -m foundation.exact
 - **Exact 7-segment enumeration.**  Counts of maximal unambiguous sets by size, the min/max, the 9/10 gap, and the construction grammar.
 - **General layouts.**  Mixed Hamming `K₂ □ K₂ □ K_q □ K_q`, overlapping-cover pixel grids (`3×3`, `3×4`), and a 7+4 diagonal layout (capacity 128).
 - **Character-set capacity.**  Check a glyph table, list conflicts and the offending cover, and compare a set size with the layout capacity.
-- **Font comparison.**  The source note’s decimal/hex tables, the exact minimum-flip tables, flip counts, and a visible+occluded recognisability baseline.
-- **Reproducible results.**  `foundation/results/foundation.json` and SVG count/existence plots.
+- **Font comparison.**  The source note’s decimal/hex tables, the exact minimum-flip tables, the min-distance 4-flip candidate, flip counts, a visible+occluded recognisability baseline, and a geometry-based topology check.
+- **Font search.**  CP-SAT over the 128 patterns: min topology mismatch, min flips, min weighted distance, and a topology-budget Pareto table.
+- **Reproducible results.**  `foundation/results/foundation.json`, `sat.json`, `font_opt.json`, and SVG count/existence plots.
 - **An honest record of open cases.**  The 3×3 minimum is bounded (21 ≤ min ≤ 32, best feasible 32); the 9-segment minimum is open.
 
 ## Architecture
@@ -61,6 +89,9 @@ foundation/block.py       exact K2 K2 Kq Kq enumeration
 foundation/exact.py       general conflict graph + MIS + optional CP-SAT
 foundation/charset.py     character-set validity and capacity
 foundation/recognize.py   visible + occluded weighted-distance baseline
+foundation/topology.py    geometry-based (components, holes) signature
+foundation/wellcovered.py well-covered criterion + verification
+foundation/font_opt.py    CP-SAT font search / Pareto
 foundation/experiments.py results JSON + SVG plots
 docs/                     problem, Goal, requirements, product, roadmap, foundation note
 ```
@@ -83,8 +114,11 @@ The foundation is deliberately **layout-parametric**: a new grid or character se
 | General mixed-Hamming family (small alphabets) | done |
 | Pixel-grid support / exact max + bounds | done |
 | Character-set capacity | done |
+| Well-covered criterion (proof + verification) | done |
 | Visible+occluded recognisability baseline | done (weights provisional) |
-| Calibrated recognisability (quiz, topological signature) | planned — M2 |
+| Geometry-based topology signature | done |
+| Font Pareto search / 4-flip candidate | done |
+| Calibrated recognisability (quiz, weights) | in progress — M2 |
 | Interactive occlusion lab + design quiz | planned — M3 |
 | 14-segment / larger grids / algorithmic design engine | planned — M4 |
 | Release site / public demo | planned — M5 |

@@ -298,49 +298,78 @@ alphabets by size `q` gives a one-parameter family.  Exact counts (via
   are missing” is a statement about the feasible cell-size patterns, not about
   a recurrence.
 
-### 3.2 Well-covered members and a candidate theorem
+### 3.2 Well-covered members: the exact criterion
 
 A graph is **well-covered** if every maximal independent set is maximum.
-Observed in the family:
+The family is completely characterised by the following elementary theorem.
 
-- `(2,4)` and `(2,8)` have only size 8, so they are well-covered.
-- CP-SAT confirms the same for `(2,3,8)` and `(2,4,8)` (min = max).
-- `(2,2)`, `(2,3)`, `(3,3)`, `(3,4)`, `(4,4)` are not well-covered.
-
-The tested cases are consistent with the refined candidate
+**Theorem.**  Let `G = K_{q1} □ … □ K_{qd}` with `q1 ≥ q2 ≥ … ≥ qd ≥ 2`.
+Then `G` is well-covered iff
 
 ```
-K_{q1} □ … □ K_{qd} is well-covered
-    ⟺  max(q_i) ≥ (sum of the other q_i) − (d − 2).
+q1 > Σ_{i=2..d} (q_i − 1),
 ```
 
-For two factors (`d=2`) the right-hand side is just the other factor, which is
-always true (`n ≥ m`), matching the known result that `K_n □ K_m` is
-well-covered.  For 7-segment (`d=4`, alphabet sizes `2,2,4,4`),
-`4 < (2+2+4) − 2 = 6`, so the graph is not well-covered and gaps are possible.
+equivalently `2·q1 > Σ_i q_i − d + 1`.  In particular, for two factors
+(`d=2`) the condition is always true, recovering the known fact that
+`K_n □ K_m` is well-covered.
 
-Tested cases for `d=4` (status from CP-SAT; `WC` means min = max):
+**Proof.**
 
-| alphabet sizes | max | sum others − 2 | observed |
-|---|---:|---:|---|
-| 2,2,2,2 | 2 | 4 | not WC (4,5,8) |
-| 2,2,2,3 | 3 | 4 | not WC (6,8) |
-| 2,2,2,4 | 4 | 4 | WC (8) |
-| 2,2,2,5 | 5 | 4 | WC (8) |
-| 2,2,3,4 | 4 | 5 | not WC (min 8, max 12) |
-| 2,2,3,5 | 5 | 5 | WC (12) |
-| 2,2,4,4 | 4 | 6 | not WC (8,11–16) |
-| 2,2,4,6 | 6 | 6 | WC (16) |
-| 3,3,3,3 | 3 | 7 | not WC (min 9, max 27) |
+*(⇒ direction, well-covered ⇒ condition.)*  Suppose
+`q1 > Σ_{i≥2}(q_i − 1)`.  Let `S` be a maximal independent set and suppose it
+misses a line `L` in coordinate 1; write the other coordinates of `L` as `y`.
+There are `q1` vertices on `L`, one for each value of coordinate 1.  Since `S`
+is maximal, each of those vertices must be adjacent to a selected vertex.  A
+selected vertex adjacent to a vertex of `L` cannot differ in coordinate 1 (it
+would be on `L`), so it must have the same coordinate 1 and differ in exactly
+one of the other coordinates.  Thus, for each of the `q1` values of
+coordinate 1, `S` contains a vertex `(x, y_x)` with `y_x` a neighbour of `y`
+in `K_{q2} □ … □ K_{qd}`.  The `y_x` must be distinct: two vertices with the
+same `y_x` and different `x` differ only in coordinate 1 and would be
+adjacent, contradicting independence.  But `y` has only
+`Σ_{i≥2}(q_i − 1)` neighbours, fewer than `q1`.  Contradiction.  Hence `S`
+meets every line in coordinate 1, so `|S| = N/q1 = α(G)`.
 
-The probe is reproducible with
-`uv run --with ortools python -m foundation.sat_experiments`; the results are
-in `foundation/results/sat.json` under `well_covered_probe`.  The multi-factor
-characterisation was not found in the literature search; treat it as a
-**conjecture with strong computational evidence** to prove in M2, not as an
-established theorem.  The known background is the well-covered
-literature (Plummer; Topp–Volkmann; Hartnell–Rall) and the
-independent-domination literature on Hamming graphs.
+*(⇐ direction, condition ⇒ well-covered.)*  Suppose
+`q1 ≤ Σ_{i≥2}(q_i − 1)`.  Choose a vertex `y` in the product of coordinates
+`2..d` and `q1` distinct neighbours `y_1,…,y_{q1}` of `y` (possible because
+the degree is `Σ_{i≥2}(q_i − 1)`).  The set
+`S0 = {(x, y_x) : x = 1..q1}` is independent: two vertices differ in
+coordinate 1, and their other coordinates are distinct, so their Hamming
+distance is at least 2.  It also dominates every vertex of the line `L` over
+`y`, since `(x, y)` is adjacent to `(x, y_x)`.  Extend `S0` to a maximal
+independent set `S`.  No vertex of `L` can be added to `S` (each is adjacent
+to a member of `S0`), so `S` still misses `L`.  A set that misses a line in
+coordinate 1 has at most `N/q1 − 1` vertices, because each selected vertex
+occupies exactly one such line and the lines are disjoint.  Hence
+`|S| < N/q1 = α(G)`, and `G` is not well-covered.  ∎
+
+For 7-segment, `q=(2,2,4,4)`, so `q1=4` and
+`Σ_{i≥2}(q_i − 1) = 1+1+3 = 5`; `4 > 5` is false, so the graph is not
+well-covered and gaps are possible.  This is exactly the 9/10 gap.
+
+Verification against the exact/CP-SAT data:
+
+| alphabet sizes | q1 | Σ others (q_i−1) | criterion | observed |
+|---|---:|---:|---|---|
+| 2,2,2,2 | 2 | 3 | not WC | 4,5,8 |
+| 2,2,2,3 | 3 | 3 | not WC | 6,8 |
+| 2,2,2,4 | 4 | 3 | WC | 8 |
+| 2,2,2,5 | 5 | 3 | WC | 8 |
+| 2,2,3,4 | 4 | 4 | not WC | min 8, max 12 |
+| 2,2,3,5 | 5 | 4 | WC | 12 |
+| 2,2,4,4 | 4 | 5 | not WC | 8, 11–16 |
+| 2,2,4,6 | 6 | 5 | WC | 16 |
+| 3,3,3,3 | 3 | 6 | not WC | min 9, max 27 |
+
+The exact statement was not found in the literature search; the proof above is
+elementary and is included because it explains the family data.  Treat the
+novelty as **pending**: if the statement is known, it is a short re-proof of a
+known well-covered/Hamming-graph result, and the contribution is the exact
+enumeration and the application, not the criterion itself.  The background is
+Plummer (well-covered graphs), Topp–Volkmann and Hartnell–Rall (Cartesian
+products), and the independent-domination literature on Hamming graphs.
 
 ### 3.3 The 9-segment continuation
 
@@ -436,30 +465,45 @@ from van Nes–Bouma, not measured values for this font.
 
 Baseline scores (higher is better; see `foundation/results/foundation.json`):
 
-| font | mean | min | total flips |
-|---|---:|---:|---:|
-| doc decimal | 0.609 | 0.150 | 5 |
-| min-flip decimal | 0.694 | 0.150 | 4 |
-| doc hex | 0.665 | 0.005 | 11 |
-| min-flip hex | 0.571 | 0.089 | 8 |
+| font | mean | min | total flips | visible topology mismatches |
+|---|---:|---:|---:|---|
+| doc decimal | 0.609 | 0.150 | 5 | 6, 8 |
+| min-flip decimal (`MIN_DEC`) | 0.694 | 0.150 | 4 | 7, 8 |
+| min-distance decimal (`OPT_DEC`) | **0.711** | 0.150 | 4 | 8 |
+| doc hex | 0.665 | 0.005 | 11 | 6, 8, F |
+| min-flip hex | 0.571 | 0.089 | 8 | 0, 6, 8, 9, A, C |
 
-These numbers are **not** a verdict.  With these provisional weights the
-min-flip decimal scores above the doc decimal, while the doc hex scores above
-the min-flip hex.  That disagreement is exactly why the weights need
-calibration; a ranking that flips under a small weight change is not yet a
-standard.
+`MIN_DEC` is one 4-flip optimum; `MIN_FLIP_DEC` (CP-SAT) is another 4-flip
+optimum with a degenerate `1 = b` only, kept as a warning.  These numbers are
+**not** a verdict.  The min-distance candidate `OPT_DEC`
+scores above the source note’s decimal set, but its 5/8 forms still need a
+human eye.  The min-flip CP-SAT font (`1 = b` only) is a warning: a low flip
+count can hide a degenerate glyph.  The 30-flip zero-mismatch font is a second
+warning: topology alone is gameable.  The weights need calibration; a ranking
+that flips under a small weight change is not yet a standard.  See
+`docs/RECOGNITION.md` for the full Pareto table.
 
-### 5.3 The next step for recognisability
+### 5.3 Topological signature (implemented)
 
-1. Define the **topological signature** (holes, components, endpoints,
-   junctions, symmetry) from the geometry, not by hand.  Use it as a hard
-   constraint or a strong prior.
-2. Run a small recognition quiz/game: show a glyph (possibly occluded), ask for
+The topological signature is now computed from the rasterised geometry in
+`foundation/topology.py`: `(components, holes)`, with a small dilation that
+closes standard segment gaps.  The standard table is 0/6/9 = one hole, 8 = two
+holes, 1/2/3/4/5/7 = none.  The signature is an objective **necessary**
+condition, not a sufficient one: a 30-flip font with zero visible topology
+mismatches exists and scores 0.105, i.e. it is unreadable.  The full analysis,
+the font Pareto table and the 6/8 structural conflict are in
+`docs/RECOGNITION.md`.
+
+The next step is calibration, not another hand rule:
+
+1. Run a small recognition quiz/game: show a glyph (possibly occluded), ask for
    the digit, record the confusion matrix.
-3. Fit `w_i`, `λ_vis`, `λ_occ` to that data and report confidence intervals.
-4. Re-rank the font sets on the fitted model, and only then call one “better”.
+2. Fit `w_i`, `λ_vis`, `λ_occ` to that data and report confidence intervals.
+3. Re-rank the font sets on the fitted model, and only then call one “better”.
+4. Put the model-optimised 4-flip decimal font in front of a human eye; it
+   changes 1/3/5/8, keeps 6 standard, and has one visible topology mismatch.
 
-Until step 3, the model is a transparent baseline, not an objective truth.
+Until step 2, the model is a transparent baseline, not an objective truth.
 
 ---
 
@@ -481,7 +525,8 @@ New in this foundation (pending a more thorough novelty search):
 - Exact counts and the 9/10 gap for `K₂ □ K₂ □ K₄ □ K₄`, including the
   cell-size grammar and the 604,008 / 364,825,664,064 totals.
 - The one-parameter family table and the observation that the gap is not
-  periodic; the well-covered threshold as a candidate theorem.
+  periodic; the exact well-covered criterion `q1 > Σ(q_i−1)` with a short
+  proof (novelty check pending).
 - The 32-character capacity corollary applied to the character-set extensions.
 - The visible-plus-occluded recognisability model and its baseline scores.
 
@@ -517,13 +562,14 @@ Python paths are dependency-free; CP-SAT is optional.
 
 ## 8. Open questions carried into M2
 
-1. Prove or disprove the candidate well-covered criterion
-   `max(q_i) ≥ Σ_{j≠i} q_j`.
+1. Search for prior art on the well-covered criterion
+   `q1 > Σ_{i≥2}(q_i−1)`; the proof is in §3.2 and the novelty is pending.
 2. Settle the exact minimum maximal size for the 3×3 pixel grid (currently
    21 ≤ min ≤ 32, best feasible 32).
 3. Settle the exact minimum for `K₂ □ K₂ □ K₈ □ K₈` (currently feasible from
    24; 20–23 unknown).
-4. Define the topological signature from geometry and validate it.
+4. Extend the topological signature with endpoints, junctions and symmetry
+   (holes + components are implemented in `foundation/topology.py`).
 5. Calibrate the recognisability weights with a quiz and re-rank the fonts.
-6. Search the exact counts and the candidate theorem for prior art before
-   publishing.
+6. Human review of the min-distance 4-flip decimal font (`OPT_DEC`).
+7. Search the exact counts and the criterion for prior art before publishing.

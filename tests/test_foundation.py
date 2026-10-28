@@ -10,6 +10,8 @@ from foundation import block, charset, recognize  # noqa: E402
 from foundation.exact import layout_graph, max_independent_set  # noqa: E402
 from foundation.fonts import DOC_DEC, DOC_HEX, MIN_DEC, MIN_HEX  # noqa: E402
 from foundation.layouts import grid_pixels, seven_seg, seven_seg_per_g  # noqa: E402
+from foundation.topology import signature, standard_signatures  # noqa: E402
+from foundation.wellcovered import criterion, verify_block_cases, verify_sat_probe  # noqa: E402
 from foundation.model import is_valid_set  # noqa: E402
 
 
@@ -51,6 +53,33 @@ def test_mis():
     assert lay.from_dict(lay.to_dict()).covers == lay.covers
 
 
+def test_wellcovered():
+    assert criterion((2, 2, 2, 4)) is True
+    assert criterion((2, 2, 2, 3)) is False
+    assert criterion((2, 2, 4, 4)) is False
+    assert criterion((2, 2, 2, 5)) is True
+    assert all(c == e for _, c, e in verify_block_cases())
+    assert all(c == e for _, c, e in verify_sat_probe())
+
+
+def test_topology():
+    std = standard_signatures()
+    for d in "069":
+        assert std[d].holes == 1, (d, std[d])
+    assert std["8"].holes == 2
+    for d in "123457":
+        assert std[d].holes == 0, (d, std[d])
+    assert signature(seven_seg(), 0x7F).holes == 2
+    from foundation.fonts import DOC_DEC, OPT_DEC, TOP0_DEC, MIN_MISMATCH_DEC
+    from foundation.recognize import set_score
+
+    assert set_score(DOC_DEC)["topology_mismatches"] == ["6", "8"]
+    assert set_score(OPT_DEC)["topology_mismatches"] == ["8"]
+    assert set_score(TOP0_DEC)["topology_mismatches"] == []
+    assert set_score(MIN_MISMATCH_DEC)["topology_mismatches"] == []
+    assert set_score(MIN_MISMATCH_DEC)["mean"] < 0.2
+
+
 def test_grid():
     adj = layout_graph(grid_pixels(3, 3))
     assert len(max_independent_set(adj)) == 64
@@ -76,6 +105,8 @@ if __name__ == "__main__":
     test_fonts()
     test_family()
     test_mis()
+    test_wellcovered()
+    test_topology()
     test_grid()
     test_recognition()
     test_valid_set()

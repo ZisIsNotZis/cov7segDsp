@@ -25,9 +25,12 @@ Acceptance:
   and per-cover uniqueness.
 - The doc’s decimal and hex tables pass; the standard tables fail where the
   original ambiguity exists.
-- The flip count and the visible/occluded score are reported for each glyph.
-- The min-flip and doc sets are both shown, labelled, so the trade-off is
-  visible rather than hidden.
+- The flip count, the visible/occluded score, and the topology match are
+  reported for each glyph.
+- The min-flip, min-distance and doc sets are all shown, labelled, so the
+  trade-off is visible rather than hidden.
+- The font search produces a Pareto table; the candidate is not shipped as
+  “best” without a human review.
 
 ## Story 3 — the reader of the public note
 
