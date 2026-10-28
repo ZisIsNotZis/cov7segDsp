@@ -1,0 +1,63 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='820' height='328' viewBox='0 0 820 328'>
+<rect width='100%' height='100%' fill='white'/>
+<text x='230' y='28' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='16' fill='#1b1b1b'>Attainable maximal-set sizes: K2 x K2 x Kq3 x Kq4</text>
+<line x1='230.0' y1='42' x2='230.0' y2='284' stroke='#e6e6e6'/>
+<text x='230.0' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>4</text>
+<line x1='277.2' y1='42' x2='277.2' y2='284' stroke='#e6e6e6'/>
+<text x='277.2' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>5</text>
+<line x1='324.3' y1='42' x2='324.3' y2='284' stroke='#e6e6e6'/>
+<text x='324.3' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>6</text>
+<line x1='371.5' y1='42' x2='371.5' y2='284' stroke='#e6e6e6'/>
+<text x='371.5' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>7</text>
+<line x1='418.7' y1='42' x2='418.7' y2='284' stroke='#e6e6e6'/>
+<text x='418.7' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>8</text>
+<line x1='465.8' y1='42' x2='465.8' y2='284' stroke='#e6e6e6'/>
+<text x='465.8' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>9</text>
+<line x1='513.0' y1='42' x2='513.0' y2='284' stroke='#e6e6e6'/>
+<text x='513.0' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>10</text>
+<line x1='560.2' y1='42' x2='560.2' y2='284' stroke='#e6e6e6'/>
+<text x='560.2' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>11</text>
+<line x1='607.3' y1='42' x2='607.3' y2='284' stroke='#e6e6e6'/>
+<text x='607.3' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>12</text>
+<line x1='654.5' y1='42' x2='654.5' y2='284' stroke='#e6e6e6'/>
+<text x='654.5' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>13</text>
+<line x1='701.7' y1='42' x2='701.7' y2='284' stroke='#e6e6e6'/>
+<text x='701.7' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>14</text>
+<line x1='748.8' y1='42' x2='748.8' y2='284' stroke='#e6e6e6'/>
+<text x='748.8' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>15</text>
+<line x1='796.0' y1='42' x2='796.0' y2='284' stroke='#e6e6e6'/>
+<text x='796.0' y='310' text-anchor='middle' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='10' fill='#777'>16</text>
+<text x='218' y='70.0' text-anchor='end' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='11' fill='#1b1b1b'>(2,2)</text>
+<circle cx='230.0' cy='66.0' r='5' fill='#c0392b'/>
+<circle cx='277.2' cy='66.0' r='5' fill='#c0392b'/>
+<circle cx='418.7' cy='66.0' r='5' fill='#c0392b'/>
+<text x='218' y='103.71428571428572' text-anchor='end' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='11' fill='#1b1b1b'>(2,3)</text>
+<circle cx='324.3' cy='99.7' r='5' fill='#c0392b'/>
+<circle cx='418.7' cy='99.7' r='5' fill='#c0392b'/>
+<text x='218' y='137.42857142857144' text-anchor='end' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='11' fill='#1b1b1b'>(2,4)</text>
+<circle cx='418.7' cy='133.4' r='5' fill='#c0392b'/>
+<text x='218' y='171.14285714285714' text-anchor='end' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='11' fill='#1b1b1b'>(2,8)</text>
+<circle cx='418.7' cy='167.1' r='5' fill='#c0392b'/>
+<text x='218' y='204.85714285714286' text-anchor='end' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='11' fill='#1b1b1b'>(3,3)</text>
+<circle cx='324.3' cy='200.9' r='5' fill='#c0392b'/>
+<circle cx='371.5' cy='200.9' r='5' fill='#c0392b'/>
+<circle cx='418.7' cy='200.9' r='5' fill='#c0392b'/>
+<circle cx='465.8' cy='200.9' r='5' fill='#c0392b'/>
+<circle cx='513.0' cy='200.9' r='5' fill='#c0392b'/>
+<circle cx='560.2' cy='200.9' r='5' fill='#c0392b'/>
+<circle cx='607.3' cy='200.9' r='5' fill='#c0392b'/>
+<text x='218' y='238.57142857142858' text-anchor='end' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='11' fill='#1b1b1b'>(3,4)</text>
+<circle cx='418.7' cy='234.6' r='5' fill='#c0392b'/>
+<circle cx='513.0' cy='234.6' r='5' fill='#c0392b'/>
+<circle cx='560.2' cy='234.6' r='5' fill='#c0392b'/>
+<circle cx='607.3' cy='234.6' r='5' fill='#c0392b'/>
+<text x='218' y='272.2857142857143' text-anchor='end' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='11' fill='#1b1b1b'>(4,4)</text>
+<circle cx='418.7' cy='268.3' r='5' fill='#c0392b'/>
+<circle cx='560.2' cy='268.3' r='5' fill='#c0392b'/>
+<circle cx='607.3' cy='268.3' r='5' fill='#c0392b'/>
+<circle cx='654.5' cy='268.3' r='5' fill='#c0392b'/>
+<circle cx='701.7' cy='268.3' r='5' fill='#c0392b'/>
+<circle cx='748.8' cy='268.3' r='5' fill='#c0392b'/>
+<circle cx='796.0' cy='268.3' r='5' fill='#c0392b'/>
+<text x='796' y='310' text-anchor='end' font-family='ui-monospace, SFMono-Regular, Menlo, monospace' font-size='11' fill='#777'>maximal-set size</text>
+</svg>

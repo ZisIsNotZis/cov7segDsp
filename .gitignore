@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Generated C++ helper
+foundation/results/count_mixed
+
+# OS / editor
+.DS_Store
+*.swp
+*~

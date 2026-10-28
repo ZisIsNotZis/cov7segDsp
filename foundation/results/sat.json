@@ -1,0 +1,212 @@
+{
+  "seg11": {
+    "segments": 11,
+    "patterns": 2048,
+    "max_independent": {
+      "status": "OPTIMAL",
+      "value": 128
+    },
+    "min_maximal": {
+      "status": "FEASIBLE",
+      "value": 97
+    }
+  },
+  "grid_3x3": {
+    "max_independent": {
+      "status": "OPTIMAL",
+      "value": 64
+    },
+    "min_maximal": {
+      "status": "FEASIBLE",
+      "value": 32
+    }
+  },
+  "k2k2k8k8": {
+    "patterns": 256,
+    "max_independent": {
+      "status": "OPTIMAL",
+      "value": 32
+    },
+    "min_maximal": {
+      "status": "FEASIBLE",
+      "value": 24
+    },
+    "feasible_20_32": {
+      "20": "UNKNOWN",
+      "21": "UNKNOWN",
+      "22": "UNKNOWN",
+      "23": "UNKNOWN",
+      "24": "OPTIMAL",
+      "25": "OPTIMAL",
+      "26": "OPTIMAL",
+      "27": "OPTIMAL",
+      "28": "OPTIMAL",
+      "29": "OPTIMAL",
+      "30": "OPTIMAL",
+      "31": "OPTIMAL",
+      "32": "OPTIMAL"
+    }
+  },
+  "well_covered_probe": {
+    "(2, 2, 2, 2)": {
+      "n": 16,
+      "alpha": 8,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 4
+      },
+      "well_covered": false,
+      "threshold": false
+    },
+    "(2, 2, 2, 3)": {
+      "n": 24,
+      "alpha": 8,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 6
+      },
+      "well_covered": false,
+      "threshold": false
+    },
+    "(2, 2, 2, 4)": {
+      "n": 32,
+      "alpha": 8,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 8
+      },
+      "well_covered": true,
+      "threshold": true
+    },
+    "(2, 2, 2, 5)": {
+      "n": 40,
+      "alpha": 8,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 8
+      },
+      "well_covered": true,
+      "threshold": true
+    },
+    "(2, 2, 3, 4)": {
+      "n": 48,
+      "alpha": 12,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 8
+      },
+      "well_covered": false,
+      "threshold": false
+    },
+    "(2, 2, 3, 5)": {
+      "n": 60,
+      "alpha": 12,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 12
+      },
+      "well_covered": true,
+      "threshold": true
+    },
+    "(2, 2, 4, 4)": {
+      "n": 64,
+      "alpha": 16,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 8
+      },
+      "well_covered": false,
+      "threshold": false
+    },
+    "(2, 2, 4, 6)": {
+      "n": 96,
+      "alpha": 16,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 16
+      },
+      "well_covered": true,
+      "threshold": true
+    },
+    "(3, 3, 3, 3)": {
+      "n": 81,
+      "alpha": 27,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 9
+      },
+      "well_covered": false,
+      "threshold": false
+    },
+    "(2, 2, 3)": {
+      "n": 12,
+      "alpha": 4,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 4
+      },
+      "well_covered": true,
+      "threshold": true
+    },
+    "(2, 2, 4)": {
+      "n": 16,
+      "alpha": 4,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 4
+      },
+      "well_covered": true,
+      "threshold": true
+    },
+    "(2, 3, 3)": {
+      "n": 18,
+      "alpha": 6,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 5
+      },
+      "well_covered": false,
+      "threshold": false
+    },
+    "(2, 3, 4)": {
+      "n": 24,
+      "alpha": 6,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 6
+      },
+      "well_covered": true,
+      "threshold": true
+    },
+    "(3, 3, 3)": {
+      "n": 27,
+      "alpha": 9,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 5
+      },
+      "well_covered": false,
+      "threshold": false
+    },
+    "(2, 4, 4)": {
+      "n": 32,
+      "alpha": 8,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 6
+      },
+      "well_covered": false,
+      "threshold": false
+    },
+    "(3, 4, 4)": {
+      "n": 48,
+      "alpha": 12,
+      "min_maximal": {
+        "status": "OPTIMAL",
+        "value": 8
+      },
+      "well_covered": false,
+      "threshold": false
+    }
+  }
+}

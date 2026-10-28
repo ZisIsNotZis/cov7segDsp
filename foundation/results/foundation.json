@@ -1,0 +1,814 @@
+{
+  "seven_seg": {
+    "per_g": {
+      "8": 144,
+      "11": 4608,
+      "12": 149184,
+      "13": 213120,
+      "14": 178560,
+      "15": 50688,
+      "16": 7704
+    },
+    "global": {
+      "16": 20736,
+      "19": 1327104,
+      "20": 42964992,
+      "21": 61378560,
+      "22": 72658944,
+      "23": 1389477888,
+      "24": 24222198528,
+      "25": 65233797120,
+      "26": 99163865088,
+      "27": 91304091648,
+      "28": 55787553792,
+      "29": 21385451520,
+      "30": 5320525824,
+      "31": 781000704,
+      "32": 59351616
+    },
+    "per_g_total": 604008,
+    "global_total": 364825664064,
+    "per_g_min": 8,
+    "per_g_max": 16,
+    "global_min": 16,
+    "global_max": 32,
+    "per_g_existence": [
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "global_existence": [
+      16,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "per_g_total_maximum_sets": 7704,
+    "global_total_maximum_sets": 59351616,
+    "per_g_total_minimum_sets": 144,
+    "global_total_minimum_sets": 20736
+  },
+  "families": {
+    "(2,2)": {
+      "q3": 2,
+      "q4": 2,
+      "n_patterns": 16,
+      "matchings": 7,
+      "counts": {
+        "4": 24,
+        "5": 16,
+        "8": 2
+      },
+      "existence": [
+        4,
+        5,
+        8
+      ],
+      "total": 42,
+      "min": 4,
+      "max": 8
+    },
+    "(2,3)": {
+      "q3": 2,
+      "q4": 3,
+      "n_patterns": 24,
+      "matchings": 13,
+      "counts": {
+        "6": 96,
+        "8": 114
+      },
+      "existence": [
+        6,
+        8
+      ],
+      "total": 210,
+      "min": 6,
+      "max": 8
+    },
+    "(2,4)": {
+      "q3": 2,
+      "q4": 4,
+      "n_patterns": 32,
+      "matchings": 21,
+      "counts": {
+        "8": 2652
+      },
+      "existence": [
+        8
+      ],
+      "total": 2652,
+      "min": 8,
+      "max": 8
+    },
+    "(2,8)": {
+      "q3": 2,
+      "q4": 8,
+      "n_patterns": 64,
+      "matchings": 73,
+      "counts": {
+        "8": 3440024
+      },
+      "existence": [
+        8
+      ],
+      "total": 3440024,
+      "min": 8,
+      "max": 8
+    },
+    "(3,3)": {
+      "q3": 3,
+      "q4": 3,
+      "n_patterns": 36,
+      "matchings": 34,
+      "counts": {
+        "6": 36,
+        "7": 288,
+        "8": 144,
+        "9": 144,
+        "10": 1260,
+        "11": 144,
+        "12": 36
+      },
+      "existence": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "total": 2052,
+      "min": 6,
+      "max": 12
+    },
+    "(3,4)": {
+      "q3": 3,
+      "q4": 4,
+      "n_patterns": 48,
+      "matchings": 73,
+      "counts": {
+        "8": 432,
+        "10": 2736,
+        "11": 12672,
+        "12": 16488
+      },
+      "existence": [
+        8,
+        10,
+        11,
+        12
+      ],
+      "total": 32328,
+      "min": 8,
+      "max": 12
+    },
+    "(4,4)": {
+      "q3": 4,
+      "q4": 4,
+      "n_patterns": 64,
+      "matchings": 209,
+      "counts": {
+        "8": 144,
+        "11": 4608,
+        "12": 149184,
+        "13": 213120,
+        "14": 178560,
+        "15": 50688,
+        "16": 7704
+      },
+      "existence": [
+        8,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "total": 604008,
+      "min": 8,
+      "max": 16
+    }
+  },
+  "grid_3x3": {
+    "n_patterns": 512,
+    "n_covers": 4,
+    "max_closed_neighborhood": 25,
+    "domination_lower_bound": 21,
+    "max_independent": 64,
+    "max_independent_example": [
+      "110000000",
+      "100100000",
+      "110010000",
+      "100110000",
+      "010001000",
+      "000101000",
+      "010011000",
+      "000111000"
+    ],
+    "note": "minimum maximal set: best feasible 32 from CP-SAT; lower bound 21; exact not settled"
+  },
+  "fonts": {
+    "checks": {
+      "standard": {
+        "ok": false,
+        "size": 16,
+        "conflicts": [
+          {
+            "a": 63,
+            "b": 57,
+            "cover": "right"
+          },
+          {
+            "a": 6,
+            "b": 7,
+            "cover": "top"
+          },
+          {
+            "a": 79,
+            "b": 127,
+            "cover": "left"
+          },
+          {
+            "a": 79,
+            "b": 111,
+            "cover": "left"
+          },
+          {
+            "a": 109,
+            "b": 125,
+            "cover": "left"
+          },
+          {
+            "a": 109,
+            "b": 111,
+            "cover": "right"
+          },
+          {
+            "a": 125,
+            "b": 127,
+            "cover": "right"
+          },
+          {
+            "a": 125,
+            "b": 124,
+            "cover": "top"
+          },
+          {
+            "a": 125,
+            "b": 121,
+            "cover": "right"
+          },
+          {
+            "a": 127,
+            "b": 111,
+            "cover": "left"
+          },
+          {
+            "a": 127,
+            "b": 119,
+            "cover": "bottom"
+          },
+          {
+            "a": 127,
+            "b": 121,
+            "cover": "right"
+          },
+          {
+            "a": 119,
+            "b": 113,
+            "cover": "right"
+          },
+          {
+            "a": 121,
+            "b": 113,
+            "cover": "bottom"
+          }
+        ],
+        "projections_unique": {
+          "top": false,
+          "right": false,
+          "bottom": false,
+          "left": false
+        }
+      },
+      "doc_dec": {
+        "ok": true,
+        "size": 10,
+        "conflicts": [],
+        "projections_unique": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      },
+      "doc_hex": {
+        "ok": true,
+        "size": 16,
+        "conflicts": [],
+        "projections_unique": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      },
+      "min_dec": {
+        "ok": true,
+        "size": 10,
+        "conflicts": [],
+        "projections_unique": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      },
+      "min_hex": {
+        "ok": true,
+        "size": 16,
+        "conflicts": [],
+        "projections_unique": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      }
+    },
+    "flips": {
+      "standard": 0,
+      "doc_dec": 5,
+      "doc_hex": 11,
+      "min_dec": 4,
+      "min_hex": 8
+    },
+    "flips_by_glyph": {
+      "standard": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "A": 0,
+        "b": 0,
+        "C": 0,
+        "d": 0,
+        "E": 0,
+        "F": 0
+      },
+      "doc_dec": {
+        "0": 0,
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4": 0,
+        "5": 1,
+        "6": 1,
+        "7": 0,
+        "8": 1,
+        "9": 0
+      },
+      "doc_hex": {
+        "0": 0,
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 3,
+        "7": 0,
+        "8": 3,
+        "9": 2,
+        "A": 0,
+        "b": 0,
+        "C": 1,
+        "d": 0,
+        "E": 0,
+        "F": 1
+      },
+      "min_dec": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 0,
+        "5": 1,
+        "6": 0,
+        "7": 1,
+        "8": 1,
+        "9": 0
+      },
+      "min_hex": {
+        "0": 1,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "A": 1,
+        "b": 0,
+        "C": 1,
+        "d": 0,
+        "E": 0,
+        "F": 1
+      }
+    },
+    "scores": {
+      "doc_dec": {
+        "mean": 0.6088343901300514,
+        "min": 0.14956861922263506,
+        "per_glyph": {
+          "0": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "1": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395
+          },
+          "2": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "3": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395
+          },
+          "4": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "5": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          },
+          "6": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          },
+          "7": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "8": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          },
+          "9": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          }
+        }
+      },
+      "doc_hex": {
+        "mean": 0.6644721305841393,
+        "min": 0.004892753725239476,
+        "per_glyph": {
+          "0": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "1": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395
+          },
+          "2": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "3": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "4": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "5": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "6": {
+            "flips": 3,
+            "visible_distance": 2.8,
+            "occluded_distance": 8.4,
+            "score": 0.004892753725239476
+          },
+          "7": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "8": {
+            "flips": 3,
+            "visible_distance": 2.6,
+            "occluded_distance": 7.800000000000001,
+            "score": 0.007154598372314579
+          },
+          "9": {
+            "flips": 2,
+            "visible_distance": 1.6,
+            "occluded_distance": 4.800000000000001,
+            "score": 0.04783488949419837
+          },
+          "A": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "b": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "C": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          },
+          "d": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "E": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "F": {
+            "flips": 1,
+            "visible_distance": 1.2,
+            "occluded_distance": 3.5999999999999996,
+            "score": 0.10228420671553748
+          }
+        }
+      },
+      "min_dec": {
+        "mean": 0.6938775282077878,
+        "min": 0.14956861922263506,
+        "per_glyph": {
+          "0": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "1": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "2": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "3": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          },
+          "4": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "5": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395
+          },
+          "6": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "7": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          },
+          "8": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395
+          },
+          "9": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          }
+        }
+      },
+      "min_hex": {
+        "mean": 0.5710983711611191,
+        "min": 0.08892161745938634,
+        "per_glyph": {
+          "0": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          },
+          "1": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "2": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "3": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "4": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "5": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "6": {
+            "flips": 1,
+            "visible_distance": 1.1,
+            "occluded_distance": 4.4,
+            "score": 0.08892161745938634
+          },
+          "7": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          },
+          "8": {
+            "flips": 1,
+            "visible_distance": 0.6,
+            "occluded_distance": 1.7999999999999998,
+            "score": 0.31981902181630395
+          },
+          "9": {
+            "flips": 1,
+            "visible_distance": 1.1,
+            "occluded_distance": 4.4,
+            "score": 0.08892161745938634
+          },
+          "A": {
+            "flips": 1,
+            "visible_distance": 1.1,
+            "occluded_distance": 4.4,
+            "score": 0.08892161745938634
+          },
+          "b": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "C": {
+            "flips": 1,
+            "visible_distance": 1.2,
+            "occluded_distance": 3.5999999999999996,
+            "score": 0.10228420671553748
+          },
+          "d": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "E": {
+            "flips": 0,
+            "visible_distance": 0,
+            "occluded_distance": 0.0,
+            "score": 1.0
+          },
+          "F": {
+            "flips": 1,
+            "visible_distance": 1.0,
+            "occluded_distance": 3.0,
+            "score": 0.14956861922263506
+          }
+        }
+      }
+    }
+  },
+  "capacity": [
+    {
+      "charset": "decimal 0-9",
+      "size": 10,
+      "capacity": 32,
+      "fits": true
+    },
+    {
+      "charset": "hex 0-9 A-F",
+      "size": 16,
+      "capacity": 32,
+      "fits": true
+    },
+    {
+      "charset": "alphanumeric, case-insensitive",
+      "size": 36,
+      "capacity": 32,
+      "fits": false
+    },
+    {
+      "charset": "alphanumeric, case-sensitive",
+      "size": 62,
+      "capacity": 32,
+      "fits": false
+    },
+    {
+      "charset": "Base64",
+      "size": 64,
+      "capacity": 32,
+      "fits": false
+    }
+  ]
+}
