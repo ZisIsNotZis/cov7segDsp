@@ -70,7 +70,7 @@ python3 -m http.server 8000
 # open http://localhost:8000/
 ```
 
-The lab has four tabs:
+The lab has an **EN / 中文** switch in the header (stored in `localStorage`), and four tabs:
 
 - **Lab** — edit a glyph, apply a cover, see the projection, the conflict list,
   the conflict matrix, and the scorecard.

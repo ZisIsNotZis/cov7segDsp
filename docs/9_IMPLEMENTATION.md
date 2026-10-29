@@ -75,7 +75,7 @@ g++ -O3 -march=native -o foundation/results/count_mixed foundation/count_mixed.c
 - `sat.json`: CP-SAT status for the 11-seg layout, the 3x3 grid,
   `K₂ □ K₂ □ K₈ □ K₈`, and the well-covered probe.  Statuses are recorded
   as-is; a `FEASIBLE` value is not a proof of optimality.
-- `index.html` + `lab/`: the M3 static lab (core logic, data, UI).
+- `index.html` + `lab/`: the M3 static lab (core logic, data, UI, EN/中文).
 - `font_opt.json`: the CP-SAT font search (min mismatch, min flips, min
   distance, topology-budget Pareto, nearest-constrained decimal/hex).  `OPT_DEC`
   in `fonts.py` is the min-distance candidate; `TOP0_DEC`/`MIN_MISMATCH_DEC`

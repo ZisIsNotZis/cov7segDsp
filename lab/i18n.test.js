@@ -1,0 +1,12 @@
+const assert = require("assert");
+globalThis.document = { documentElement: {}, querySelectorAll: () => [], getElementById: () => null };
+require("./i18n.js");
+const I = globalThis.I18N;
+assert.deepStrictEqual(Object.keys(I.DICT.en).sort(), Object.keys(I.DICT.zh).sort());
+assert.strictEqual(I.t("nav.lab"), "Lab");
+I.setLang("zh");
+assert.strictEqual(I.t("nav.lab"), "实验台");
+assert.strictEqual(I.t("lang.switch"), "EN");
+I.setLang("en");
+assert.strictEqual(I.t("nav.lab"), "Lab");
+console.log("i18n tests passed");

@@ -2,6 +2,9 @@
 (function () {
   "use strict";
   const C = globalThis.COV;
+  const I = globalThis.I18N;
+  const t = I.t;
+  const fontName = (key) => t("font." + key);
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -90,9 +93,9 @@
 
   // ---------------------------------------------------------------- tabs
   function initTabs() {
-    $$(".tabs button").forEach((btn) => {
+    $$(".tabs button[data-tab]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        $$(".tabs button").forEach((b) => b.classList.toggle("active", b === btn));
+        $$(".tabs button[data-tab]").forEach((b) => b.classList.toggle("active", b === btn));
         $$(".tab").forEach((tab) =>
           tab.classList.toggle("active", tab.id === "tab-" + btn.dataset.tab)
         );
@@ -113,7 +116,7 @@
   function initLab() {
     fillSelect(
       $("#lab-font"),
-      Object.entries(C.FONTS).map(([k, f]) => [k, f.name]),
+      Object.entries(C.FONTS).map(([k]) => [k, fontName(k)]),
       lab.fontKey
     );
     fillSelect(
@@ -160,7 +163,7 @@
   function renderCoverButtons() {
     const box = $("#lab-covers");
     box.innerHTML = "";
-    const choices = [[null, "no cover"], ...C.COVER_ORDER.map((c) => [c, c + " cover"])];
+    const choices = [[null, t("cover.none")], ...C.COVER_ORDER.map((c) => [c, t("cover." + c)])];
     for (const [value, label] of choices) {
       const b = document.createElement("button");
       b.textContent = label;
@@ -186,12 +189,19 @@
     const readingsBox = $("#lab-readings");
     readingsBox.innerHTML = "";
     if (!lab.cover) {
-      readingsBox.appendChild(chip("Visible pattern: " + C.bitsOf(lab.pattern)));
+      readingsBox.appendChild(chip(t("lab.visible", { pattern: C.bitsOf(lab.pattern) })));
     } else {
       const masked = C.projected(lab.pattern, lab.cover);
       const rs = C.readings(lab.font, masked, lab.cover);
       readingsBox.appendChild(
-        chip(`Under ${lab.cover} cover: ${C.bitsOf(masked)} → ` + (rs.length ? rs.join(" / ") : "no glyph"), rs.length > 1 ? "warn" : "")
+        chip(
+          t("lab.under", {
+            cover: t("cover." + lab.cover),
+            pattern: C.bitsOf(masked),
+            readings: rs.length ? rs.join(" / ") : t("lab.noGlyph"),
+          }),
+          rs.length > 1 ? "warn" : ""
+        )
       );
     }
 
@@ -200,14 +210,14 @@
     const card = $("#lab-scorecard");
     card.innerHTML = "";
     const rows = [
-      ["font", info.name],
-      ["conflicts", info.conflicts.length],
-      ["mean score", info.meanScore.toFixed(3)],
-      ["min score", info.minScore.toFixed(3)],
-      ["flips from standard", info.totalFlips],
-      ["topology mismatches", info.topologyMismatches.join(", ") || "none"],
-      ["nearest mismatches", info.nearestMismatches.join(", ") || "none"],
-      ["min nearest margin", info.minNearestMargin.toFixed(2)],
+      [t("score.font"), fontName(lab.fontKey)],
+      [t("score.conflicts"), info.conflicts.length],
+      [t("score.mean"), info.meanScore.toFixed(3)],
+      [t("score.min"), info.minScore.toFixed(3)],
+      [t("score.flips"), info.totalFlips],
+      [t("score.topo"), info.topologyMismatches.join(", ") || t("common.none")],
+      [t("score.nearest"), info.nearestMismatches.join(", ") || t("common.none")],
+      [t("score.margin"), info.minNearestMargin.toFixed(2)],
     ];
     for (const [k, v] of rows) {
       const row = document.createElement("div");
@@ -216,7 +226,7 @@
       kk.textContent = k;
       const vv = document.createElement("span");
       vv.textContent = String(v);
-      vv.className = k === "conflicts" && info.conflicts.length ? "bad" : "";
+      vv.className = k === t("score.conflicts") && info.conflicts.length ? "bad" : "";
       row.append(kk, vv);
       card.appendChild(row);
     }
@@ -225,12 +235,17 @@
     const list = $("#lab-conflicts");
     list.innerHTML = "";
     if (!info.conflicts.length) {
-      list.appendChild(chip("No conflicts — this set is unambiguous under all four covers.", "ok"));
+      list.appendChild(chip(t("lab.noConflicts"), "ok"));
     } else {
       for (const d of info.conflicts) {
         const item = document.createElement("button");
         item.className = "conflict-item";
-        item.innerHTML = `<b>${d.a}</b> ↔ <b>${d.b}</b> under <b>${d.cover}</b> · hidden ${segmentNames(d.hidden).join(",")}`;
+        item.textContent = t("lab.conflictLine", {
+          a: d.a,
+          b: d.b,
+          cover: t("cover." + d.cover),
+          segments: segmentNames(d.hidden).join(", "),
+        });
         item.addEventListener("click", () => {
           lab.pair = d;
           renderLabDetail();
@@ -296,7 +311,7 @@
     }
     host.appendChild(table);
     host.appendChild(
-      chip("Cell = covers where the pair collides (T/R/B/L). Click a cell to inspect.", "hint")
+      chip(t("lab.matrixHint"), "hint")
     );
   }
 
@@ -304,7 +319,7 @@
     const host = $("#lab-detail");
     host.innerHTML = "";
     if (!lab.pair) {
-      host.appendChild(chip("Select a conflict (list or matrix) to see the hidden segments.", "hint"));
+      host.appendChild(chip(t("lab.selectConflict"), "hint"));
       return;
     }
     const d = lab.pair;
@@ -326,7 +341,13 @@
     host.appendChild(row);
     const text = document.createElement("p");
     text.className = "hint";
-    text.textContent = `${d.a} and ${d.b} both become ${d.projection} under the ${d.cover} cover. Hidden segments: ${segmentNames(d.hidden).join(", ")}.`;
+    text.textContent = t("lab.detailLine", {
+      a: d.a,
+      b: d.b,
+      projection: d.projection,
+      cover: t("cover." + d.cover),
+      segments: segmentNames(d.hidden).join(", "),
+    });
     host.appendChild(text);
   }
 
@@ -346,7 +367,7 @@
       $("#cd-font"),
       Object.entries(C.FONTS)
         .filter(([, f]) => f.charset === "dec")
-        .map(([k, f]) => [k, f.name]),
+        .map(([k]) => [k, fontName(k)]),
       cd.fontKey
     );
     $("#cd-font").addEventListener("change", () => {
@@ -356,7 +377,7 @@
     });
     $("#cd-start").addEventListener("click", () => {
       cd.running = !cd.running;
-      $("#cd-start").textContent = cd.running ? "Pause" : "Start";
+      $("#cd-start").textContent = cd.running ? t("cd.pause") : t("cd.start");
       if (cd.running) {
         cd.timer = setInterval(() => {
           cd.count = cd.count <= 0 ? 99 : cd.count - 1;
@@ -437,7 +458,7 @@
     }
     const masked = C.projected(p, cover);
     const rs = C.readings(font, masked, cover);
-    host.appendChild(chip("sees " + C.bitsOf(masked), "hint"));
+    host.appendChild(chip(t("cd.sees", { pattern: C.bitsOf(masked) }), "hint"));
     host.appendChild(chip(rs.length ? rs.join(" / ") : "—", rs.length > 1 ? "warn" : "ok"));
   }
 
@@ -454,8 +475,12 @@
     }
     positionLeaf();
     $("#cd-cover-label").textContent = cd.cover
-      ? `${cd.cover} cover: hiding ${C.COVER_ORDER.includes(cd.cover) ? C.COVERS[cd.cover].join(", ") : ""}`
-      : "no occlusion — drag the leaf to a side";
+      ? t("cd.coverLabel", {
+          cover: t("cover." + cd.cover),
+          segments: C.COVERS[cd.cover].join(", "),
+        })
+      : t("cd.noCover");
+    $("#cd-start").textContent = cd.running ? t("cd.pause") : t("cd.start");
     renderDigitReadings($("#cd-tens"), tens, cd.font, cd.cover);
     renderDigitReadings($("#cd-ones"), ones, cd.font, cd.cover);
   }
@@ -489,7 +514,7 @@
   function initQuiz() {
     fillSelect(
       $("#quiz-font"),
-      Object.entries(C.FONTS).map(([k, f]) => [k, f.name]),
+      Object.entries(C.FONTS).map(([k]) => [k, fontName(k)]),
       quiz.fontKey
     );
     $("#quiz-font").addEventListener("change", () => {
@@ -507,7 +532,7 @@
       URL.revokeObjectURL(a.href);
     });
     $("#quiz-reset").addEventListener("click", () => {
-      if (!confirm("Clear all quiz responses?")) return;
+      if (!confirm(t("quiz.confirmClear"))) return;
       quiz.data = [];
       saveQuiz();
       renderQuizStats();
@@ -536,7 +561,7 @@
       choices.appendChild(b);
     }
     $("#quiz-feedback").innerHTML = "";
-    $("#quiz-feedback").appendChild(chip("What is it? Click a digit.", "hint"));
+    $("#quiz-feedback").appendChild(chip(t("quiz.what"), "hint"));
   }
 
   function answer(response) {
@@ -559,11 +584,13 @@
     renderQuizStats();
     const fb = $("#quiz-feedback");
     fb.innerHTML = "";
-    fb.appendChild(chip(correct ? "correct" : `wrong — it was ${cur.label}`, correct ? "ok" : "warn"));
+    fb.appendChild(
+      chip(correct ? t("quiz.correct") : t("quiz.wrong", { label: cur.label }), correct ? "ok" : "warn")
+    );
     if (possible.length > 1) {
-      fb.appendChild(chip("ambiguous under this cover: " + possible.join(" / "), "warn"));
+      fb.appendChild(chip(t("quiz.ambiguous", { labels: possible.join(" / ") }), "warn"));
     } else {
-      fb.appendChild(chip("unique reading", "ok"));
+      fb.appendChild(chip(t("quiz.unique"), "ok"));
     }
     $$("#quiz-choices button").forEach((b) => (b.disabled = true));
   }
@@ -576,9 +603,9 @@
     const top = document.createElement("div");
     top.className = "row";
     top.append(
-      chip(`trials ${n}`, "hint"),
-      chip(`correct ${ok}`, "ok"),
-      chip(`accuracy ${n ? ((ok / n) * 100).toFixed(1) + "%" : "—"}`, n ? "ok" : "hint")
+      chip(`${t("quiz.trials")} ${n}`, "hint"),
+      chip(`${t("quiz.correctCount")} ${ok}`, "ok"),
+      chip(`${t("quiz.accuracy")} ${n ? ((ok / n) * 100).toFixed(1) + "%" : "—"}`, n ? "ok" : "hint")
     );
     host.appendChild(top);
     if (!n) return;
@@ -591,7 +618,7 @@
     const table = document.createElement("table");
     table.className = "stats-table";
     const head = document.createElement("tr");
-    for (const h of ["shown", "trials", "correct"]) {
+    for (const h of [t("quiz.shown"), t("quiz.trials"), t("quiz.correctCount")]) {
       const th = document.createElement("th");
       th.textContent = h;
       head.appendChild(th);
@@ -640,15 +667,37 @@
       }
       const cap = document.createElement("p");
       cap.className = "hint";
-      cap.textContent = "Confusion matrix: rows = shown, columns = response.";
+      cap.textContent = t("quiz.confusion");
       host.appendChild(cap);
       host.appendChild(m);
     }
   }
 
   // ---------------------------------------------------------------- boot
+  function refreshFontSelects() {
+    for (const id of ["#lab-font", "#cd-font", "#quiz-font"]) {
+      const sel = $(id);
+      for (const opt of sel.options) {
+        if (opt.value) opt.textContent = fontName(opt.value);
+      }
+    }
+  }
+
+  function initLang() {
+    $("#lang-switch").addEventListener("click", () => {
+      I.setLang(I.lang === "en" ? "zh" : "en");
+      refreshFontSelects();
+      renderLab();
+      renderCd();
+      renderQuizStats();
+      newQuestion();
+    });
+  }
+
+  I.init();
   initTabs();
   initLab();
   initCd();
   initQuiz();
+  initLang();
 })();

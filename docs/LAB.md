@@ -30,10 +30,19 @@ No build step, no framework, no network.  The only files loaded are:
 index.html
 lab/data.js      precomputed topology signatures for the 128 patterns
 lab/core.js      conflict, projection, score, nearest, topology logic
+lab/i18n.js      English/Chinese strings and the language switch
 lab/ui.js        DOM wiring
 assets/logo.svg
 foundation/plots/*.svg
 ```
+
+## Language
+
+The header has an **EN / 中文** switch.  The whole lab UI (static labels,
+dynamic conflict lines, scorecard, quiz feedback, math notes) follows it, and
+the choice is stored in `localStorage` under `cov7seg_lang`.  The source notes
+under `docs/` remain English; the quiz export is language-neutral (font keys,
+labels, covers, patterns, responses).
 
 ## Lab
 
@@ -108,6 +117,8 @@ The lab is the bridge between the exact model and the human eye:
   input for `foundation/calibrate.py` (below).
 - The lab defaults to the optimised decimal font; its 5 and 8 were reviewed and
   accepted as readable, but the weights are still provisional.
+- The Chinese UI is a written translation, not machine-translated at runtime.
+  The source notes remain English for now.
 
 ## Calibrating the weights
 

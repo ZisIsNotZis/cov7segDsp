@@ -118,14 +118,15 @@
 <header>
   <img class="logo" src="assets/logo.svg" alt="cov7seg">
   <div>
-    <h1>cov7seg lab</h1>
-    <p class="sub">one side off — what can you still read?</p>
+    <h1 data-i18n="header.title">cov7seg lab</h1>
+    <p class="sub" data-i18n="header.sub">one side off — what can you still read?</p>
   </div>
   <nav class="tabs">
-    <button data-tab="lab" class="active">Lab</button>
-    <button data-tab="countdown">Countdown</button>
-    <button data-tab="quiz">Quiz</button>
-    <button data-tab="math">Math</button>
+    <button data-tab="lab" class="active" data-i18n="nav.lab">Lab</button>
+    <button data-tab="countdown" data-i18n="nav.countdown">Countdown</button>
+    <button data-tab="quiz" data-i18n="nav.quiz">Quiz</button>
+    <button data-tab="math" data-i18n="nav.math">Math</button>
+    <button id="lang-switch" class="small">中文</button>
   </nav>
 </header>
 
@@ -134,34 +135,34 @@
   <section id="tab-lab" class="tab active">
     <div class="grid">
       <div class="panel">
-        <h2>Glyph editor</h2>
+        <h2 data-i18n="lab.title">Glyph editor</h2>
         <div id="lab-display" class="display"></div>
         <div id="lab-covers" class="row" style="margin-top:8px"></div>
         <div id="lab-readings" class="readings"></div>
         <div class="row" style="margin-top:10px">
-          <button id="lab-random" class="small">Random glyph</button>
-          <button id="lab-reset" class="small">Reset preset</button>
+          <button id="lab-random" class="small" data-i18n="lab.random">Random glyph</button>
+          <button id="lab-reset" class="small" data-i18n="lab.reset">Reset preset</button>
         </div>
         <div class="row" style="margin-top:12px">
-          <label>slot <select id="lab-slot"></select></label>
-          <button id="lab-apply" class="small">Apply glyph to slot</button>
+          <label><span data-i18n="lab.slot">slot</span> <select id="lab-slot"></select></label>
+          <button id="lab-apply" class="small" data-i18n="lab.apply">Apply glyph to slot</button>
         </div>
-        <p class="hint">Click a segment to toggle it. Pick a cover to see what survives. A conflict means two slots become identical under that cover.</p>
+        <p class="hint" data-i18n="lab.hint">Click a segment to toggle it. Pick a cover to see what survives. A conflict means two slots become identical under that cover.</p>
       </div>
       <div class="panel">
-        <h2>Font</h2>
+        <h2 data-i18n="lab.font">Font</h2>
         <div class="row">
           <select id="lab-font" style="max-width:100%"></select>
         </div>
         <div id="lab-scorecard" class="scorecard" style="margin-top:10px"></div>
-        <h3>Conflicts</h3>
+        <h3 data-i18n="lab.conflicts">Conflicts</h3>
         <div id="lab-conflicts" class="conflict-list"></div>
-        <h3>Selected conflict</h3>
+        <h3 data-i18n="lab.selected">Selected conflict</h3>
         <div id="lab-detail"></div>
       </div>
     </div>
     <div class="panel">
-      <h2>Conflict matrix</h2>
+      <h2 data-i18n="lab.matrix">Conflict matrix</h2>
       <div id="lab-matrix"></div>
     </div>
   </section>
@@ -171,25 +172,25 @@
     <div class="panel">
       <div class="row">
         <select id="cd-font" style="max-width:100%"></select>
-        <button id="cd-start">Start</button>
-        <button id="cd-reset">Reset</button>
+        <button id="cd-start" data-i18n="cd.start">Start</button>
+        <button id="cd-reset" data-i18n="cd.reset">Reset</button>
       </div>
       <div id="cd-stage" class="cd-stage">
         <div id="cd-display" class="display" style="min-height:0"></div>
-        <div id="cd-leaf" class="leaf" title="Drag me to a side"></div>
+        <div id="cd-leaf" class="leaf" data-i18n-title="cd.leafTitle" title="Drag me to a side"></div>
       </div>
       <div id="cd-cover-label" class="hint"></div>
       <div class="grid two" style="margin-top:12px">
         <div class="panel" style="margin:0">
-          <h3>Tens</h3>
+          <h3 data-i18n="cd.tens">Tens</h3>
           <div id="cd-tens" class="readings"></div>
         </div>
         <div class="panel" style="margin:0">
-          <h3>Ones</h3>
+          <h3 data-i18n="cd.ones">Ones</h3>
           <div id="cd-ones" class="readings"></div>
         </div>
       </div>
-      <p class="hint">Drag the leaf to a side. The covered side is hidden on both digits; the lists show every digit that could still be read. Try “Standard” vs “Optimised” to see the difference.</p>
+      <p class="hint" data-i18n="cd.hint">Drag the leaf to a side. The covered side is hidden on both digits; the lists show every digit that could still be read. Try “Standard” vs “Optimised” to see the difference.</p>
     </div>
   </section>
 
@@ -198,54 +199,55 @@
     <div class="panel">
       <div class="row">
         <select id="quiz-font" style="max-width:100%"></select>
-        <label class="hint"><input type="checkbox" id="quiz-occlude" checked> random occlusion</label>
-        <button id="quiz-next">New glyph</button>
-        <button id="quiz-export" class="small">Export JSON</button>
-        <button id="quiz-reset" class="small">Clear data</button>
+        <label class="hint"><input type="checkbox" id="quiz-occlude" checked> <span data-i18n="quiz.occlude">random occlusion</span></label>
+        <button id="quiz-next" data-i18n="quiz.new">New glyph</button>
+        <button id="quiz-export" class="small" data-i18n="quiz.export">Export JSON</button>
+        <button id="quiz-reset" class="small" data-i18n="quiz.clear">Clear data</button>
       </div>
       <div id="quiz-display" class="display"></div>
       <div id="quiz-choices" class="choices"></div>
       <div id="quiz-feedback" class="feedback"></div>
       <div id="quiz-stats"></div>
-      <p class="hint">This is the human-calibration harness for M3. Responses are stored in localStorage; export the JSON to fit the weights.</p>
+      <p class="hint" data-i18n="quiz.hint">This is the human-calibration harness for M3. Responses are stored in localStorage; export the JSON to fit the weights.</p>
     </div>
   </section>
 
   <!-- ------------------------------------------------------------ MATH -->
   <section id="tab-math" class="tab">
     <div class="panel">
-      <h2>What the foundation found</h2>
-      <p>Seven-segment display, four possible one-side covers: top removes <code>a</code>, bottom removes <code>d</code>, left removes <code>e,f</code>, right removes <code>b,c</code>; the middle <code>g</code> is never covered.</p>
+      <h2 data-i18n="math.title">What the foundation found</h2>
+      <p data-i18n-html="math.intro">Seven-segment display, four possible one-side covers: top removes <code>a</code>, bottom removes <code>d</code>, left removes <code>e,f</code>, right removes <code>b,c</code>; the middle <code>g</code> is never covered.</p>
       <table class="math-table">
-        <tr><th>maximum unambiguous set</th><td>32</td></tr>
-        <tr><th>minimum maximal set</th><td>16</td></tr>
-        <tr><th>attainable maximal sizes</th><td>16, 19–32 (17 and 18 do not exist)</td></tr>
-        <tr><th>maximal sets per g / globally</th><td>604,008 / 364,825,664,064</td></tr>
-        <tr><th>character capacity</th><td>32 (decimal and hex fit; 36-letter alphanumeric and Base64 do not)</td></tr>
-        <tr><th>construction</th><td>4 cells × a matching of K₄,₄, plus cross-cell disjointness and hole-covering</td></tr>
-        <tr><th>well-covered criterion</th><td>K_{q1} □ … □ K_{qd} is well-covered iff q1 &gt; Σ<sub>i≥2</sub>(q_i − 1)</td></tr>
+        <tr><th data-i18n="math.max">maximum unambiguous set</th><td>32</td></tr>
+        <tr><th data-i18n="math.min">minimum maximal set</th><td>16</td></tr>
+        <tr><th data-i18n="math.sizes">attainable maximal sizes</th><td data-i18n="math.sizesVal">16, 19–32 (17 and 18 do not exist)</td></tr>
+        <tr><th data-i18n="math.counts">maximal sets per g / globally</th><td>604,008 / 364,825,664,064</td></tr>
+        <tr><th data-i18n="math.capacity">character capacity</th><td data-i18n="math.capacityVal">32 (decimal and hex fit; 36-letter alphanumeric and Base64 do not)</td></tr>
+        <tr><th data-i18n="math.construction">construction</th><td data-i18n="math.constructionVal">4 cells × a matching of K₄,₄, plus cross-cell disjointness and hole-covering</td></tr>
+        <tr><th data-i18n="math.wellcovered">well-covered criterion</th><td>K_{q1} □ … □ K_{qd} is well-covered iff q1 &gt; Σ<sub>i≥2</sub>(q_i − 1)</td></tr>
       </table>
-      <p>The per-<code>g</code> graph is <code>K₂ □ K₂ □ K₄ □ K₄</code>; the global graph is two disjoint copies because <code>g</code> is never covered. The 9/10 gap is not a periodic sequence: it is the set of feasible cell-size patterns.</p>
-      <p>Recognisability is checked with a geometry-based <code>(components, holes)</code> signature and a nearest-standard / segment-fault check. The source note’s hex font fails the nearest check for 6 and 8; no 16-glyph 0–F nearest-preserving font exists. The optimised decimal candidate changes 1, 3, 5, 8 (4 flips) and is the “Optimised 0–9” preset in the Lab.</p>
+      <p data-i18n-html="math.para">The per-<code>g</code> graph is <code>K₂ □ K₂ □ K₄ □ K₄</code>; the global graph is two disjoint copies because <code>g</code> is never covered. The 9/10 gap is not a periodic sequence: it is the set of feasible cell-size patterns.</p>
+      <p data-i18n-html="math.recog">Recognisability is checked with a geometry-based <code>(components, holes)</code> signature and a nearest-standard / segment-fault check. The source note’s hex font fails the nearest check for 6 and 8; no 16-glyph 0–F nearest-preserving font exists. The optimised decimal candidate changes 1, 3, 5, 8 (4 flips) and is the “Optimised 0–9” preset in the Lab.</p>
       <div class="plots">
         <figure>
           <img src="foundation/plots/sevenseg_global_counts.svg" alt="global counts by size">
-          <figcaption>Global maximal-set counts by size: peak at 26, not at the maximum 32.</figcaption>
+          <figcaption data-i18n="math.fig1">Global maximal-set counts by size: peak at 26, not at the maximum 32.</figcaption>
         </figure>
         <figure>
           <img src="foundation/plots/family_existence.svg" alt="family existence">
-          <figcaption>Attainable maximal sizes for K₂ □ K₂ □ K_q □ K_q: the gap moves and can disappear.</figcaption>
+          <figcaption data-i18n="math.fig2">Attainable maximal sizes for K₂ □ K₂ □ K_q □ K_q: the gap moves and can disappear.</figcaption>
         </figure>
       </div>
-      <p class="hint">Full notes: <a href="docs/FOUNDATION.md">docs/FOUNDATION.md</a> · <a href="docs/RECOGNITION.md">docs/RECOGNITION.md</a> · <a href="docs/0_ROADMAP.md">roadmap</a>.</p>
+      <p class="hint" data-i18n-html="math.notes">Full notes: <a href="docs/FOUNDATION.md">docs/FOUNDATION.md</a> · <a href="docs/RECOGNITION.md">docs/RECOGNITION.md</a> · <a href="docs/0_ROADMAP.md">roadmap</a>.</p>
     </div>
   </section>
 </main>
 
 <footer>
-  cov7seg · M3 lab · built from the M1/M2 exact results.  Everything is static; no server, no build.
+  <span data-i18n="footer">cov7seg · M3 lab · built from the M1/M2 exact results. Everything is static; no server, no build.</span>
 </footer>
 
+<script src="lab/i18n.js"></script>
 <script src="lab/data.js"></script>
 <script src="lab/core.js"></script>
 <script src="lab/ui.js"></script>
