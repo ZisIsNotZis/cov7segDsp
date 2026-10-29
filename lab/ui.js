@@ -1,4 +1,4 @@
-/* cov7seg lab UI.  Requires lab/data.js and lab/core.js. */
+/* cov7seg lab UI.  Requires lab/i18n.js, lab/data.js and lab/core.js. */
 (function () {
   "use strict";
   const C = globalThis.COV;
@@ -16,6 +16,13 @@
     e: [8, 52, 8, 86],
     f: [8, 14, 8, 48],
     g: [12, 50, 88, 50],
+  };
+
+  const state = {
+    fontKey: "opt-dec",
+    font: cloneFont(C.FONTS["opt-dec"]),
+    selected: "0",
+    labCover: null,
   };
 
   function cloneFont(font) {
@@ -91,133 +98,135 @@
     return s;
   }
 
+  function badge(text, cls = "", title = "") {
+    const s = document.createElement("span");
+    s.className = "badge " + cls;
+    s.textContent = text;
+    if (title) s.title = title;
+    return s;
+  }
+
   // ---------------------------------------------------------------- tabs
   function initTabs() {
     $$(".tabs button[data-tab]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        $$(".tabs button[data-tab]").forEach((b) => b.classList.toggle("active", b === btn));
+        $$(".tabs button[data-tab]").forEach((b) =>
+          b.classList.toggle("active", b === btn)
+        );
         $$(".tab").forEach((tab) =>
           tab.classList.toggle("active", tab.id === "tab-" + btn.dataset.tab)
         );
+        if (btn.dataset.tab === "quiz" && quiz.dirty) {
+          newQuestion();
+          quiz.dirty = false;
+        }
       });
     });
   }
 
-  // ---------------------------------------------------------------- lab
-  const lab = {
-    fontKey: "opt-dec",
-    font: cloneFont(C.FONTS["opt-dec"]),
-    pattern: C.maskOf(C.FONTS["opt-dec"].glyphs["0"]),
-    cover: null,
-    slot: "0",
-    pair: null,
-  };
+  // ---------------------------------------------------------- global font
+  function initGlobalFont() {
+    fillSelect(
+      $("#global-font"),
+      Object.keys(C.FONTS).map((k) => [k, fontName(k)]),
+      state.fontKey
+    );
+    $("#global-font").addEventListener("change", () => {
+      state.fontKey = $("#global-font").value;
+      state.font = cloneFont(C.FONTS[state.fontKey]);
+      state.selected = Object.keys(state.font.glyphs)[0];
+      renderLab();
+      renderCd();
+      newQuestion();
+      quiz.dirty = false;
+    });
+  }
 
+  function refreshGlobalFont() {
+    const sel = $("#global-font");
+    for (const opt of sel.options) {
+      if (opt.value) opt.textContent = fontName(opt.value);
+    }
+  }
+
+  // ---------------------------------------------------------------- lab
   function initLab() {
-    fillSelect(
-      $("#lab-font"),
-      Object.entries(C.FONTS).map(([k]) => [k, fontName(k)]),
-      lab.fontKey
-    );
-    fillSelect(
-      $("#lab-slot"),
-      Object.keys(lab.font.glyphs).map((k) => [k, k]),
-      lab.slot
-    );
-    $("#lab-font").addEventListener("change", () => {
-      lab.fontKey = $("#lab-font").value;
-      lab.font = cloneFont(C.FONTS[lab.fontKey]);
-      lab.slot = Object.keys(lab.font.glyphs)[0];
-      fillSelect(
-        $("#lab-slot"),
-        Object.keys(lab.font.glyphs).map((k) => [k, k]),
-        lab.slot
-      );
-      lab.pattern = C.maskOf(lab.font.glyphs[lab.slot]);
-      lab.pair = null;
-      renderLab();
+    $("#lab-reset-font").addEventListener("click", () => {
+      state.font = cloneFont(C.FONTS[state.fontKey]);
+      state.selected = Object.keys(state.font.glyphs)[0];
+      afterFontEdit();
     });
-    $("#lab-slot").addEventListener("change", () => {
-      lab.slot = $("#lab-slot").value;
-      lab.pattern = C.maskOf(lab.font.glyphs[lab.slot]);
-      lab.pair = null;
-      renderLab();
-    });
-    $("#lab-apply").addEventListener("click", () => {
-      lab.font.glyphs[lab.slot] = C.bitsOf(lab.pattern);
-      renderLab();
-    });
-    $("#lab-random").addEventListener("click", () => {
-      lab.pattern = 1 + Math.floor(Math.random() * 127);
-      renderLab();
-    });
-    $("#lab-reset").addEventListener("click", () => {
-      lab.font = cloneFont(C.FONTS[lab.fontKey]);
-      lab.pattern = C.maskOf(lab.font.glyphs[lab.slot]);
-      lab.pair = null;
-      renderLab();
+    $("#lab-reset-digit").addEventListener("click", () => {
+      state.font.glyphs[state.selected] =
+        C.FONTS[state.fontKey].glyphs[state.selected];
+      afterFontEdit();
     });
     renderLab();
+  }
+
+  function afterFontEdit() {
+    renderLab();
+    renderCd();
+    quiz.dirty = true;
   }
 
   function renderCoverButtons() {
     const box = $("#lab-covers");
     box.innerHTML = "";
-    const choices = [[null, t("cover.none")], ...C.COVER_ORDER.map((c) => [c, t("cover." + c)])];
+    const choices = [
+      [null, t("cover.none")],
+      ...C.COVER_ORDER.map((c) => [c, t("cover." + c)]),
+    ];
     for (const [value, label] of choices) {
       const b = document.createElement("button");
+      b.type = "button";
       b.textContent = label;
-      b.className = "small" + (lab.cover === value ? " active" : "");
+      b.className = "small" + (state.labCover === value ? " active" : "");
       b.addEventListener("click", () => {
-        lab.cover = value;
+        state.labCover = value;
         renderLab();
       });
       box.appendChild(b);
     }
   }
 
-  function renderLab() {
-    renderCoverButtons();
-    renderGlyph($("#lab-display"), lab.pattern, {
-      cover: lab.cover,
-      interactive: true,
-      onToggle: (i) => {
-        lab.pattern ^= 1 << i;
-        renderLab();
-      },
-    });
-    const readingsBox = $("#lab-readings");
-    readingsBox.innerHTML = "";
-    if (!lab.cover) {
-      readingsBox.appendChild(chip(t("lab.visible", { pattern: C.bitsOf(lab.pattern) })));
-    } else {
-      const masked = C.projected(lab.pattern, lab.cover);
-      const rs = C.readings(lab.font, masked, lab.cover);
-      readingsBox.appendChild(
-        chip(
-          t("lab.under", {
-            cover: t("cover." + lab.cover),
-            pattern: C.bitsOf(masked),
-            readings: rs.length ? rs.join(" / ") : t("lab.noGlyph"),
-          }),
-          rs.length > 1 ? "warn" : ""
-        )
-      );
-    }
+  function renderSummary(info) {
+    const host = $("#lab-summary");
+    host.innerHTML = "";
+    const topo = info.topologyMismatches.length
+      ? info.topologyMismatches.join(", ")
+      : t("common.none");
+    const near = info.nearestMismatches.length
+      ? info.nearestMismatches.join(", ")
+      : t("common.none");
+    host.append(
+      chip(fontName(state.fontKey), "accent"),
+      chip(`${t("score.conflicts")} ${info.conflicts.length}`, info.conflicts.length ? "warn" : "ok"),
+      chip(`${t("score.mean")} ${info.meanScore.toFixed(3)}`),
+      chip(`${t("score.flips")} ${info.totalFlips}`),
+      chip(`${t("score.topo")} ${topo}`, info.topologyMismatches.length ? "warn" : ""),
+      chip(`${t("score.nearest")} ${near}`, info.nearestMismatches.length ? "warn" : "")
+    );
+  }
 
-    // scorecard
-    const info = C.setInfo(lab.font);
-    const card = $("#lab-scorecard");
-    card.innerHTML = "";
+  function renderGlyphScore(gi) {
+    const host = $("#lab-glyph-score");
+    host.innerHTML = "";
     const rows = [
-      [t("score.font"), fontName(lab.fontKey)],
-      [t("score.conflicts"), info.conflicts.length],
-      [t("score.mean"), info.meanScore.toFixed(3)],
-      [t("score.min"), info.minScore.toFixed(3)],
-      [t("score.flips"), info.totalFlips],
-      [t("score.topo"), info.topologyMismatches.join(", ") || t("common.none")],
-      [t("score.nearest"), info.nearestMismatches.join(", ") || t("common.none")],
-      [t("score.margin"), info.minNearestMargin.toFixed(2)],
+      [t("score.glyph"), gi.score.toFixed(3)],
+      [t("score.flips"), gi.flips],
+      [
+        t("score.topo"),
+        `${C.topoString(gi.topology)} ${
+          gi.topologyMatch ? t("common.match") : t("common.mismatch")
+        }`,
+      ],
+      [
+        t("score.nearest"),
+        `${
+          gi.nearest.unique ? t("common.unique") : t("lab.ambiguous")
+        } · ${t("score.margin")} ${gi.nearest.margin.toFixed(2)}`,
+      ],
     ];
     for (const [k, v] of rows) {
       const row = document.createElement("div");
@@ -226,38 +235,101 @@
       kk.textContent = k;
       const vv = document.createElement("span");
       vv.textContent = String(v);
-      vv.className = k === t("score.conflicts") && info.conflicts.length ? "bad" : "";
       row.append(kk, vv);
-      card.appendChild(row);
+      host.appendChild(row);
     }
+  }
 
-    // conflict list
-    const list = $("#lab-conflicts");
-    list.innerHTML = "";
-    if (!info.conflicts.length) {
-      list.appendChild(chip(t("lab.noConflicts"), "ok"));
-    } else {
-      for (const d of info.conflicts) {
-        const item = document.createElement("button");
-        item.className = "conflict-item";
-        item.textContent = t("lab.conflictLine", {
-          a: d.a,
-          b: d.b,
-          cover: t("cover." + d.cover),
-          segments: segmentNames(d.hidden).join(", "),
-        });
-        item.addEventListener("click", () => {
-          lab.pair = d;
-          renderLabDetail();
-        });
-        list.appendChild(item);
+  function renderGallery(info) {
+    const host = $("#lab-gallery");
+    host.innerHTML = "";
+    for (const label of info.labels) {
+      const gi = info.glyphs.find((g) => g.label === label);
+      const p = gi.mask;
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "digit-card" + (label === state.selected ? " selected" : "");
+      card.addEventListener("click", () => {
+        state.selected = label;
+        renderLab();
+      });
+
+      const head = document.createElement("div");
+      head.className = "digit-card-head";
+      const lab = document.createElement("span");
+      lab.className = "digit-card-label";
+      lab.textContent = label;
+      const badges = document.createElement("span");
+      badges.className = "badges";
+      const covers = [
+        ...new Set(
+          info.conflicts
+            .filter((d) => d.a === label || d.b === label)
+            .map((d) => d.cover)
+        ),
+      ];
+      if (covers.length) {
+        badges.appendChild(
+          badge(
+            covers.map((c) => c[0].toUpperCase()).join(" "),
+            "red",
+            t("lab.conflict")
+          )
+        );
       }
+      if (state.labCover) {
+        const rs = C.readings(
+          state.font,
+          C.projected(p, state.labCover),
+          state.labCover
+        );
+        if (rs.length > 1) badges.appendChild(badge(t("lab.ambiguous"), "red"));
+      }
+      if (gi.topologyMatch === false) {
+        badges.appendChild(badge("T", "amber", t("score.topo")));
+      }
+      if (!gi.nearest.unique) {
+        badges.appendChild(badge("N", "amber", t("score.nearest")));
+      }
+      head.append(lab, badges);
+
+      const holder = document.createElement("div");
+      holder.className = "mini";
+      renderGlyph(holder, p, { cover: state.labCover });
+
+      const meta = document.createElement("div");
+      meta.className = "digit-meta";
+      meta.textContent = `${gi.flips} ${t("lab.flipsShort")} · ${gi.score.toFixed(2)}`;
+
+      card.append(head, holder, meta);
+      host.appendChild(card);
     }
+  }
 
-    // matrix
-    renderMatrix(info);
-
-    renderLabDetail();
+  function renderConflictList(info) {
+    const host = $("#lab-conflicts");
+    host.innerHTML = "";
+    if (!info.conflicts.length) {
+      host.appendChild(chip(t("lab.noConflicts"), "ok"));
+      return;
+    }
+    for (const d of info.conflicts) {
+      const line = document.createElement("button");
+      line.type = "button";
+      line.className = "conflict-line";
+      line.textContent = t("lab.conflictLine", {
+        a: d.a,
+        b: d.b,
+        cover: t("cover." + d.cover),
+        segments: segmentNames(d.hidden).join(", "),
+      });
+      line.addEventListener("click", () => {
+        state.labCover = d.cover;
+        state.selected = d.a;
+        renderLab();
+      });
+      host.appendChild(line);
+    }
   }
 
   function renderMatrix(info) {
@@ -274,7 +346,7 @@
       head.appendChild(th);
     }
     table.appendChild(head);
-    const pats = Object.fromEntries(labels.map((l) => [l, C.maskOf(info.glyphs.find((g) => g.label === l).pattern)]));
+    const pats = Object.fromEntries(info.glyphs.map((g) => [g.label, g.mask]));
     for (const rowLabel of labels) {
       const tr = document.createElement("tr");
       const th = document.createElement("th");
@@ -290,19 +362,12 @@
           if (covers.length) {
             td.textContent = covers.map((c) => c[0].toUpperCase()).join("");
             td.className = "conflict";
-            td.title = `${rowLabel} / ${colLabel}: ${covers.join(", ")}`;
+            td.title = `${rowLabel} / ${colLabel}: ${covers.map((c) => t("cover." + c)).join(", ")}`;
             td.addEventListener("click", () => {
-              lab.pair = {
-                a: rowLabel,
-                b: colLabel,
-                cover: covers[0],
-                hidden: (pats[rowLabel] ^ pats[colLabel]) & C.COVER_MASKS[covers[0]],
-                projection: C.bitsOf(C.projected(pats[rowLabel], covers[0])),
-              };
-              renderLabDetail();
+              state.labCover = covers[0];
+              state.selected = rowLabel;
+              renderLab();
             });
-          } else {
-            td.textContent = "";
           }
         }
         tr.appendChild(td);
@@ -310,51 +375,56 @@
       table.appendChild(tr);
     }
     host.appendChild(table);
-    host.appendChild(
-      chip(t("lab.matrixHint"), "hint")
-    );
+    host.appendChild(chip(t("lab.matrixHint"), "hint"));
   }
 
-  function renderLabDetail() {
-    const host = $("#lab-detail");
-    host.innerHTML = "";
-    if (!lab.pair) {
-      host.appendChild(chip(t("lab.selectConflict"), "hint"));
-      return;
-    }
-    const d = lab.pair;
-    const info = C.setInfo(lab.font);
-    const pa = C.maskOf(info.glyphs.find((g) => g.label === d.a).pattern);
-    const pb = C.maskOf(info.glyphs.find((g) => g.label === d.b).pattern);
-    const row = document.createElement("div");
-    row.className = "pair";
-    for (const [label, p] of [[d.a, pa], [d.b, pb]]) {
-      const cell = document.createElement("div");
-      cell.className = "pair-cell";
-      const cap = document.createElement("div");
-      cap.className = "cap";
-      cap.textContent = label;
-      renderGlyph(cell, p, { cover: d.cover, highlightMask: d.hidden });
-      cell.prepend(cap);
-      row.appendChild(cell);
-    }
-    host.appendChild(row);
-    const text = document.createElement("p");
-    text.className = "hint";
-    text.textContent = t("lab.detailLine", {
-      a: d.a,
-      b: d.b,
-      projection: d.projection,
-      cover: t("cover." + d.cover),
-      segments: segmentNames(d.hidden).join(", "),
+  function renderLab() {
+    renderCoverButtons();
+    const label = state.selected;
+    $("#lab-selected-label").textContent = label;
+    renderGlyph($("#lab-display"), C.maskOf(state.font.glyphs[label]), {
+      cover: state.labCover,
+      interactive: true,
+      onToggle: (i) => {
+        state.font.glyphs[label] = C.bitsOf(
+          C.maskOf(state.font.glyphs[label]) ^ (1 << i)
+        );
+        afterFontEdit();
+      },
     });
-    host.appendChild(text);
+
+    const readingsBox = $("#lab-readings");
+    readingsBox.innerHTML = "";
+    if (!state.labCover) {
+      readingsBox.appendChild(
+        chip(t("lab.visible", { pattern: C.bitsOf(C.maskOf(state.font.glyphs[label])) }))
+      );
+    } else {
+      const masked = C.projected(C.maskOf(state.font.glyphs[label]), state.labCover);
+      const rs = C.readings(state.font, masked, state.labCover);
+      readingsBox.appendChild(
+        chip(
+          t("lab.under", {
+            cover: t("cover." + state.labCover),
+            pattern: C.bitsOf(masked),
+            readings: rs.length ? rs.join(" / ") : t("lab.noGlyph"),
+          }),
+          rs.length > 1 ? "warn" : ""
+        )
+      );
+    }
+
+    const gi = C.glyphInfo(state.font, label);
+    renderGlyphScore(gi);
+    const info = C.setInfo(state.font);
+    renderSummary(info);
+    renderGallery(info);
+    renderConflictList(info);
+    renderMatrix(info);
   }
 
   // ---------------------------------------------------------------- countdown
   const cd = {
-    fontKey: "opt-dec",
-    font: cloneFont(C.FONTS["opt-dec"]),
     count: 99,
     cover: null,
     running: false,
@@ -363,18 +433,6 @@
   };
 
   function initCd() {
-    fillSelect(
-      $("#cd-font"),
-      Object.entries(C.FONTS)
-        .filter(([, f]) => f.charset === "dec")
-        .map(([k]) => [k, fontName(k)]),
-      cd.fontKey
-    );
-    $("#cd-font").addEventListener("change", () => {
-      cd.fontKey = $("#cd-font").value;
-      cd.font = cloneFont(C.FONTS[cd.fontKey]);
-      renderCd();
-    });
     $("#cd-start").addEventListener("click", () => {
       cd.running = !cd.running;
       $("#cd-start").textContent = cd.running ? t("cd.pause") : t("cd.start");
@@ -406,7 +464,7 @@
       cd.leaf.y = Math.min(0.9, Math.max(0.1, (e.clientY - rect.top) / rect.height));
       positionLeaf();
     });
-    leaf.addEventListener("pointerup", (e) => {
+    leaf.addEventListener("pointerup", () => {
       drag = false;
       leaf.classList.remove("dragging");
       snapLeaf();
@@ -448,21 +506,22 @@
     renderCd();
   }
 
-  function renderDigitReadings(host, digit, font, cover) {
+  function renderDigitReadings(host, digit, cover) {
     host.innerHTML = "";
     const label = String(digit);
-    const p = C.maskOf(font.glyphs[label]);
+    const p = C.maskOf(state.font.glyphs[label]);
     if (!cover) {
       host.appendChild(chip(label, "ok"));
       return;
     }
     const masked = C.projected(p, cover);
-    const rs = C.readings(font, masked, cover);
+    const rs = C.readings(state.font, masked, cover);
     host.appendChild(chip(t("cd.sees", { pattern: C.bitsOf(masked) }), "hint"));
     host.appendChild(chip(rs.length ? rs.join(" / ") : "—", rs.length > 1 ? "warn" : "ok"));
   }
 
   function renderCd() {
+    $("#cd-font-name").textContent = fontName(state.fontKey);
     const stage = $("#cd-display");
     stage.innerHTML = "";
     const tens = Math.floor(cd.count / 10);
@@ -470,7 +529,10 @@
     for (const d of [tens, ones]) {
       const wrap = document.createElement("div");
       wrap.className = "cd-digit";
-      renderGlyph(wrap, C.maskOf(cd.font.glyphs[String(d)]), { cover: cd.cover, big: true });
+      renderGlyph(wrap, C.maskOf(state.font.glyphs[String(d)]), {
+        cover: cd.cover,
+        big: true,
+      });
       stage.appendChild(wrap);
     }
     positionLeaf();
@@ -481,17 +543,18 @@
         })
       : t("cd.noCover");
     $("#cd-start").textContent = cd.running ? t("cd.pause") : t("cd.start");
-    renderDigitReadings($("#cd-tens"), tens, cd.font, cd.cover);
-    renderDigitReadings($("#cd-ones"), ones, cd.font, cd.cover);
+    renderDigitReadings($("#cd-tens"), tens, cd.cover);
+    renderDigitReadings($("#cd-ones"), ones, cd.cover);
   }
 
   // ---------------------------------------------------------------- quiz
   const QUIZ_KEY = "cov7seg_quiz_v1";
   const quiz = {
-    fontKey: "opt-dec",
-    font: cloneFont(C.FONTS["opt-dec"]),
-    current: null,
     data: [],
+    current: null,
+    dirty: false,
+    timer: null,
+    answered: false,
   };
 
   function loadQuiz() {
@@ -512,19 +575,10 @@
   }
 
   function initQuiz() {
-    fillSelect(
-      $("#quiz-font"),
-      Object.entries(C.FONTS).map(([k]) => [k, fontName(k)]),
-      quiz.fontKey
-    );
-    $("#quiz-font").addEventListener("change", () => {
-      quiz.fontKey = $("#quiz-font").value;
-      quiz.font = cloneFont(C.FONTS[quiz.fontKey]);
-      newQuestion();
-    });
-    $("#quiz-next").addEventListener("click", newQuestion);
     $("#quiz-export").addEventListener("click", () => {
-      const blob = new Blob([JSON.stringify(quiz.data, null, 2)], { type: "application/json" });
+      const blob = new Blob([JSON.stringify(quiz.data, null, 2)], {
+        type: "application/json",
+      });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
       a.download = "cov7seg-quiz.json";
@@ -543,33 +597,44 @@
   }
 
   function newQuestion() {
-    const labels = Object.keys(quiz.font.glyphs);
+    clearTimeout(quiz.timer);
+    quiz.answered = false;
+    const labels = Object.keys(state.font.glyphs);
     const label = labels[Math.floor(Math.random() * labels.length)];
-    const occlude = $("#quiz-occlude").checked;
-    const cover = occlude
-      ? [null, ...C.COVER_ORDER][Math.floor(Math.random() * 5)]
-      : null;
-    quiz.current = { label, cover, fontKey: quiz.fontKey, fontName: quiz.font.name };
-    renderGlyph($("#quiz-display"), C.maskOf(quiz.font.glyphs[label]), { cover, big: true });
+    const opts = [null, ...C.COVER_ORDER];
+    const cover = opts[Math.floor(Math.random() * opts.length)];
+    quiz.current = { label, cover, fontKey: state.fontKey };
+    $("#quiz-cover").textContent = cover
+      ? t("quiz.coverLabel", { cover: t("cover." + cover) })
+      : t("quiz.noCover");
+    renderGlyph($("#quiz-display"), C.maskOf(state.font.glyphs[label]), {
+      cover,
+      big: true,
+    });
     const choices = $("#quiz-choices");
     choices.innerHTML = "";
     for (const l of labels) {
       const b = document.createElement("button");
+      b.type = "button";
       b.textContent = l;
       b.className = "choice";
       b.addEventListener("click", () => answer(l));
       choices.appendChild(b);
     }
-    $("#quiz-feedback").innerHTML = "";
-    $("#quiz-feedback").appendChild(chip(t("quiz.what"), "hint"));
+    const fb = $("#quiz-feedback");
+    fb.innerHTML = "";
+    fb.appendChild(chip(t("quiz.what"), "hint"));
   }
 
   function answer(response) {
+    if (!quiz.current || quiz.answered) return;
+    quiz.answered = true;
     const cur = quiz.current;
-    if (!cur) return;
-    const p = C.maskOf(quiz.font.glyphs[cur.label]);
+    const p = C.maskOf(state.font.glyphs[cur.label]);
     const masked = cur.cover ? C.projected(p, cur.cover) : p;
-    const possible = cur.cover ? C.readings(quiz.font, masked, cur.cover) : [cur.label];
+    const possible = cur.cover
+      ? C.readings(state.font, masked, cur.cover)
+      : [cur.label];
     const correct = response === cur.label;
     quiz.data.push({
       font: cur.fontKey,
@@ -593,13 +658,15 @@
       fb.appendChild(chip(t("quiz.unique"), "ok"));
     }
     $$("#quiz-choices button").forEach((b) => (b.disabled = true));
+    quiz.timer = setTimeout(newQuestion, 1500);
   }
 
   function renderQuizStats() {
     const host = $("#quiz-stats");
     host.innerHTML = "";
-    const n = quiz.data.length;
-    const ok = quiz.data.filter((d) => d.correct).length;
+    const rows = quiz.data.filter((d) => d.font === state.fontKey);
+    const n = rows.length;
+    const ok = rows.filter((d) => d.correct).length;
     const top = document.createElement("div");
     top.className = "row";
     top.append(
@@ -610,7 +677,7 @@
     host.appendChild(top);
     if (!n) return;
     const byShown = {};
-    for (const d of quiz.data) {
+    for (const d of rows) {
       byShown[d.shown] = byShown[d.shown] || { n: 0, ok: 0 };
       byShown[d.shown].n++;
       if (d.correct) byShown[d.shown].ok++;
@@ -635,58 +702,49 @@
     }
     host.appendChild(table);
 
-    // Confusion matrix for the current font (raw data is exported too).
-    const labels = Object.keys(quiz.font.glyphs);
-    const rows = quiz.data.filter(
-      (d) => d.font === quiz.fontKey && labels.includes(d.shown) && labels.includes(d.response)
+    const labels = Object.keys(state.font.glyphs);
+    const matrixRows = rows.filter(
+      (d) => labels.includes(d.shown) && labels.includes(d.response)
     );
-    if (rows.length) {
-      const m = document.createElement("table");
-      m.className = "stats-table matrix-lite";
-      const head = document.createElement("tr");
-      head.appendChild(document.createElement("th"));
-      for (const l of labels) {
-        const th = document.createElement("th");
-        th.textContent = l;
-        head.appendChild(th);
-      }
-      m.appendChild(head);
-      for (const shown of labels) {
-        const tr = document.createElement("tr");
-        const th = document.createElement("th");
-        th.textContent = shown;
-        tr.appendChild(th);
-        for (const response of labels) {
-          const td = document.createElement("td");
-          const n = rows.filter((d) => d.shown === shown && d.response === response).length;
-          td.textContent = n ? String(n) : "";
-          if (shown === response) td.className = "diag";
-          tr.appendChild(td);
-        }
-        m.appendChild(tr);
-      }
-      const cap = document.createElement("p");
-      cap.className = "hint";
-      cap.textContent = t("quiz.confusion");
-      host.appendChild(cap);
-      host.appendChild(m);
+    if (!matrixRows.length) return;
+    const m = document.createElement("table");
+    m.className = "stats-table matrix-lite";
+    const mhead = document.createElement("tr");
+    mhead.appendChild(document.createElement("th"));
+    for (const l of labels) {
+      const th = document.createElement("th");
+      th.textContent = l;
+      mhead.appendChild(th);
     }
+    m.appendChild(mhead);
+    for (const shown of labels) {
+      const tr = document.createElement("tr");
+      const th = document.createElement("th");
+      th.textContent = shown;
+      tr.appendChild(th);
+      for (const response of labels) {
+        const td = document.createElement("td");
+        const c = matrixRows.filter(
+          (d) => d.shown === shown && d.response === response
+        ).length;
+        td.textContent = c ? String(c) : "";
+        if (shown === response) td.className = "diag";
+        tr.appendChild(td);
+      }
+      m.appendChild(tr);
+    }
+    const cap = document.createElement("p");
+    cap.className = "hint";
+    cap.textContent = t("quiz.confusion");
+    host.appendChild(cap);
+    host.appendChild(m);
   }
 
-  // ---------------------------------------------------------------- boot
-  function refreshFontSelects() {
-    for (const id of ["#lab-font", "#cd-font", "#quiz-font"]) {
-      const sel = $(id);
-      for (const opt of sel.options) {
-        if (opt.value) opt.textContent = fontName(opt.value);
-      }
-    }
-  }
-
+  // ---------------------------------------------------------------- language
   function initLang() {
     $("#lang-switch").addEventListener("click", () => {
       I.setLang(I.lang === "en" ? "zh" : "en");
-      refreshFontSelects();
+      refreshGlobalFont();
       renderLab();
       renderCd();
       renderQuizStats();
@@ -694,7 +752,9 @@
     });
   }
 
+  // ---------------------------------------------------------------- boot
   I.init();
+  initGlobalFont();
   initTabs();
   initLab();
   initCd();

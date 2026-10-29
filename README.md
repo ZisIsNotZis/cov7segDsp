@@ -70,14 +70,17 @@ python3 -m http.server 8000
 # open http://localhost:8000/
 ```
 
-The lab has an **EN / 中文** switch in the header (stored in `localStorage`), and four tabs:
+The lab has one **global font selector** and an **EN / 中文** switch in the header;
+the language choice is stored in `localStorage`.  Four tabs:
 
-- **Lab** — edit a glyph, apply a cover, see the projection, the conflict list,
-  the conflict matrix, and the scorecard.
+- **Lab** — all digits are visible at once as cards.  Click a digit to edit it;
+  segment clicks save immediately.  The selected cover is applied to every card;
+  conflicts, topology and nearest-standard badges are on the cards, and the full
+  conflict list is below.  No slot dropdown, no apply button.
 - **Countdown** — drag the leaf to a side and watch which digits are still
   readable; compare Standard vs Optimised.
-- **Quiz** — read a glyph (optionally occluded), click the digit, export the
-  JSON for calibration.
+- **Quiz** — read an automatically occluded glyph, click the digit, and the next
+  glyph appears automatically.  Export the JSON for calibration.
 - **Math** — the exact results, the capacity, and the count plots.
 
 The lab is documented in [docs/LAB.md](docs/LAB.md).
