@@ -31,6 +31,10 @@ def bundle(source: Path) -> str:
 
     def script(match):
         content = local_asset(match[1]).read_text(encoding='utf-8')
+        # The historical translated lab creates document links at runtime.
+        # Rewrite its escaped href strings as well as the static anchors.
+        content = re.sub(r'''href=(\\?["'])(docs/[^\\"'<>\s]+)''',
+                         lambda m: 'href=' + m[1] + SOURCE + m[2], content)
         # Prevent a literal HTML end tag inside JavaScript strings closing the element.
         content = re.sub(r'</script', r'<\\/script', content, flags=re.I)
         return '<script>\n' + content + '\n</script>'
@@ -41,7 +45,8 @@ def bundle(source: Path) -> str:
             return tag
         path = local_asset(url)
         mime = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
-        data = base64.b64encode(path.read_bytes()).decode('ascii')
+        raw = path.read_text(encoding='utf-8').encode('utf-8') if mime == 'image/svg+xml' else path.read_bytes()
+        data = base64.b64encode(raw).decode('ascii')
         return tag.replace('src="' + url + '"', 'src="data:' + mime + ';base64,' + data + '"')
 
     def link(match):
@@ -58,8 +63,7 @@ def bundle(source: Path) -> str:
     html = re.sub(r'<link\s+rel="stylesheet"\s+href="([^"]+)"\s*/?>', style, html, flags=re.I)
     html = re.sub(r'<script\s+src="([^"]+)"\s*>\s*</script>', script, html, flags=re.I)
     html = re.sub(r'<img\b[^>]*\bsrc="([^"]+)"[^>]*>', image, html, flags=re.I)
-    # Rewrite navigation before inlining? Inlined scripts may contain href="..."
-    # source strings, so rewrite only actual anchor start tags.
+    # Scope static navigation rewriting to anchor start tags.
     html = re.sub(r'<a\b[^>]*>', lambda m: re.sub(r'href="([^"]+)"', link, m[0]), html, flags=re.I)
     html = html.replace('<head>', '<head>\n<!-- Self-contained build; AGPL-3.0-or-later; source: ' + SOURCE + ' -->', 1)
     return html

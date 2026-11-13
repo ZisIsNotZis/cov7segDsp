@@ -42,6 +42,7 @@ class ReleaseTests(unittest.TestCase):
                     self.assertTrue(not href or href.startswith('#') or urlsplit(href).scheme == 'https'
                                     or (name == 'index.html' and href == 'cov7seg.html'), (name, href))
                 self.assertIn('AGPL-3.0', content)
+                self.assertNotIn(r'href=\"docs/', content, 'Translated runtime links must not point to missing local docs')
             main = (output / 'cov7seg.html').read_text(encoding='utf-8')
             self.assertIn('这一次，规则由你来定。', main)
             self.assertIn('function buildLayout', main)
