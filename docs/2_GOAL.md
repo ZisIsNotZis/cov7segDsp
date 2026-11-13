@@ -1,5 +1,15 @@
 # The Goal
 
+## 2026-11-13 scope clarification
+
+The user asked for systematic research spanning left/right-only and simultaneous
+occlusion, one/two unknown failed segments, detection versus unique recovery,
+character inventories and richer display geometries. They also requested a major
+redesign for people with no context: introduce the problem, provide a playground
+and verifier, guide design and offer multiple reference solutions. The ambition
+below remains. Model-based decoding is not human recognisability. Current evidence
+and limits: [CHANNELS](CHANNELS.md).
+
 **Make an open, self-contained research-and-playground project about
 occlusion-tolerant segmented displays: a layout-parametric engine that computes
 exact capacities, maximal-set counts, construction rules and character-set

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="亲手探索数码管的遮挡、坏段与纠错。猜一次、改一笔，再用精确验证发现字形背后的信息。">
+  <meta name="theme-color" content="#f4f3eb"><title>看见之外 · cov7seg 交互研究室</title>
+  <link rel="stylesheet" href="lab/experience.css">
+</head>
+<body>
+  <a class="skip" href="#main">跳到内容</a>
+  <header class="site-header">
+    <a href="#" class="brand" aria-label="看见之外，首页"><span class="brand-icon" aria-hidden="true">8</span><span>看见之外 <small>COV7SEG</small></span></a>
+    <nav aria-label="主要导航"><a href="#first-look">先猜一次</a><a href="#workshop">动手实验</a><a href="#findings">研究发现</a></nav>
+    <a class="header-link" href="docs/CHANNELS.md">研究笔记 <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="main">
+    <section class="hero section-shell" id="first-look" aria-labelledby="hero-title">
+      <div class="hero-copy"><p class="eyebrow"><span class="live-dot"></span> 一个关于信息缺失的小实验</p>
+        <h1 id="hero-title">你看到的，<br>是<span class="outline-word">全部</span>吗？</h1>
+        <p class="lead">一块数码屏。一侧被挡住。<br>它原来显示的，到底是哪个数字？</p>
+        <p class="hero-invite">不用懂数学，先相信你的眼睛。</p>
+        <a class="quiet-link" href="#workshop">已经发现了？直接去实验 <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="first-experiment">
+        <div class="experiment-top"><span>01 / 第一眼</span><span class="stage-label">右侧被遮挡</span></div>
+        <div class="hero-screen"><div id="intro-glyph" class="intro-glyph"></div><div class="occluder" aria-hidden="true"><span>被挡住的部分</span></div><span class="screen-mark">SIGNAL / ?</span></div>
+        <div class="guess-panel"><p>它原来是……</p><div class="guess-choices" role="group" aria-label="猜测原数字"><button data-guess="6">6</button><button data-guess="8">8</button><button data-guess="unknown">无法确定 <span>？</span></button></div></div>
+        <div id="intro-feedback" class="intro-feedback" aria-live="polite"><span class="mini-arrow">↳</span> 选一个答案，看看隐藏的信息。</div>
+        <button id="intro-reveal" class="text-button" hidden>移开遮挡，看看原因 <span aria-hidden="true">↗</span></button>
+      </div>
+      <div id="intro-explanation" class="intro-explanation" hidden>
+        <div class="reveal-pair"><figure><div id="reveal-six"></div><figcaption>原来是 6</figcaption></figure><span>或</span><figure><div id="reveal-eight"></div><figcaption>原来是 8</figcaption></figure><span class="reveal-arrow">→</span><figure><div id="reveal-same"></div><figcaption>右侧被遮后，一模一样</figcaption></figure></div>
+        <div><p class="eyebrow">问题出在信息，而不是你的眼睛</p><h2>两个答案，都说得通。</h2><p>标准的 6 和 8 只差右上方的一段。遮住右边，这个区别就消失了。再聪明的解码器，也不能凭空找回已经丢失的信息。</p><a class="button primary" href="#workshop" id="intro-to-challenge">能不能改一笔，让它们不同？ <span aria-hidden="true">↓</span></a></div>
+      </div>
+    </section>
+    <section class="concept-strip section-shell" aria-label="三种不同的问题">
+      <div><span class="concept-number">01</span><h2>被挡住</h2><p>知道哪里没看见。<br>我们称之为<strong>擦除</strong>。</p></div>
+      <div><span class="concept-number">02</span><h2>某段坏了</h2><p>不知道哪里出了错。<br>这比遮挡更难。</p></div>
+      <div><span class="concept-number">03</span><h2>还认得出来吗？</h2><p>图案彼此不同，<br>也未必像我们熟悉的数字。</p></div>
+      <p class="strip-note">先分清问题，<br>才知道怎样设计答案。</p>
+    </section>
+    <section class="workshop section-shell" id="workshop" aria-labelledby="workshop-title">
+      <div class="section-heading"><div><p class="eyebrow">02 / 你来设计，计算机找反例</p><h2 id="workshop-title">少一笔，多一种可能。</h2></div><p>改变规则、点亮线段，看看你的设计<br>能否经得住遮挡与故障。</p></div>
+      <div class="mission-row" aria-label="推荐实验"><button class="mission active" data-mission="repair"><span>从这里开始</span><strong>修复 6 / 8</strong><small>先解决一对，再检查整套数字 ↗</small></button><button class="mission" data-mission="sides"><span>换个假设</span><strong>如果只遮左右？</strong><small>少一种遮挡，就一定更容易吗？ ↗</small></button><button class="mission" data-mission="fault"><span>增加难度</span><strong>有一段悄悄坏了</strong><small>能发现异常，还是能还原数字？ ↗</small></button><button class="mission" data-mission="diagonal"><span>拓展空间</span><strong>给数字加上斜线</strong><small>多几根线，能换来多少余地？ ↗</small></button></div>
+      <div class="lab-shell">
+        <div class="lab-toolbar"><span class="lab-kicker"><span class="live-dot"></span> LIVE PLAYGROUND</span><div class="utility-actions"><button id="save-design" class="text-button">保存到本机</button><button id="export-design" class="text-button">导出设计 ↓</button><button id="import-design" class="text-button">导入 ↑</button><input id="design-file" type="file" accept=".json,application/json" hidden></div></div>
+        <div class="lab-config">
+          <label>显示结构<select id="layout-select"></select></label><label>字符集<select id="charset-select"></select></label><label>参考起点<select id="font-select"></select></label>
+          <label>遮挡情况<select id="cover-select"><option value="four">四个方向，任一侧</option><option value="lr">仅左 / 右，二选一</option><option value="both">左 + 右，同时遮挡</option><option value="all">上 + 下 + 左 + 右，同时</option><option value="none">没有遮挡</option><option value="top">仅上侧</option><option value="lrt">左 / 右 / 上，任一侧</option></select></label>
+        </div>
+        <details class="advanced-config" id="advanced"><summary>加入故障，或改变验证目标 <span aria-hidden="true">+</span></summary><div class="lab-config advanced-fields">
+          <label>故障类型<select id="fault-select"><option value="off">坏段不亮（1 → 0）</option><option value="on">坏段常亮（0 → 1）</option><option value="flip">状态翻转（0 ↔ 1）</option></select></label>
+          <label>故障预算<select id="budget-select"><option value="0">没有故障</option><option value="1">至多 1 段</option><option value="2">至多 2 段</option></select></label>
+          <label>想做到什么<select id="goal-select"><option value="correct">唯一恢复：知道原来是什么</option><option value="detect">发现异常：不误认为另一个完好字符</option></select></label>
+          <label>遮挡信息<select id="known-select"><option value="known">知道被遮住的是哪一侧</option><option value="unknown">也不知道遮挡的位置</option></select></label>
+        </div><p class="fine-print">“至多”包括没有故障；故障位置未知。同一观测必须兼容完好与损坏情况。这里一个故障单位是一根独立发光段，未模拟真实器件的公共引脚、电路级联故障或人脑先验。</p></details>
+        <div id="mission-guidance" class="mission-guidance" aria-live="polite"></div>
+        <div class="editor-layout">
+          <div class="glyph-workbench"><div class="workbench-heading"><span>正在设计 <strong id="selected-label">8</strong></span><button id="reset-glyph" class="text-button">恢复这个字</button></div><div id="editor-glyph" class="editor-glyph"></div><div class="workbench-foot"><span>点线段，或使用下面的段按钮</span><span id="edit-count"></span></div><div id="segment-controls" class="segment-controls" role="group" aria-label="逐段切换"></div><div class="preview-cover"><span>看一眼遮挡后</span><div id="preview-covers" class="segmented" role="group" aria-label="遮挡预览"></div></div><div id="preview-glyph" class="preview-glyph"></div><p id="preview-caption" class="fine-print"></p></div>
+          <div class="font-workbench"><div class="workbench-heading"><span>你的整套字形 <small id="glyph-count"></small></span><button id="reset-font" class="text-button">恢复整套</button></div><div id="font-gallery" class="font-gallery" role="group" aria-label="选择编辑的字符"></div><p id="font-note" class="fine-print"></p><div class="design-summary" id="design-summary" aria-live="polite"></div></div>
+        </div>
+        <div class="verification"><div class="verification-heading"><div><p class="eyebrow">验证结果</p><h3 id="verdict-title">正在检查……</h3></div><span id="verdict-badge" class="verdict-badge"></span></div><p id="verdict-explanation"></p><div id="witness-list" class="witness-list"></div><div id="verification-note" class="fine-print"></div></div>
+        <div class="lab-bottom"><p id="design-status" role="status">设计保留在当前页面。可以随时导出，再继续实验。</p><button id="restore-design" class="text-button" hidden>恢复上次保存的设计 ↗</button></div>
+      </div>
+    </section>
+    <section class="answers section-shell" id="answers" aria-labelledby="answers-title"><div class="section-heading"><div><p class="eyebrow">03 / 参考答案，也是下一道问题</p><h2 id="answers-title">不止一种解法。<br>也没有免费的改进。</h2></div><p>先自己试试，再看看别人怎样取舍。<br>每个方案都可以带回实验台继续修改。</p></div><div id="reference-list" class="reference-list"></div><p class="answer-footnote">通过验证，只表示在选定的离散模型中满足约束。字形是否易读，需要真实的人来识别；编码示例不等于推荐字体。</p></section>
+    <section class="findings section-shell" id="findings" aria-labelledby="findings-title"><div class="section-heading"><div><p class="eyebrow">04 / 从直觉走向规律</p><h2 id="findings-title">这些实验，告诉了我们什么？</h2></div><a class="quiet-link" href="docs/CHANNELS.md">完整模型、证明与复现 ↗</a></div>
+      <div class="capacity-study"><div><span class="finding-tag">新增系统实验 · 七段 · 精确容量</span><h3>同样七段，<br>规则一变，答案就变。</h3><p>只遮左右，不一定比四个方向容纳更多图案；但加上一个未知坏段，十个数字就可能已经放不下。</p></div><div class="capacity-table-wrap"><table class="capacity-table"><caption class="visually-hidden">七段显示在不同遮挡和故障模型中的精确最大字符数量</caption><thead><tr><th scope="col">遮挡与故障</th><th scope="col">需要做到</th><th scope="col">最多图案</th><th scope="col"><span class="visually-hidden">查看场景</span></th></tr></thead><tbody><tr><td>左 / 右，任一侧 · 无故障</td><td>唯一恢复</td><td><strong>32</strong></td><td><button data-capacity="lr">试试 ↗</button></td></tr><tr><td>左 + 右，同时 · 无故障</td><td>唯一恢复</td><td><strong>8</strong></td><td><button data-capacity="both">试试 ↗</button></td></tr><tr><td>左 / 右 + 至多一段坏灭</td><td>不误认成完好字符</td><td><strong>16</strong></td><td><button data-capacity="detect">试试 ↗</button></td></tr><tr class="table-highlight"><td>左 / 右 + 至多一段坏灭</td><td>唯一恢复</td><td><strong>6</strong></td><td><button data-capacity="off">试试 ↗</button></td></tr><tr><td>左 / 右 + 至多一次翻转</td><td>唯一恢复</td><td><strong>4</strong></td><td><button data-capacity="flip">试试 ↗</button></td></tr></tbody></table><p class="fine-print">遮挡方向已知；允许任意亮灭图案，不附加人眼可读性。点击“试试”载入该场景中的常规数字，观察具体反例。容量的精确求解与见证在研究记录中。</p></div></div>
+      <div class="coding-breakthrough"><div><span class="finding-tag">一个建设性的出路</span><h3>七段不够，就把冗余放在还看得见的地方。</h3><p>两个格子各加一个 X，把七位纠错编码放进左右遮挡保留的内部段。在这个理想模型中，16 种编码可同时承受任意一侧遮挡和一次未知翻转。代价是：它们还不是容易阅读的字体。</p></div><button id="try-hamming" class="button primary">载入这组 16 字符纠错编码 ↗</button></div>
+      <div class="finding-grid"><article class="finding lead-finding"><span class="finding-tag">已精确计算 · 七段 / 四侧 / 无故障</span><div class="big-number">32<span>种图案</span></div><h3>空间够大，不代表都能读懂。</h3><p>128 种亮灭组合中，最多选出 32 种，让任意单侧被遮后仍不冲突。十进制和十六进制有空间容纳；36 个字符或 Base64 的 64 个字符超过这个上限。</p><p class="fine-print">容量讨论允许任意图案，不要求像熟悉的文字。</p></article>
+      <article class="finding"><span class="finding-tag">一个容易混淆的区别</span><h3>“发现它坏了”<br>比“知道它原来是什么”容易。</h3><div class="mini-schematic"><span>A</span><i>↘</i><span class="schematic-noise">?</span><i>↗</i><span>B</span></div><p>损坏结果不是任何完好字符，就能报异常。但若 A 和 B 都可能变成它，仅报异常仍无法恢复原字符。</p><button class="quiet-link" id="try-detection">切换验证目标，亲自比较 ↗</button></article>
+      <article class="finding"><span class="finding-tag">模型决定结论</span><h3>知道挡在哪里，<br>本身也是一种信息。</h3><p>如果遮挡方向也未知，需要比较“左遮的 A”和“右遮的 B”。它们可能产生相同观测，即使同一方向下没有冲突。</p><button class="quiet-link" id="try-unknown">把遮挡位置也隐藏起来 ↗</button></article>
+      <article class="finding"><span class="finding-tag">一个设计陷阱</span><h3>多加线段，<br>也要问：加在哪里？</h3><p>两格各加一个 X，可以是 4 根整条斜线，也可以在交点拆成 8 个独立段。这是不同的控制预算。边缘遮挡怎样作用于斜线，也必须明确约定。</p><button class="quiet-link" id="try-layouts">试试不同结构 ↗</button></article></div>
+      <details class="research-details"><summary>再深入一点：容量、极大集与尚未完成的事 <span>+</span></summary><div class="research-columns"><div><h3>“最多”与“不能再加”不同</h3><p>最大集是能放进最多图案的方案。极大集只是“按当前选法，已经不能再加”。七段四侧模型的极大集大小可以是 16 或 19–32；17、18 不存在。这不限制你选择一个尚可扩充的 17 字符集合。</p><a href="docs/FOUNDATION.md">查看组合研究与构造规律 ↗</a></div><div><h3>结论的边界</h3><p>这里模拟独立段的亮灭和理想整侧遮挡，不代替道路安全实验或真实器件故障分析。“只遮左右”是可比较的情景假设，不能直接当作所有交通场景的事实。新布局的参考图案、数学容量与人眼可读性分别报告。</p><a href="docs/RECOGNITION.md">查看识别模型与未验证部分 ↗</a></div></div></details>
+    </section>
+    <section class="closing section-shell"><p class="eyebrow">你已经开始像设计者一样思考了</p><h2>下一次看到一个数字，<br>也看看它没告诉你的部分。</h2><a class="button primary" href="#workshop">带着新问题，再试一次 ↑</a></section>
+  </main>
+  <footer class="site-footer section-shell"><div class="brand">看见之外 <small>COV7SEG</small></div><p>可复现的研究 · 可动手的解释 · AGPL-3.0</p><div><a href="README.md">项目说明</a><a href="docs/CHANNELS.md">研究记录</a><a href="legacy.html">旧版实验台</a></div></footer>
+  <noscript><p class="noscript">本页的动手实验需要 JavaScript。研究内容可直接阅读 <a href="docs/CHANNELS.md">研究笔记</a>。</p></noscript>
+  <script src="lab/data.js"></script><script src="lab/core.js"></script><script src="lab/channel.js"></script><script src="lab/catalog.js"></script><script src="lab/research.js"></script><script src="lab/experience.js"></script>
+</body></html>

@@ -79,8 +79,21 @@ def distance(p: int, q: int, visible: int, weights: dict[str, float]) -> float:
     return d
 
 
+def trial_table(trial: dict) -> dict[str, str]:
+    """Use the actual displayed font snapshot; v1 data is legacy/unverified."""
+    if "glyphs" not in trial:
+        return FONT_MAP[trial["font"]]
+    table = trial["glyphs"]
+    if not isinstance(table, dict) or not table:
+        raise ValueError("empty or invalid trial glyph snapshot")
+    for label, pattern in table.items():
+        if label not in STANDARD or not isinstance(pattern, str) or len(pattern) != 7 or set(pattern) - {"0", "1"}:
+            raise ValueError("calibration requires known labels and seven binary segments")
+    return table
+
+
 def logits(trial: dict, weights: dict[str, float]) -> dict[str, float]:
-    table = FONT_MAP[trial["font"]]
+    table = trial_table(trial)
     p = mask(table[trial["shown"]])
     vis = visible_mask(trial.get("cover"))
     std = as_patterns(STANDARD)
@@ -93,7 +106,7 @@ def logits(trial: dict, weights: dict[str, float]) -> dict[str, float]:
 def nll(trials: list[dict], weights: dict[str, float]) -> float:
     total = 0.0
     for t in trials:
-        table = FONT_MAP[t["font"]]
+        table = trial_table(t)
         if t["shown"] not in table or t.get("response") not in table:
             continue
         z = logits(t, weights)
@@ -107,7 +120,7 @@ def accuracy(trials: list[dict], weights: dict[str, float]) -> float:
     good = 0
     total = 0
     for t in trials:
-        table = FONT_MAP[t["font"]]
+        table = trial_table(t)
         if t["shown"] not in table or t.get("response") not in table:
             continue
         z = logits(t, weights)
@@ -183,6 +196,8 @@ def main() -> None:
     if not args.data:
         ap.error("provide --data quiz.json or --synthetic")
     trials = json.loads(Path(args.data).read_text(encoding="utf-8"))
+    if any(t.get("schema") != "cov7seg-trial-v2" for t in trials):
+        print("WARNING: legacy responses may expose hidden segments or omit edited glyphs; do not treat this fit as validated perception evidence.")
     weights, res = fit(trials)
     print("fit", res.success, res.message)
     print("weights", {s: round(weights[s], 3) for s in SEGMENTS})

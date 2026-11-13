@@ -1,5 +1,93 @@
 # Implementation
 
+## Release and hosting
+
+`python -m foundation.build_site` embeds CSS, ordered scripts, data and SVG
+images into `dist/index.html` and the portable `dist/cov7seg.html`. Source stays
+modular. Project-document links point to GitHub; detailed documents/history need
+network, but the main experiment and embedded research library do not. The build
+is deterministic and emits sizes and SHA-256 hashes in `dist/manifest.json`.
+`tests/test_build_site.py` parses every output page to reject external runtime
+assets or accidental local links and checks reproducibility.
+
+`.github/workflows/pages.yml` tests Python and JavaScript, builds the single-file
+artifacts and publishes `dist/` on `master` pushes. Pull requests do not deploy.
+GitHub Pages serves the public app; a user needs only a browser. The public repo
+remains the source home. `dist/` is ignored rather than maintained as a second source.
+
+## Current entry points (2026-11-13)
+
+### Custom designer revision
+
+The initial report redesign listed below is preserved as `workshop-v1.html`.
+Current `index.html` uses `lab/designer-ui.js` / `.css`, with a single custom
+design state covering available geometry, labels, independent expected glyphs,
+multiple per-side rules, weights and actual glyphs. `lab/designer-core.js` provides
+BigInt geometry/clipping, hard checks, per-glyph metrics and bounded live search.
+`lab/expectations.js` contains independent geometric targets, not response data.
+`foundation/build_archive_data.py` generates `lab/archive-data.js`; `archive-ui.js`
+renders the original evidence and lets a research font enter the current verifier.
+`lab/designer-oracle.test.js` independently checks geometry, >32-bit masks,
+physical faults, legacy metric regression, full glyph-error coverage and search.
+
+Revision checks: original Python foundation and all eight channel cases still pass;
+all six Node test files pass, including independent shape/archive and designer oracles.
+Browser QA exercised individual diagonal/point switches, uppercase/lowercase inventory
+merging (36 labels), an undefined custom symbol warning, two simultaneous requirement
+rows, left recovery 12% / right detection 30% with three unknown faults, independent
+target editing, v2 save/export/import, research-font loading, clearing actual glyphs,
+live search and loading/revalidating the found 0.711 decimal candidate. No page JS errors
+were observed. A numeric-field synchronisation defect and narrow-screen table overflow
+were found and fixed; the 390px page no longer overflows horizontally. These checks do
+not establish fresh-user usability or real perceptual accuracy.
+
+Boundary clarification: the physical grid now spans [0,1], with SVG display
+padding outside that range. Positive-depth covers include their leading edge;
+zero means no cover. `lab/boundary.test.js` checks every positive depth removing
+the outer edge, the exact 50% middle-line equality, points, surviving diagonal
+pieces, 100%, and unknown-depth critical states. Arbitrary epsilon offsets are
+not used to classify these boundaries.
+
+### Initial report redesign (historical file map)
+
+- `index.html`, `lab/experience.css`, `lab/experience.js`: story, design challenges,
+  reference solutions, scene configuration, design import/export.
+- `lab/catalog.js`: renderable geometry, exact masks, six character inventories
+  and labelled reference/coding fonts.
+- `lab/channel.js`: finite observation sets, fault/cover composition, detection
+  and correction with concrete collision witnesses.
+- `foundation/build_channel_data.py` generates `lab/research.js` from canonical
+  results; the workshop uses it to explain hardware impossibility during editing.
+- `foundation/channels.py`: Python model and bounded exact capacity search.
+- `foundation/channel_experiments.py`, `foundation/results/channels.json`:
+  reproducible scenario results and constructive witnesses.
+- `docs/CHANNELS.md`: research definitions, claims, proofs, sources and limits.
+- `legacy.html`, original `lab/ui.js`: expert lab. Quiz v2 masks covered segments
+  identically, records actual glyph snapshots and separates ambiguity from error;
+  `calibrate.py` consumes the snapshot. Old exports remain unverified.
+- `lab/channel.test.js`, `tests/test_channels.py`, `tests/test_calibration_snapshot.py`:
+  channel semantics, independent physical-fault oracles and data integrity.
+
+The original map below is retained; its old `index.html` lab entry now means `legacy.html`.
+
+### Verification of this release
+
+On 2026-11-13: original foundation tests and seven-segment assertions passed;
+8 channel unit tests and 2 edited-font calibration tests passed. The JavaScript
+suite independently enumerated physical faults, validated witnesses and compared
+all 144 published Python scenarios and their capacity constructions. Browser
+capacity summaries are generated from the same JSON and checked for agreement.
+
+Browser checks exercised guess/reveal, the 6/8 repair (changing a resolves that
+pair while other pairs remain), loading the four-flip candidate, adding faults,
+the 15-segment protected Hamming construction with 16 labels under all-sides
+simultaneous erasure plus one flip, local save/reload/restore, and JSON
+export/import. The seven-segment single-off/LR case displayed its capacity-6
+impossibility guidance. The 390px layout had no horizontal page overflow;
+the desktop homepage and narrow-screen references were visually inspected.
+No page JavaScript errors were observed in the inspected flows. This is not a
+fresh-user usability study, a perceptual experiment, or exhaustive browser coverage.
+
 ## Layout
 
 ```

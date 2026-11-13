@@ -1,0 +1,62 @@
+name: Verify and publish Pages
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Verify the original research
+        run: python tests/test_foundation.py
+      - name: Verify channels, calibration and packaging
+        run: python -m unittest discover -s tests -v
+      - name: Verify browser algorithms and model regressions
+        run: node --test lab/*.test.js
+      - name: Build self-contained pages
+        run: python -m foundation.build_site
+      - name: Save downloadable single HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: cov7seg-single-html
+          path: dist/cov7seg.html
+      - name: Configure Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+      - name: Upload Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

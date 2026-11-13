@@ -1,5 +1,26 @@
 # What must be true
 
+## Current design contract — 2026-11-13 correction
+
+The workshop is a configurable design problem, not a set of preset tours.
+
+- Geometry, per-stroke hardware availability and per-character light state are
+  separate. Grid dimensions state whether they count cells or vertices.
+- Character inventories can be combined and edited, with explicit case folding.
+- Multiple independent rules specify selected sides, separate geometric depth
+  thresholds for recovery/detection, simultaneous/alternative covers and unknown
+  segment faults. The intact state is always checked.
+- All glyphs participating in any failed requirement are identified; yellow
+  shape deviation is separate from red hard failure. Unknown targets remain unscored.
+- Independent expected glyphs, visible/occluded weighted distance, nearest target
+  and geometry-based topology remain inspectable. Scores are model outputs.
+- Reference generation runs against the current design, with cancellation,
+  explicit budgets and full candidate revalidation. Preset selection alone is not search.
+- Original proofs, combinatorial enumeration, font trade-offs and known bounds
+  remain available in a generated research library, with links to canonical evidence.
+
+The original requirements below still define the historical research foundation.
+
 ## Functional requirements
 
 1. **Layout model.**  A layout is a segment set plus named covers (each a

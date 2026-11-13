@@ -1,5 +1,59 @@
 # Roadmap
 
+## Current route — custom designer revision, 2026-11-13
+
+The user corrected the first redesign: switching presets was not enough. They need
+to specify the canvas and available strokes, combine character inventories, set
+per-direction detection/recovery severities, and see independent expected-shape
+matching, dynamic errors, scores and generated answers. The earlier route below
+preserves that iteration's decisions; it is not acceptance of the current product.
+
+The responsible framing error was treating a narrative plus preset switches as
+the requested design capability. The durable correction is one editable design
+specification (geometry, enabled hardware, labels/case policy, independent targets,
+rules, weights) consumed by rendering, validation, search and persistence alike.
+The research library is a separate chapter with generated evidence, not a substitute
+for live computation in the workshop. Current user flow and limits: [LAB](LAB.md).
+
+Acceptance for this revision: edit an individual hardware diagonal; combine and
+case-fold labels; impose different left/right recovery and detection thresholds;
+observe complete per-character hard errors and shape warnings; edit a target
+independently; generate and reverify a candidate for the current requirements;
+save/import all of the above; reload an original research font and inspect it.
+Budget-limited or unsupported checks/searches must remain visibly unresolved.
+
+## First report redesign — historical iteration, 2026-11-13
+
+The milestone labels below are historical planning, not the current completion checklist.
+The user judged the research mostly complete but the report confusing and unengaging,
+then authorised systematic fault/cover extensions and a substantial learning redesign.
+
+Current release scope:
+
+1. **Unified channel research:** known/unknown cover, alternative/simultaneous masks,
+   at-most 0–2 off/on/flip faults, detection versus correction, witnesses and exact/bounded capacities.
+   Evidence: [CHANNELS](CHANNELS.md), `foundation/results/channels.json`, channel tests.
+2. **Complete learning loop:** guess → reveal → edit → counterexample → compare
+   reference → change assumptions. `index.html` is the first-visit local entry.
+3. **Reusable exploration:** geometry-driven structures, six inventories, editable
+   fonts, finite-channel validation, design save/import/export. Charset size is not legibility.
+4. **Honest closure:** retain original results, distinguish proved/computed/bounded/modelled,
+   and label human perception as unverified. Keep the legacy tool separately.
+
+Acceptance: a visitor can explain the 6/8 ambiguity, change a glyph and see a concrete
+consequence, compare detection/recovery, reproduce a result, and export/reload the
+actual design. Automated/browser checks support this; no fresh-user study has yet
+established that the experience meets every reader's needs.
+
+Next useful checkpoint: feedback on the complete local experience. Then choose among
+a legibility experiment, temporal/shared-fault model, richer glyph search, or a hard
+larger-layout bound. No future autonomous run or external publication is scheduled.
+
+## Historical route (2026-10-28)
+
+The material below preserves why the original milestones were chosen. Its “current”,
+“in progress” and “planned” labels describe that time and are superseded above.
+
 Goal in one line: **an open, layout-parametric foundation for occlusion-tolerant
 segmented displays, with exact combinatorics, a calibratable recognisability
 model, and a playable explanation.**

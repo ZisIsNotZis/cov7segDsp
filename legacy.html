@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cov7seg lab — one side off</title>
+<style>
+  :root{
+    --bg:#0c0c0f; --panel:#141418; --panel2:#191920; --line:#2a2a32;
+    --ink:#f2f2f5; --muted:#9a9aa5; --accent:#ff5a4d; --amber:#ffb020;
+    --green:#4ade80; --red:#f43f5e; --blue:#60a5fa;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:radial-gradient(1200px 600px at 20% -10%, #1a1214 0, var(--bg) 55%);
+    color:var(--ink); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:14px; line-height:1.5;
+  }
+  header{display:flex; align-items:center; gap:18px; padding:22px clamp(16px,4vw,48px) 10px; flex-wrap:wrap}
+  .logo{width:150px; height:50px; display:block}
+  h1{font-size:20px; margin:0; letter-spacing:.5px}
+  .sub{margin:2px 0 0; color:var(--muted); font-size:12px}
+  .tabs{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto}
+  .header-controls{display:flex; gap:8px; align-items:center}
+  .control{display:flex; align-items:center; gap:6px; color:var(--muted); font-size:12px}
+  .control select{max-width:190px}
+  .tabs button, button, select{
+    font:inherit; color:var(--ink); background:var(--panel2); border:1px solid var(--line);
+    border-radius:8px; padding:7px 11px; cursor:pointer;
+  }
+  .tabs button.active, button.active, button:hover, select:hover{border-color:var(--accent); color:#fff}
+  .tabs button.active{background:#2a1414}
+  button.small{padding:5px 8px; font-size:12px}
+  button:disabled{opacity:.45; cursor:default}
+  main{padding:10px clamp(16px,4vw,48px) 60px; max-width:1280px; margin:0 auto}
+  .tab{display:none}
+  .tab.active{display:block}
+  .panel{
+    background:linear-gradient(180deg,var(--panel),#121216); border:1px solid var(--line);
+    border-radius:14px; padding:16px; margin-bottom:16px;
+  }
+  h2{font-size:15px; margin:0 0 12px; color:#fff}
+  h3{font-size:12px; margin:16px 0 8px; color:var(--muted); text-transform:uppercase; letter-spacing:1px}
+  .grid{display:grid; grid-template-columns:minmax(300px,1fr) minmax(320px,1.15fr); gap:16px}
+  .lab-grid{grid-template-columns:minmax(300px,.9fr) minmax(340px,1.3fr)}
+  .grid.two{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid,.grid.two,.lab-grid{grid-template-columns:1fr}}
+  .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .summary-panel{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+  .summary-chips{display:flex; gap:6px; flex-wrap:wrap}
+  .display{display:flex; gap:18px; justify-content:center; align-items:center; min-height:190px}
+  .glyph{width:170px; height:170px; display:block}
+  .glyph.big{width:190px; height:190px}
+  .glyph-bg{fill:#0a0a0c; stroke:#24242b; stroke-width:1}
+  .seg{stroke-width:9; stroke-linecap:round; fill:none; transition:stroke .12s}
+  .seg.on{stroke:var(--accent); filter:drop-shadow(0 0 5px rgba(255,90,77,.55))}
+  .seg.off{stroke:#2c2c34}
+  .seg.hidden{stroke:#4a3a20; opacity:.35}
+  .seg.covered{stroke:#22222a; opacity:.3}
+  .seg.conflict{stroke:var(--red); stroke-width:10; stroke-dasharray:4 3; filter:drop-shadow(0 0 6px rgba(244,63,94,.8))}
+  .seg.clickable{cursor:pointer; pointer-events:stroke}
+  .seg.clickable:hover{stroke-width:12}
+  .hint{color:var(--muted); font-size:12px; margin:8px 0 0}
+  .chip{display:inline-block; padding:2px 8px; border:1px solid var(--line); border-radius:999px; font-size:12px; margin:3px 4px 3px 0; color:var(--muted)}
+  .chip.ok{color:var(--green); border-color:#245c39}
+  .chip.warn{color:var(--red); border-color:#6b1d2a}
+  .chip.hint{color:var(--muted)}
+  .chip.accent{color:#ffd1cb; border-color:#7a2a24}
+  .scorecard{display:grid; gap:4px; margin-top:10px}
+  .kv{display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid #202027; padding:4px 0; font-size:12px}
+  .kv span:first-child{color:var(--muted)}
+  .kv .bad{color:var(--red)}
+  .accent{color:var(--accent)}
+  .gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px}
+  .digit-card{
+    text-align:left; padding:6px; border-radius:10px; border:1px solid var(--line);
+    background:#101014; cursor:pointer; position:relative; font:inherit; color:var(--ink);
+  }
+  .digit-card:hover{border-color:#5a2a24}
+  .digit-card.selected{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset}
+  .digit-card-head{display:flex; align-items:center; justify-content:space-between; gap:4px}
+  .digit-card-label{font-size:15px; color:#fff}
+  .digit-card .mini .glyph{width:86px; height:86px; margin:2px auto}
+  .digit-meta{font-size:10px; color:var(--muted); margin-top:2px}
+  .badges{display:flex; gap:3px; flex-wrap:wrap}
+  .badge{display:inline-block; padding:0 4px; border-radius:4px; font-size:9px; line-height:15px; border:1px solid var(--line); color:var(--muted)}
+  .badge.red{color:#ffd7dd; background:#54121d; border-color:#7a1d2c}
+  .badge.amber{color:#ffe1a8; background:#3a2a10; border-color:#6b4a10}
+  .conflict-list{display:grid; gap:5px}
+  .conflict-line{
+    text-align:left; font-size:12px; background:#18181d; border:1px solid var(--line);
+    border-radius:8px; padding:6px 9px; cursor:pointer; color:var(--ink);
+  }
+  .conflict-line:hover{border-color:var(--red)}
+  details.panel summary{cursor:pointer; color:var(--muted); font-size:12px}
+  details.panel[open] summary{color:#fff; margin-bottom:10px}
+  #lab-matrix{overflow:auto}
+  .matrix{border-collapse:collapse; margin-top:6px}
+  .matrix th{font-size:10px; color:var(--muted); font-weight:400; padding:2px 4px}
+  .matrix td{width:24px; height:24px; text-align:center; border:1px solid #22222a; font-size:9px; color:var(--muted)}
+  .matrix td.diag{color:#33333c}
+  .matrix td.conflict{background:#54121d; color:#ffd7dd; cursor:pointer; border-color:#7a1d2c}
+  .matrix td.conflict:hover{background:#7a1d2c}
+  .cd-stage{position:relative; min-height:300px; display:flex; align-items:center; justify-content:center; margin:8px 0}
+  .cd-digit{display:flex; justify-content:center}
+  #cd-display{gap:26px}
+  .leaf{
+    position:absolute; z-index:5; border-radius:55% 12% 55% 12%;
+    background:radial-gradient(circle at 30% 30%, #7bd88f, #2b6b3a 60%, #173a20);
+    border:1px solid #9be6a8; box-shadow:0 8px 22px rgba(0,0,0,.55);
+    cursor:grab; touch-action:none; transition:width .12s, height .12s;
+  }
+  .leaf.dragging{cursor:grabbing}
+  .leaf::after{content:""; position:absolute; inset:10% 42% 10% 42%; background:#0d2a15; opacity:.5; border-radius:50%}
+  .choices{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+  .choice{min-width:44px; font-size:16px; padding:10px 12px}
+  .feedback{margin-top:10px; min-height:28px}
+  #quiz-stats{overflow:auto}
+  .stats-table{border-collapse:collapse; margin-top:10px; font-size:12px}
+  .stats-table th,.stats-table td{border:1px solid #24242b; padding:3px 10px; text-align:right}
+  .stats-table th{color:var(--muted); font-weight:400}
+  .stats-table td:first-child,.stats-table th:first-child{text-align:left}
+  .matrix-lite td{min-width:18px; font-size:10px; text-align:center}
+  .matrix-lite td.diag{color:var(--green); background:#112318}
+  .readings{min-height:30px; margin-top:8px}
+  .math-table{border-collapse:collapse; margin:10px 0; font-size:12px; width:100%}
+  .math-table th,.math-table td{border:1px solid #24242b; padding:4px 10px; text-align:left}
+  .math-table th{color:var(--muted); font-weight:400; width:34%}
+  .plots{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px}
+  .plots figure{flex:1 1 320px; margin:0}
+  .plots img{width:100%; background:#fff; border-radius:10px; border:1px solid var(--line)}
+  .plots figcaption{color:var(--muted); font-size:11px; margin-top:6px}
+  footer{color:var(--muted); font-size:11px; padding:0 clamp(16px,4vw,48px) 30px; max-width:1280px; margin:0 auto}
+  a{color:var(--blue)}
+</style>
+</head>
+<body>
+<header>
+  <img class="logo" src="assets/logo.svg" alt="cov7seg">
+  <div>
+    <h1 data-i18n="header.title">cov7seg lab</h1>
+    <p class="sub" data-i18n="header.sub">one side off — what can you still read?</p>
+  </div>
+  <nav class="tabs">
+    <button data-tab="lab" class="active" data-i18n="nav.lab">Lab</button>
+    <button data-tab="countdown" data-i18n="nav.countdown">Countdown</button>
+    <button data-tab="quiz" data-i18n="nav.quiz">Quiz</button>
+    <button data-tab="math" data-i18n="nav.math">Math</button>
+  </nav>
+  <div class="header-controls">
+    <label class="control"><span data-i18n="global.font">Font</span><select id="global-font"></select></label>
+    <button id="lang-switch" class="small">中文</button>
+  </div>
+</header>
+
+<main>
+  <!-- ------------------------------------------------------------ LAB -->
+  <section id="tab-lab" class="tab active">
+    <div class="panel summary-panel">
+      <div id="lab-summary" class="summary-chips"></div>
+      <button id="lab-reset-font" class="small" data-i18n="lab.resetFont">Reset font</button>
+    </div>
+    <div class="grid lab-grid">
+      <div class="panel">
+        <h2><span data-i18n="lab.editor">Edit glyph</span> <span id="lab-selected-label" class="accent">0</span></h2>
+        <div id="lab-display" class="display"></div>
+        <div id="lab-covers" class="row" style="margin-top:8px"></div>
+        <div id="lab-readings" class="readings"></div>
+        <div id="lab-glyph-score" class="scorecard"></div>
+        <button id="lab-reset-digit" class="small" data-i18n="lab.resetDigit">Reset digit</button>
+        <p class="hint" data-i18n="lab.hint">Click a segment to toggle it. Edits are saved to the selected digit immediately.</p>
+      </div>
+      <div class="panel">
+        <h2 data-i18n="lab.gallery">All digits</h2>
+        <div id="lab-gallery" class="gallery"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2 data-i18n="lab.conflicts">Conflicts</h2>
+      <div id="lab-conflicts" class="conflict-list"></div>
+      <p class="hint" data-i18n="lab.conflictHint">Click a line to select that glyph and cover.</p>
+    </div>
+    <details class="panel">
+      <summary data-i18n="lab.matrixSummary">Conflict matrix (optional)</summary>
+      <div id="lab-matrix"></div>
+    </details>
+  </section>
+
+  <!-- ------------------------------------------------------ COUNTDOWN -->
+  <section id="tab-countdown" class="tab">
+    <div class="panel">
+      <div class="row">
+        <button id="cd-start" data-i18n="cd.start">Start</button>
+        <button id="cd-reset" data-i18n="cd.reset">Reset</button>
+        <span id="cd-font-name" class="chip"></span>
+      </div>
+      <div id="cd-stage" class="cd-stage">
+        <div id="cd-display" class="display" style="min-height:0"></div>
+        <div id="cd-leaf" class="leaf" data-i18n-title="cd.leafTitle" title="Drag me to a side"></div>
+      </div>
+      <div id="cd-cover-label" class="hint"></div>
+      <div class="grid two" style="margin-top:12px">
+        <div class="panel" style="margin:0">
+          <h3 data-i18n="cd.tens">Tens</h3>
+          <div id="cd-tens" class="readings"></div>
+        </div>
+        <div class="panel" style="margin:0">
+          <h3 data-i18n="cd.ones">Ones</h3>
+          <div id="cd-ones" class="readings"></div>
+        </div>
+      </div>
+      <p class="hint" data-i18n="cd.hint">Drag the leaf to a side. The covered side is hidden on both digits; the lists show every digit that could still be read.</p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ QUIZ -->
+  <section id="tab-quiz" class="tab">
+    <div class="panel">
+      <div class="row">
+        <button id="quiz-export" class="small" data-i18n="quiz.export">Export JSON</button>
+        <button id="quiz-reset" class="small" data-i18n="quiz.clear">Clear data</button>
+        <span id="quiz-cover" class="chip"></span>
+      </div>
+      <div id="quiz-display" class="display"></div>
+      <div id="quiz-choices" class="choices"></div>
+      <div id="quiz-feedback" class="feedback"></div>
+      <div id="quiz-stats"></div>
+      <p class="hint" data-i18n="quiz.hint">Answer; the next glyph appears automatically. Responses are stored in localStorage; export the JSON to fit the weights.</p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ MATH -->
+  <section id="tab-math" class="tab">
+    <div class="panel">
+      <h2 data-i18n="math.title">What the foundation found</h2>
+      <p data-i18n-html="math.intro">Seven-segment display, four possible one-side covers: top removes <code>a</code>, bottom removes <code>d</code>, left removes <code>e,f</code>, right removes <code>b,c</code>; the middle <code>g</code> is never covered.</p>
+      <table class="math-table">
+        <tr><th data-i18n="math.max">maximum unambiguous set</th><td>32</td></tr>
+        <tr><th data-i18n="math.min">minimum maximal set</th><td>16</td></tr>
+        <tr><th data-i18n="math.sizes">attainable maximal sizes</th><td data-i18n="math.sizesVal">16, 19–32 (17 and 18 do not exist)</td></tr>
+        <tr><th data-i18n="math.counts">maximal sets per g / globally</th><td>604,008 / 364,825,664,064</td></tr>
+        <tr><th data-i18n="math.capacity">character capacity</th><td data-i18n="math.capacityVal">32 (decimal and hex fit; 36-letter alphanumeric and Base64 do not)</td></tr>
+        <tr><th data-i18n="math.construction">construction</th><td data-i18n="math.constructionVal">4 cells × a matching of K₄,₄, plus cross-cell disjointness and hole-covering</td></tr>
+        <tr><th data-i18n="math.wellcovered">well-covered criterion</th><td>K_{q1} □ … □ K_{qd} is well-covered iff q1 &gt; Σ<sub>i≥2</sub>(q_i − 1)</td></tr>
+      </table>
+      <p data-i18n-html="math.para">The per-<code>g</code> graph is <code>K₂ □ K₂ □ K₄ □ K₄</code>; the global graph is two disjoint copies because <code>g</code> is never covered. The 9/10 gap is not a periodic sequence: it is the set of feasible cell-size patterns.</p>
+      <p data-i18n-html="math.recog">Recognisability uses a geometry-based <code>(components, holes)</code> signature and a nearest-standard / segment-fault check. The source note’s hex font fails the nearest check for 6 and 8; no 16-glyph 0–F nearest-preserving font exists. The optimised decimal candidate changes 1, 3, 5, 8 (4 flips) and is the “Optimised 0–9” preset in the Lab.</p>
+      <div class="plots">
+        <figure>
+          <img src="foundation/plots/sevenseg_global_counts.svg" alt="global counts by size">
+          <figcaption data-i18n="math.fig1">Global maximal-set counts by size: peak at 26, not at the maximum 32.</figcaption>
+        </figure>
+        <figure>
+          <img src="foundation/plots/family_existence.svg" alt="family existence">
+          <figcaption data-i18n="math.fig2">Attainable maximal sizes for K₂ □ K₂ □ K_q □ K_q: the gap moves and can disappear.</figcaption>
+        </figure>
+      </div>
+      <p class="hint" data-i18n-html="math.notes">Full notes: <a href="docs/FOUNDATION.md">docs/FOUNDATION.md</a> · <a href="docs/RECOGNITION.md">docs/RECOGNITION.md</a> · <a href="docs/0_ROADMAP.md">roadmap</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span data-i18n="footer">cov7seg · M3 lab · built from the M1/M2 exact results. Everything is static; no server, no build.</span>
+</footer>
+
+<script src="lab/i18n.js"></script>
+<script src="lab/data.js"></script>
+<script src="lab/core.js"></script>
+<script src="lab/ui.js"></script>
+</body>
+</html>

@@ -11,3 +11,6 @@ foundation/results/count_mixed
 .DS_Store
 *.swp
 *~
+
+# Reproducible single-file / Pages build
+dist/

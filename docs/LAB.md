@@ -1,151 +1,85 @@
-# The lab
+# 从需求开始设计显示器
 
-`index.html` is a static, dependency-free playground for the occlusion problem.
-It uses the M1/M2 results and has four views: **Lab**, **Countdown**, **Quiz**,
-**Math**.
+当前入口 `index.html`。无构建步骤：项目根目录运行
+`python -m http.server 8000 --bind 127.0.0.1`，访问 `http://127.0.0.1:8000/`。
+计算在浏览器本地进行，无账户、上传或运行时外部依赖。
 
-There is one **global font selector** in the header.  It is the only mode
-dropdown: changing it resets the working font and all views to that preset.
-There are no per-tab font selectors, no slot dropdown, and no “apply” button:
-click a digit to edit it, and every edit is saved immediately.
+## 为什么重新组织实验台
 
-The **EN / 中文** switch is next to the font selector.  The choice is stored in
-`localStorage` and the whole UI follows it; the source notes remain English.
+上一轮页面让人经历了一个现象，却主要在切换已有结构与字库。用户明确要求真正定义
+画布、可用段、字符库存、分层容错和预期字形，并让既有算法参与动态分析与参考搜索。
+本次以同一份设计状态驱动显示、验证、搜索与保存，不再用预设切换代替设计能力。
 
-## Open it
+## 第一步：定义画布与可用硬件
 
-```bash
-cd cov7segDsp
-python3 -m http.server 8000
-# then open http://localhost:8000/
-```
+格线画布的顶点行列数与格子数分别标明。例如 2 列 × 3 行顶点组成 1 × 2 个格子，
+正交边就是七段显示；每格可增加两种方向的斜线。可单独切换每根候选线段是否存在。
+还可启用顶点独立灯点：只保留点可形成点阵，只保留一个角点可作为独立小数点。
 
-Opening `index.html` directly also works in most browsers; a local server is
-recommended because some browsers restrict `localStorage` on `file://`.
+硬件层的“禁用这根线”与字形层的“这个字符不点亮这根线”是不同操作。前者作用于
+整套字库。字形使用 BigInt 表示，不会在超过 32 根线后悄悄丢失高位；候选段上限为 128。
 
-No build step, no framework, no network.  Files:
+## 第二步：选你真正需要的字符
 
-```
-index.html
-lab/data.js      precomputed topology signatures for the 128 patterns
-lab/core.js      conflict, projection, score, nearest, topology logic
-lab/i18n.js      English/Chinese strings and the language switch
-lab/ui.js        DOM wiring
-assets/logo.svg
-foundation/plots/*.svg
-```
+预设用于便捷选取，仍可以叠加和逐字增删、自定义输入。大小写不敏感时合并等价标签，
+页面显示实际需要区分的字符数。Base64 本来区分大小写；折叠后的集合不再是完整 Base64。
 
-## Lab
+只有选择了字符，才有需要共同满足的约束；不会把未选字符当成必须编码的标签。
 
-The Lab is designed to show everything at once:
+## 第三步：逐条写容错要求
 
-- **Summary bar** — font name, number of conflicts, mean score, total flips,
-  topology mismatches, nearest-standard mismatches.  No clicks.
-- **All digits gallery** — every glyph in the font, as a card.  The selected
-  cover is applied to every card, so you see all projections at the same time.
-  Badges:
-  - `T R B L` in red: the glyph participates in a conflict; the letters are
-    the covers where it collides.
-  - `ambiguous` in red: under the selected cover, more than one digit maps to
-    the same projection.
-  - `T` in amber: the glyph's topology differs from the standard.
-  - `N` in amber: the intended digit is not the unique nearest standard.
-  - the card footer gives flips from standard and weighted score.
-- **Editor** — click a card to select it; click a segment in the big glyph to
-  toggle it.  The edit is written into the working font immediately, and the
-  gallery, countdown and score update.  **Reset digit** restores that one glyph
-  from the preset; **Reset font** restores the whole preset.
-- **Cover buttons** — no cover / top / right / bottom / left.  The projection
-  line under the editor and every gallery card follow the selected cover.
-- **Conflicts** — every conflicting pair is listed automatically, with the
-  cover and the hidden segments.  Click a line to select that glyph and cover.
-- **Conflict matrix** — optional, inside a `<details>`; cells show the covers
-  where a pair collides.  Click a cell to select the pair's first glyph and that
-  cover.
+每条规则独立选择方向、左右等方向是任选其一还是同时遮挡，以及坏灭/常亮/任意翻转
+的未知段数。每个方向分别设置两个阈值：
 
-The old “slot + apply” flow is gone.  Editing a digit *is* selecting it.
+- **恢复到多少深度**：在这范围内，观测只能来自一个原字符。
+- **检测到多少深度**：在更严重的范围内，允许无法恢复，但不能悄悄冒充另一个完好字符。
 
-## Countdown
+例如“左遮到 10% 必须恢复、到 25% 必须检出，右侧分别为 15% 和 30%，再叠加至多
+一个坏灭段”。还可另外添加仅故障、无额外遮挡的要求，或多条不同故障预算的要求。
+完好状态始终检查，不能用“没有坏的”和“坏了的”解释不同字符却得到同一个观测。
 
-- Uses the global font.
-- Drag the leaf; it snaps to the nearest side (or “no cover” in the middle).
-- Both digits lose that side; the tens/ones lists show every digit that could
-  still be read.
-- **Start/Pause** and **Reset** are the only controls; the countdown wraps
-  99 → 0 → 99.
-- Try **Standard 0–9** with the right cover and wait for 68/86; then switch to
-  **Optimised 0–9** and repeat.
+百分比表示从该侧覆盖画布宽/高的深度，**不是事件发生概率**。几何采用真实线段裁切；
+物理画布为 `[0,1] × [0,1]`，不包含绘图留白，线宽按零处理。深度 0 表示不遮挡；
+任何正深度都包含最外侧边；遮挡前沿也属于被遮区域，因此 50% 恰好覆盖中线。
+只要残留非零长度，在理想模型里仍能读到该独立段的亮灭位。因此极细残段的现实可见性
+没有被证明。“pin”在此是独立亮灭段，不是现实封装引脚或共用驱动线路。
 
-## Quiz
+已知遮挡时，对最大深度的严格检验可保证更浅深度，因为更浅只会留下更多信息。
+未知遮挡需要跨方向和深度比较；枚举触限或连续联合几何未完成时，结果保持“未证实”，
+不会把没有找到反例当成验证通过。检测也不保证察觉无可见影响的物理故障。
 
-- Uses the global font.
-- A random glyph is shown with a random cover (one in five is unoccluded).  The
-  cover is stated above the glyph.
-- Click the digit you read.  The feedback says correct/wrong and whether the
-  view was ambiguous.
-- The next glyph appears automatically after 1.2 s; there is no “new glyph”
-  button.  Responses go to `localStorage` under `cov7seg_quiz_v1`.
-- **Export JSON** downloads the raw responses:
-  ```json
-  {"font":"opt-dec","shown":"6","cover":"right","response":"8",
-   "correct":false,"possible":["6","8"],"ts":"..."}
-  ```
-- **Clear data** wipes the responses.  The stats panel shows trials, accuracy,
-  per-shown counts and a confusion matrix for the current font.
+## 第四步：明确你期待字形像什么
 
-## Calibrating the weights
+目标字形独立保存。内置七段标准沿用原研究权重；通用字形另有明确的 5 × 7 几何参考，
+可在当前结构中拟合，也可人工修改目标。未知字符没有内置参考时先不评分，不能当成满分。
 
-The quiz export feeds a visible-evidence conditional-logit fit:
+原研究的可见距离、较小权重的遮挡后距离、最近标准与拓扑检查都能查看。自定义几何
+使用单独标示的光栅/形状代理；它与经典七段分数不混为一个经验证的感知量表。可以调整
+各项权重，观察设计取舍。改变当前字形不会自动改目标，否则修改越多也可能永远“满分”。
 
-```bash
-uv run --with scipy python -m foundation.calibrate --data cov7seg-quiz.json
-```
+## 第五步：改字、看原因、生成候选
 
-The model is
+逐字符显示硬错误和形状偏差。红色表示至少一条要求失败；黄色表示偏离期望，颜色不
+替代文字原因。平均分、最差字形、最近目标与连通/洞结构各有意义，不互相替代。
+所有有问题的字符都统计，反例展示数量限制不应影响谁被标红。
 
-```
-P(response = r | shown g, cover c)
-  ∝ exp( − Σ_{i visible under c} w_i · [g_i ≠ standard[r]_i] )
-```
+反例明确给出两种原字符、各自遮挡与坏段，以及相同观测。改变要求、硬件、目标或字形
+后重新计算，不从历史预设借用“通过”的结论。
 
-Only the segments the viewer can see enter the likelihood; the hidden segments
-are the viewer's prior, not observed evidence.  The design score’s `λ_occ` is a
-separate design weight and is not identifiable from these responses alone.
+“生成参考答案”针对当前配置搜索：小空间枚举图案并搜索合法赋值，大空间采用有预算
+的改进搜索。目标是先满足全部硬要求，再比较模型代价。可以取消，所有返回候选重新
+完整验证。预算内没找到解不代表不存在解；只有严格上界或穷尽证明才可称不可能。
+穷尽或最优也仅针对声明的有限模型与优化目标，不等于最佳人类字体。
 
-Synthetic self-test:
+## 保留设计与访问研究
 
-```bash
-uv run --with scipy python -m foundation.calibrate --synthetic
-```
+保存/导出需包含完整画布、可用段、当前字形、独立目标、字符标签、规则和权重。导入
+后按实际状态重新验证。浏览器本机存储不是云端备份，重要设计请导出。
 
-It recovers known weights with RMSE ≈ 0.04 at 2–4k trials.
+末章保留旧研究的完整脉络：容量与精确计数、四格匹配构造、广义图族与判据、字体
+Pareto 与拓扑反例、最近标准的十六进制限制、故障容量与冗余构造、感知证据边界。
+表格由 `python -m foundation.build_archive_data` 从原结果生成；研究字库可带回实验台。
 
-## What the lab is for
-
-1. It makes the conflict **visible**: all digits, all projections, hidden
-   segments, no table decoding.
-2. It makes the 6/8 case concrete: standard 6 and 8 collide under the right
-   cover; the optimised font changes 8 (and 5) to break it.
-3. It collects the data the current weights lack.  The M2 weights are
-   provisional; the quiz is how they get replaced.
-
-## Limits
-
-- The occlusion model is the ideal “one outer line” model, not a geometric
-  partial cover.
-- The topology signature is `(components, holes)` only; endpoints, junctions and
-  symmetry are still open.
-- The quiz stores data locally; there is no server.  The exported JSON is the
-  input for the calibration step.
-- The lab defaults to the optimised decimal font; its 5 and 8 were reviewed and
-  accepted as readable, but the weights are still provisional.
-- The Chinese UI is a written translation, not machine-translated at runtime.
-
-## Regenerating the topology table
-
-```bash
-python -m foundation.build_lab_data
-```
-
-This writes `lab/data.js` from `foundation/topology.py`; rerun it after changing
-the raster parameters or the segment geometry.
+权威正文：[FOUNDATION](FOUNDATION.md)、[RECOGNITION](RECOGNITION.md)、[CHANNELS](CHANNELS.md)。
+历史页面：`workshop-v1.html`（第一轮叙事/预设实验），`legacy.html`（最早中英文诊断台）。
+这些历史入口不定义当前设计器的流程，也不把旧测验数据冒充真人可读性验证。

@@ -60,7 +60,8 @@
       const covered = opts.cover && (C.COVER_MASKS[opts.cover] >> i) & 1;
       let cls = on ? "seg on" : "seg off";
       if (covered) {
-        if (opts.highlightMask && (opts.highlightMask >> i) & 1) cls = "seg conflict";
+        if (opts.blind) cls = "seg covered";
+        else if (opts.highlightMask && (opts.highlightMask >> i) & 1) cls = "seg conflict";
         else if (on) cls = "seg hidden";
         else cls = "seg covered";
       }
@@ -603,12 +604,13 @@
     const label = labels[Math.floor(Math.random() * labels.length)];
     const opts = [null, ...C.COVER_ORDER];
     const cover = opts[Math.floor(Math.random() * opts.length)];
-    quiz.current = { label, cover, fontKey: state.fontKey };
+    quiz.current = { label, cover, fontKey: state.fontKey, glyphs: { ...state.font.glyphs } };
     $("#quiz-cover").textContent = cover
       ? t("quiz.coverLabel", { cover: t("cover." + cover) })
       : t("quiz.noCover");
     renderGlyph($("#quiz-display"), C.maskOf(state.font.glyphs[label]), {
       cover,
+      blind: true,
       big: true,
     });
     const choices = $("#quiz-choices");
@@ -630,13 +632,16 @@
     if (!quiz.current || quiz.answered) return;
     quiz.answered = true;
     const cur = quiz.current;
-    const p = C.maskOf(state.font.glyphs[cur.label]);
+    const p = C.maskOf(cur.glyphs[cur.label]);
     const masked = cur.cover ? C.projected(p, cur.cover) : p;
     const possible = cur.cover
-      ? C.readings(state.font, masked, cur.cover)
-      : [cur.label];
+      ? C.readings({glyphs:cur.glyphs}, masked, cur.cover)
+      : Object.keys(cur.glyphs).filter(l => C.maskOf(cur.glyphs[l]) === p);
     const correct = response === cur.label;
     quiz.data.push({
+      schema: "cov7seg-trial-v2",
+      glyphs: cur.glyphs,
+      hiddenEvidence: false,
       font: cur.fontKey,
       shown: cur.label,
       cover: cur.cover,
@@ -650,7 +655,7 @@
     const fb = $("#quiz-feedback");
     fb.innerHTML = "";
     fb.appendChild(
-      chip(correct ? t("quiz.correct") : t("quiz.wrong", { label: cur.label }), correct ? "ok" : "warn")
+      chip(possible.length > 1 && possible.includes(response) ? t("quiz.insufficient") : correct ? t("quiz.correct") : t("quiz.wrong", { label: cur.label }), possible.includes(response) ? "ok" : "warn")
     );
     if (possible.length > 1) {
       fb.appendChild(chip(t("quiz.ambiguous", { labels: possible.join(" / ") }), "warn"));

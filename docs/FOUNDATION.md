@@ -316,7 +316,7 @@ equivalently `2·q1 > Σ_i q_i − d + 1`.  In particular, for two factors
 
 **Proof.**
 
-*(⇒ direction, well-covered ⇒ condition.)*  Suppose
+*(Sufficiency, condition ⇒ well-covered.)*  Suppose
 `q1 > Σ_{i≥2}(q_i − 1)`.  Let `S` be a maximal independent set and suppose it
 misses a line `L` in coordinate 1; write the other coordinates of `L` as `y`.
 There are `q1` vertices on `L`, one for each value of coordinate 1.  Since `S`
@@ -331,7 +331,7 @@ adjacent, contradicting independence.  But `y` has only
 `Σ_{i≥2}(q_i − 1)` neighbours, fewer than `q1`.  Contradiction.  Hence `S`
 meets every line in coordinate 1, so `|S| = N/q1 = α(G)`.
 
-*(⇐ direction, condition ⇒ well-covered.)*  Suppose
+*(Necessity, by contraposition.)*  Suppose
 `q1 ≤ Σ_{i≥2}(q_i − 1)`.  Choose a vertex `y` in the product of coordinates
 `2..d` and `q1` distinct neighbours `y_1,…,y_{q1}` of `y` (possible because
 the degree is `Σ_{i≥2}(q_i − 1)`).  The set
@@ -347,7 +347,9 @@ occupies exactly one such line and the lines are disjoint.  Hence
 
 For 7-segment, `q=(2,2,4,4)`, so `q1=4` and
 `Σ_{i≥2}(q_i − 1) = 1+1+3 = 5`; `4 > 5` is false, so the graph is not
-well-covered and gaps are possible.  This is exactly the 9/10 gap.
+well-covered, so maximal sets need not all have the same size. The specific
+9/10 gap is established by the construction grammar and exact enumeration;
+non-well-coveredness alone does not imply that particular gap.
 
 Verification against the exact/CP-SAT data:
 

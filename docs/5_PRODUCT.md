@@ -1,5 +1,17 @@
 # The product
 
+## Current product — 2026-11-13
+
+`index.html` is the context-free learning experience; `legacy.html` preserves the
+original expert lab. [LAB](LAB.md) describes the user path; [CHANNELS](CHANNELS.md)
+is authoritative for the new unified cover/fault model and results. The release
+includes a finite-channel verifier and geometry-driven editable fonts, not a
+certified font or a validated human-recognition model.
+
+M1/M2 descriptions below are historical implementation context. Topology, the quiz
+and calibration harness were implemented; human calibration remains unverified.
+Larger-layout optimal capacities are not a prerequisite to this release.
+
 ## Current release (M1)
 
 A small, dependency-free Python foundation plus a reproducible note.
